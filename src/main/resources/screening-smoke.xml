@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Screening - smoke tests" parallel="classes" thread-count="2">
+    <test name="Main functional">
+        <groups>
+            <run>
+                <include name="smoke test"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="authorization.RegistrationTest"/>
+            <class name="candidate.CandidateTest"/>
+            <class name="problem.ProblemTest"/>
+            <class name="candidate.CandidateFlowTest"/>
+        </classes>
+    </test>
+</suite>
