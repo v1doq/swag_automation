@@ -8,6 +8,7 @@
             </run>
         </groups>
         <classes>
+            <class name="base.SuiteTest"/>
             <class name="authorization.RegistrationTest"/>
             <class name="candidate.CandidateTest"/>
             <class name="problem.ProblemTest"/>
