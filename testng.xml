@@ -6,5 +6,6 @@
     </listeners>
     <suite-files>
         <suite-file path="src/main/resources/screening-smoke.xml"/>
+        <suite-file path="src/main/resources/screening-regression.xml"/>
     </suite-files>
 </suite>

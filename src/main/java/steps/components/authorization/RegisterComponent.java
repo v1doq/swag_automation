@@ -7,6 +7,7 @@ import steps.components.base.BaseComponent;
 
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public class RegisterComponent extends BaseComponent {
 
@@ -15,11 +16,11 @@ public class RegisterComponent extends BaseComponent {
     }
 
     public WebElement getFirstNameInput(){
-        return $(xpath("//input"));
+        return $(xpath("//input[@type='text']"));
     }
 
     public WebElement getLastNameInput(){
-        return $(xpath("//div[2]/div/input"));
+        return $(xpath("(//input[@type='text'])[2]"));
     }
 
     public WebElement getEmailInput(){
@@ -41,5 +42,26 @@ public class RegisterComponent extends BaseComponent {
     public void openRegistrationPopUp(){
         $(cssSelector("span:nth-child(5)>button")).click();
         waitForText(By.cssSelector("h2"), "Please, enter your registration information");
+        assertThat(elementToBeClickable(xpath("(//button[@type='button'])[2]")));
+    }
+
+    public boolean isFirstNameErrorDisplayed(){
+        return isElementPresent(xpath(".//*[@id='app']/div[2]/div/div/div[3]/div[1]/div[2]/div[1]/div"));
+    }
+
+    public boolean isLastNameErrorDisplayed(){
+        return isElementPresent(xpath(".//*[@id='app']/div[2]/div/div/div[3]/div[2]/div[2]/div[1]/div"));
+    }
+
+    public boolean isEmailErrorDisplayed(){
+        return isElementPresent(xpath("//div[3]/div[3]/div[2]/div/div"));
+    }
+
+    public boolean isPasswordErrorDisplayed(){
+        return isElementPresent(xpath("//div[4]/div[2]/div/div"));
+    }
+
+    public boolean isRepeatPasswordErrorDisplayed(){
+        return isElementPresent(xpath("//div[5]/div[2]/div/div"));
     }
 }

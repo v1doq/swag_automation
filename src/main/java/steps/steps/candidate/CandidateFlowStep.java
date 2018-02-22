@@ -29,8 +29,7 @@ public class CandidateFlowStep {
     @Step("Verify that candidate confirm his email")
     public boolean isUserConfirmedEmail(){
         String text = "Assignment details";
-        component.waitForTextInH1(text);
-        return component.getH1().getText().contains(text);
+        return component.getH1(text).getText().contains(text);
     }
 
     @Step("Go to problem screen")
@@ -47,13 +46,12 @@ public class CandidateFlowStep {
         component.getRunButton().click();
         component.waitForCompilerResponse("Test run result: Ok");
         component.getSubmitButton().click();
-        component.waitForTextInH1("Congratulations!");
+        component.getH1("Congratulations!");
     }
 
     @Step("Verify that candidate go to finish screening step")
     public boolean isUserSolveTheTask(){
         String text = "Congratulations!";
-        component.waitForTextInH1(text);
-        return component.getH1().getText().contains(text);
+        return component.getH1(text).getText().contains(text);
     }
 }

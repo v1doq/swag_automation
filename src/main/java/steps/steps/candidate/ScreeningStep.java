@@ -22,7 +22,7 @@ public class ScreeningStep {
     @Step("Create screening")
     public void createScreening(){
         component.openScreeningPopUp();
-        component.getLanguageCheckbox().click();
+        component.jsClick(component.getLanguageCheckbox());
         component.getProblemCheckbox().click();
         component.getSubmitButton().click();
     }

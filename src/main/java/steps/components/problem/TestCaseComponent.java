@@ -6,6 +6,7 @@ import steps.components.base.BaseComponent;
 
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 
 public class TestCaseComponent extends BaseComponent {
 
@@ -18,7 +19,7 @@ public class TestCaseComponent extends BaseComponent {
     }
 
     public void openTestCasePopUp(){
-        waitForElementToBeClickable(getPlusButton());
+        assertThat(elementToBeClickable(getPlusButton()));
         getPlusButton().click();
     }
 
