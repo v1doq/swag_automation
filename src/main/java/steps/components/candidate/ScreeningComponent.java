@@ -4,7 +4,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import steps.components.base.BaseComponent;
 
-import static org.openqa.selenium.By.*;
+import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.xpath;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 
 public class ScreeningComponent extends BaseComponent {
 
@@ -37,8 +39,7 @@ public class ScreeningComponent extends BaseComponent {
     }
 
     public void openScreeningPopUp(){
-        waitForElementToBeClickable(getPlusButton());
+        assertThat(elementToBeClickable(getPlusButton()));
         getPlusButton().click();
-        sleep(500);
     }
 }

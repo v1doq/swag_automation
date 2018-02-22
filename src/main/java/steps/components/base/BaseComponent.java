@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 
 public class BaseComponent extends ConciseApi {
 
@@ -19,11 +20,13 @@ public class BaseComponent extends ConciseApi {
         return driver;
     }
 
-    public void waitForTextInH1(String text){
+    public WebElement getH1(String text){
         waitForText(By.cssSelector("h1"), text);
+        return $(cssSelector("h1"));
     }
 
-    public WebElement getH1(){
-        return $(cssSelector("h1"));
+    public WebElement getServerError(String text){
+        assertThat(textToBe(cssSelector(".red--text"), text));
+        return $(cssSelector(".red--text"));
     }
 }

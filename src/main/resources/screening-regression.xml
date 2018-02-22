@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Screening - regression tests" parallel="tests" thread-count="4">
+    <test name="Registration positive tests">
+        <groups>
+            <run>
+                <include name="register positive"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="authorization.RegistrationTest" />
+        </classes>
+    </test>
+    <test name="Registration negative tests">
+        <groups>
+            <run>
+                <include name="register negative"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="authorization.RegistrationTest" />
+        </classes>
+    </test>
+    <test name="Authorization positive tests">
+        <groups>
+            <run>
+                <include name="auth positive"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="authorization.LoginTest" />
+        </classes>
+    </test>
+    <test name="Authorization negative tests">
+        <groups>
+            <run>
+                <include name="auth negative"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="authorization.LoginTest" />
+        </classes>
+    </test>
+</suite>
