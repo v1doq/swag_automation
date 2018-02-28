@@ -13,11 +13,11 @@ public class LoginComponent extends BaseComponent {
     }
 
     public WebElement getUsernameInput(){
-        return $(tagName("username"));
+        return $(name("username"));
     }
 
     public WebElement getPasswordInput(){
-        return $(tagName("password"));
+        return $(name("password"));
     }
 
     public WebElement getSubmitButton(){

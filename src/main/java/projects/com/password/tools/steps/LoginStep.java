@@ -6,7 +6,8 @@ import projects.com.password.tools.components.LoginComponent;
 
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static common.DefaultConstant.USERNAME_PASS_TOOLS;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static org.openqa.selenium.By.className;
+import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 import static settings.TestConfig.getProperty;
 
 public class LoginStep {
@@ -33,6 +34,17 @@ public class LoginStep {
         component.getUsernameInput().sendKeys(username);
         component.getPasswordInput().sendKeys(pass);
         component.getSubmitButton().click();
-        component.assertThat(visibilityOf(component.getLogoutButton()));
+        component.assertThat(textToBe(className("toolbar__title"), "Passwords Tool"));
+    }
+
+    @Step("Log out")
+    public void logout() {
+        component.getDriver().manage().window().maximize();
+        component.getLogoutButton().click();
+    }
+
+    @Step("Verify that user was successfully login")
+    public boolean isUserLogin(){
+        return component.getLogoutButton().isDisplayed();
     }
 }

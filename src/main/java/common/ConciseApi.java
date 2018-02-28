@@ -24,7 +24,7 @@ public abstract class ConciseApi {
         WebElement element = null;
         try {
             element = assertThat(visibilityOfElementLocated(locator));
-        } catch (Exception e){
+        } catch (StaleElementReferenceException e){
             LOG.info("Catch exception");
         }
         return element;
