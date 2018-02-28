@@ -1,9 +1,9 @@
-package steps.steps.authorization;
+package projects.com.swag.screening.steps.authorization;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import settings.SQLConnector;
-import steps.components.authorization.RegisterComponent;
+import projects.com.swag.screening.components.authorization.RegisterComponent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,7 +14,7 @@ import static org.apache.commons.lang.RandomStringUtils.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
-import static steps.components.base.ConciseApi.sleep;
+import static common.ConciseApi.sleep;
 
 public class RegisterStep {
 

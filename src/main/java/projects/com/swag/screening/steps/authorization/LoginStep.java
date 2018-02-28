@@ -1,8 +1,8 @@
-package steps.steps.authorization;
+package projects.com.swag.screening.steps.authorization;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import steps.components.authorization.LoginComponent;
+import projects.com.swag.screening.components.authorization.LoginComponent;
 
 import java.util.List;
 
@@ -12,8 +12,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.TestConfig.getProperty;
-import static steps.components.base.ConciseApi.sleep;
-import static steps.steps.authorization.RegisterStep.*;
+import static projects.com.swag.screening.steps.authorization.RegisterStep.*;
 
 public class LoginStep {
 

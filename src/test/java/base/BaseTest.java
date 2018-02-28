@@ -16,7 +16,7 @@ import org.testng.annotations.BeforeMethod;
 import settings.Browser;
 import settings.SeleniumListener;
 import settings.TestConfig;
-import steps.components.base.ConciseApi;
+import common.ConciseApi;
 
 import java.util.concurrent.TimeUnit;
 

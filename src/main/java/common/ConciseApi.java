@@ -1,4 +1,4 @@
-package steps.components.base;
+package common;
 
 import com.google.common.base.Function;
 import org.openqa.selenium.*;

@@ -1,9 +1,9 @@
-package steps.steps.problem;
+package projects.com.swag.screening.steps.problem;
 
 import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import steps.components.problem.ProblemComponent;
+import projects.com.swag.screening.components.problem.ProblemComponent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
-import static steps.steps.problem.TestCaseStep.PATTERN;
+import static projects.com.swag.screening.steps.problem.TestCaseStep.PATTERN;
 
 public class ProblemStep {
 

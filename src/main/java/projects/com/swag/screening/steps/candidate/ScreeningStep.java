@@ -1,9 +1,9 @@
-package steps.steps.candidate;
+package projects.com.swag.screening.steps.candidate;
 
 import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import steps.components.candidate.ScreeningComponent;
+import projects.com.swag.screening.components.candidate.ScreeningComponent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

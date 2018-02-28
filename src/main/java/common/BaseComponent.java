@@ -1,4 +1,4 @@
-package steps.components.base;
+package common;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

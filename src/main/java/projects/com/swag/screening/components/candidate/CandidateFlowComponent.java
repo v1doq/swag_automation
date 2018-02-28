@@ -1,9 +1,9 @@
-package steps.components.candidate;
+package projects.com.swag.screening.components.candidate;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import steps.components.base.BaseComponent;
+import common.BaseComponent;
 
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
