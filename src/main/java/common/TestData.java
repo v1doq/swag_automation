@@ -42,9 +42,7 @@ public final class TestData {
 
     public static final List<String> VALID_NAME_LIST = asList(
             randomAlphabetic(MIN_NAME_LENGTH),
-            randomAlphabetic(MAX_NAME_LENGTH),
-            "Björk",
-            "Кириллица"
+            randomAlphabetic(MAX_NAME_LENGTH)
     );
 
     public static final List<String> INVALID_NAME_LIST = asList(

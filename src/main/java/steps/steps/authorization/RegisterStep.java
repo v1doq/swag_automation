@@ -11,6 +11,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.RandomStringUtils.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 import static steps.components.base.ConciseApi.sleep;
@@ -51,8 +52,10 @@ public class RegisterStep {
 
     @Step("Submit registration form")
     public void submitForm() {
-        component.getSubmitButton().click();
-        sleep(300);
+        component.assertThat(elementToBeClickable(component.getSubmitButton()));
+        component.assertThat(visibilityOf(component.getSubmitButton()));
+        component.actionClick(component.getSubmitButton());
+        sleep(700); //need to fix
     }
 
     @Step("Fill first and last name fields")
