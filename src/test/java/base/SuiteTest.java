@@ -2,9 +2,9 @@ package base;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
-import steps.steps.candidate.CandidateStep;
-import steps.steps.candidate.ScreeningStep;
-import steps.steps.problem.ProblemStep;
+import projects.com.swag.screening.steps.candidate.CandidateStep;
+import projects.com.swag.screening.steps.candidate.ScreeningStep;
+import projects.com.swag.screening.steps.problem.ProblemStep;
 
 public class SuiteTest extends BaseTest {
 

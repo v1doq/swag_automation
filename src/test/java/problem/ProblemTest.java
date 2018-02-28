@@ -7,13 +7,13 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import steps.steps.authorization.LoginStep;
-import steps.steps.problem.ProblemStep;
-import steps.steps.problem.TestCaseStep;
+import projects.com.swag.screening.steps.authorization.LoginStep;
+import projects.com.swag.screening.steps.problem.ProblemStep;
+import projects.com.swag.screening.steps.problem.TestCaseStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
-import static steps.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
+import static projects.com.swag.screening.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
 
 @Feature("Problem")
 @Story("Functional tests for add problem and test case to a problem")

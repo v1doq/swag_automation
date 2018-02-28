@@ -1,9 +1,9 @@
-package steps.steps.problem;
+package projects.com.swag.screening.steps.problem;
 
 import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import steps.components.problem.TestCaseComponent;
+import projects.com.swag.screening.components.problem.TestCaseComponent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

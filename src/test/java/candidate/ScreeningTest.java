@@ -7,15 +7,15 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import steps.steps.candidate.CandidateStep;
-import steps.steps.authorization.LoginStep;
-import steps.steps.problem.ProblemStep;
-import steps.steps.candidate.ScreeningStep;
+import projects.com.swag.screening.steps.candidate.CandidateStep;
+import projects.com.swag.screening.steps.authorization.LoginStep;
+import projects.com.swag.screening.steps.problem.ProblemStep;
+import projects.com.swag.screening.steps.candidate.ScreeningStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static steps.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
+import static projects.com.swag.screening.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
 
 @Feature("Screening")
 @Story("Functional tests for add screening to a candidate")

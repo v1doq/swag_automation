@@ -1,8 +1,8 @@
-package steps.steps.candidate;
+package projects.com.swag.screening.steps.candidate;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import steps.components.candidate.CandidateFlowComponent;
+import projects.com.swag.screening.components.candidate.CandidateFlowComponent;
 
 import static common.DefaultConstant.CANDIDATE_ACCESS_CODE;
 import static settings.TestConfig.getProperty;

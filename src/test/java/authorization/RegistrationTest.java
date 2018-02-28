@@ -7,14 +7,14 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import steps.steps.authorization.LoginStep;
-import steps.steps.authorization.RegisterStep;
+import projects.com.swag.screening.steps.authorization.LoginStep;
+import projects.com.swag.screening.steps.authorization.RegisterStep;
 
 import static common.DefaultConstant.*;
 import static common.TestData.*;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
-import static steps.steps.authorization.RegisterStep.MIN_PASSWORD_LENGTH;
+import static projects.com.swag.screening.steps.authorization.RegisterStep.MIN_PASSWORD_LENGTH;
 
 @Feature("Registration")
 @Story("Functional tests for registration form")

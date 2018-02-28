@@ -1,8 +1,8 @@
-package steps.components.authorization;
+package projects.com.swag.screening.components.authorization;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import steps.components.base.BaseComponent;
+import common.BaseComponent;
 
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.xpath;
