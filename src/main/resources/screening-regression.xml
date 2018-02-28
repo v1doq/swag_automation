@@ -8,7 +8,7 @@
             </run>
         </groups>
         <classes>
-            <class name="authorization.RegistrationTest" />
+            <class name="projects.com.swag.screening.authorization.RegistrationTest" />
         </classes>
     </test>
     <test name="Registration negative tests">
@@ -18,7 +18,7 @@
             </run>
         </groups>
         <classes>
-            <class name="authorization.RegistrationTest" />
+            <class name="projects.com.swag.screening.authorization.RegistrationTest" />
         </classes>
     </test>
     <test name="Authorization positive tests">
@@ -28,7 +28,7 @@
             </run>
         </groups>
         <classes>
-            <class name="authorization.LoginTest" />
+            <class name="projects.com.swag.screening.authorization.LoginTest" />
         </classes>
     </test>
     <test name="Authorization negative tests">
@@ -38,7 +38,7 @@
             </run>
         </groups>
         <classes>
-            <class name="authorization.LoginTest" />
+            <class name="projects.com.swag.screening.authorization.LoginTest" />
         </classes>
     </test>
 </suite>
