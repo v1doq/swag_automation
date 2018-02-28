@@ -2,6 +2,7 @@ package steps.components.base;
 
 import com.google.common.base.Function;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -20,7 +21,13 @@ public abstract class ConciseApi {
     }
 
     protected WebElement $(By locator) {
-        return assertThat(visibilityOfElementLocated(locator));
+        WebElement element = null;
+        try {
+            element = assertThat(visibilityOfElementLocated(locator));
+        } catch (Exception e){
+            LOG.info("Catch exception");
+        }
+        return element;
     }
 
     public <V> V assertThat(Function<? super WebDriver, V> condition) {
@@ -57,5 +64,10 @@ public abstract class ConciseApi {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public void actionClick(WebElement element){
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(element).click().build().perform();
     }
 }

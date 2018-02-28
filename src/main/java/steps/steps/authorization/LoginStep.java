@@ -12,6 +12,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.TestConfig.getProperty;
+import static steps.components.base.ConciseApi.sleep;
 import static steps.steps.authorization.RegisterStep.*;
 
 public class LoginStep {
