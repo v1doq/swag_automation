@@ -8,11 +8,11 @@
             </run>
         </groups>
         <classes>
-            <class name="base.SuiteTest"/>
-            <class name="authorization.RegistrationTest"/>
-            <class name="candidate.CandidateTest"/>
-            <class name="problem.ProblemTest"/>
-            <class name="candidate.CandidateFlowTest"/>
+            <class name="common.SuiteTest"/>
+            <class name="projects.com.swag.screening.authorization.RegistrationTest"/>
+            <class name="projects.com.swag.screening.candidate.CandidateTest"/>
+            <class name="projects.com.swag.screening.problem.ProblemTest"/>
+            <class name="projects.com.swag.screening.candidate.CandidateFlowTest"/>
         </classes>
     </test>
 </suite>

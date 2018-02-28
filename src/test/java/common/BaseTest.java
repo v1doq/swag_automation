@@ -1,4 +1,4 @@
-package base;
+package common;
 
 import io.qameta.allure.Attachment;
 import org.openqa.selenium.OutputType;
@@ -16,7 +16,6 @@ import org.testng.annotations.BeforeMethod;
 import settings.Browser;
 import settings.SeleniumListener;
 import settings.TestConfig;
-import common.ConciseApi;
 
 import java.util.concurrent.TimeUnit;
 

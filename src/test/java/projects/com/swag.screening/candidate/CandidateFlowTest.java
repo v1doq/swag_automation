@@ -1,58 +1,59 @@
-package candidate;
+package projects.com.swag.screening.candidate;
 
-import base.BaseTest;
+import common.BaseTest;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import projects.com.swag.screening.steps.candidate.CandidateFlowStep;
 import projects.com.swag.screening.steps.candidate.CandidateStep;
-import projects.com.swag.screening.steps.authorization.LoginStep;
-import projects.com.swag.screening.steps.problem.ProblemStep;
 import projects.com.swag.screening.steps.candidate.ScreeningStep;
+import projects.com.swag.screening.steps.problem.ProblemStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
-import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.swag.screening.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
 
-@Feature("Screening")
-@Story("Functional tests for add screening to a candidate")
-public class ScreeningTest extends BaseTest {
+@Feature("Candidate's flow")
+@Story("Functional tests for candidate's flow")
+public class CandidateFlowTest extends BaseTest {
 
     private CandidateStep candidateStep;
+    private CandidateFlowStep candidateFlowStep;
     private ScreeningStep screeningStep;
     private ProblemStep problemStep;
 
     @BeforeMethod(description = "Precondition", alwaysRun = true)
     public void setUp() {
         candidateStep = new CandidateStep(driver);
+        candidateFlowStep = new CandidateFlowStep(driver);
         screeningStep = new ScreeningStep(driver);
         problemStep = new ProblemStep(driver);
-        LoginStep loginStep = new LoginStep(driver);
-        loginStep.authorization();
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(description = "Create a candidate, add screening and verify assigned URL")
-    public void createNewScreeningAndVerifyItInDB() {
+    @Test(groups = "smoke test", description = "Confirm email by candidate, solve the task and submit screening")
+    public void confirmEmailSolveTheTaskAndSubmit() {
         String email = randomAlphabetic(10) + "@" + randomAlphabetic(2) + "." + randomAlphabetic(2);
         String problemName = randomAlphabetic(MIN_PROBLEM_NAME_LENGTH);
+
         problemStep.createProblemWithTestCaseInDB(problemName);
         candidateStep.createCandidateInDB(email);
+        String problemIdInDB = problemStep.getProblemIdInDB(problemName);
         String candidateIdInDB = candidateStep.getCandidateIdInDB(email);
+        screeningStep.createScreeningInDB(candidateIdInDB, problemIdInDB);
 
-        candidateStep.openCandidatePage();
-        screeningStep.createScreening();
-        String candidateIdInScreening = screeningStep.getCandidateIdInScreeningTableInDB(candidateIdInDB);
-        assertEquals(candidateIdInDB, candidateIdInScreening);
+        candidateFlowStep.goToWelcomeScreen();
+        candidateFlowStep.emailConfirmation(email);
+        assertTrue(candidateFlowStep.isUserConfirmedEmail());
 
-        String candidateAccessCode = screeningStep.getCandidateAccessCodeInScreeningTableInDB(candidateIdInDB);
-        String assignedUrl = screeningStep.getAssignedUrl();
-        assertTrue(assignedUrl.contains(candidateAccessCode));
+        candidateFlowStep.goToProblemScreen();
+        candidateFlowStep.solveTheTask();
+        assertTrue(candidateFlowStep.isUserSolveTheTask());
 
-        screeningStep.deleteScreeningInDB(candidateIdInScreening);
+        screeningStep.deleteAllScreeningInDB();
         candidateStep.deleteCandidateInDB(email);
         problemStep.deleteProblemInDB(problemName);
     }

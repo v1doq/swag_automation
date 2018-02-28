@@ -1,6 +1,6 @@
-package authorization;
+package projects.com.swag.screening.authorization;
 
-import base.BaseTest;
+import common.BaseTest;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;

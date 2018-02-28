@@ -1,6 +1,6 @@
-package candidate;
+package projects.com.swag.screening.candidate;
 
-import base.BaseTest;
+import common.BaseTest;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -17,9 +17,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.swag.screening.steps.problem.ProblemStep.MIN_PROBLEM_NAME_LENGTH;
 
-@Feature("Candidate")
-@Story("Functional tests for add candidate and screening to a candidate")
-public class CandidateTest extends BaseTest {
+@Feature("Screening")
+@Story("Functional tests for add screening to a candidate")
+public class ScreeningTest extends BaseTest {
 
     private CandidateStep candidateStep;
     private ScreeningStep screeningStep;
@@ -34,22 +34,17 @@ public class CandidateTest extends BaseTest {
         loginStep.authorization();
     }
 
-    @Feature("Candidate / Screening")
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Create a candidate, add screening and verify assigned URL")
-    public void createNewCandidateAndVerifyItInDB() {
+    @Test(description = "Create a candidate, add screening and verify assigned URL")
+    public void createNewScreeningAndVerifyItInDB() {
         String email = randomAlphabetic(10) + "@" + randomAlphabetic(2) + "." + randomAlphabetic(2);
         String problemName = randomAlphabetic(MIN_PROBLEM_NAME_LENGTH);
         problemStep.createProblemWithTestCaseInDB(problemName);
+        candidateStep.createCandidateInDB(email);
+        String candidateIdInDB = candidateStep.getCandidateIdInDB(email);
 
         candidateStep.openCandidatePage();
-        candidateStep.createCandidate(email);
-        String candidateEmailInDB = candidateStep.getCandidateEmailInDB(email);
-        assertEquals(email, candidateEmailInDB);
-
-        candidateStep.findCandidateInList(email);
         screeningStep.createScreening();
-        String candidateIdInDB = candidateStep.getCandidateIdInDB(email);
         String candidateIdInScreening = screeningStep.getCandidateIdInScreeningTableInDB(candidateIdInDB);
         assertEquals(candidateIdInDB, candidateIdInScreening);
 
