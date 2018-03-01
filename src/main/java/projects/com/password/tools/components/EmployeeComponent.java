@@ -4,17 +4,12 @@ import common.BaseComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.*;
 
 public class EmployeeComponent extends BaseComponent {
 
     public EmployeeComponent(WebDriver driver) {
         super(driver);
-    }
-
-    public WebElement getCreateButton(){
-        return $(cssSelector(".btn-route-icon"));
     }
 
     public WebElement getNameInput(){
@@ -37,11 +32,25 @@ public class EmployeeComponent extends BaseComponent {
         return $(name("password"));
     }
 
-    public WebElement getCommentInput(){
-        return $(cssSelector("div.input-group__input > textarea"));
-    }
-
     public WebElement getSubmitButton(){
         return $(cssSelector("button:nth-child(6)"));
+    }
+
+    //pop up
+    public WebElement getNewPasswordInput(){
+        return $(name("new password"));
+    }
+
+    public WebElement getOkButton(){
+        return $(cssSelector("button:nth-child(1)"));
+    }
+
+    //edit
+    public WebElement getUpdateButton(){
+        return $(cssSelector("button:nth-child(5)"));
+    }
+
+    public WebElement getProfileTab(){
+        return $(id("profile-tab-header"));
     }
 }

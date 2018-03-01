@@ -13,15 +13,27 @@ public class TableComponent extends BaseComponent {
         super(driver);
     }
 
+    public WebElement getCreateButton(){
+        return $(cssSelector(".btn-route-icon"));
+    }
+
     public WebElement getSearchInput(){
         return $(name("Search"));
     }
 
-    public WebElement getChangePassButton(){
+    public WebElement getActionButton(){
         return $(cssSelector(".btn-row-action"));
+    }
+
+    public WebElement getEditButton(){
+        return $(cssSelector("td:nth-child(2) > a"));
     }
 
     public WebElement getDeleteButton(){
         return $(cssSelector(".btn-row-action:nth-of-type(2)"));
+    }
+
+    public WebElement getYesButton(){
+        return $(cssSelector("button:nth-child(2)"));
     }
 }

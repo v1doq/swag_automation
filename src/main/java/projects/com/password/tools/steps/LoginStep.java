@@ -6,8 +6,6 @@ import projects.com.password.tools.components.LoginComponent;
 
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static common.DefaultConstant.USERNAME_PASS_TOOLS;
-import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
 import static settings.TestConfig.getProperty;
 
 public class LoginStep {
@@ -25,7 +23,7 @@ public class LoginStep {
     }
 
     @Step("Open landing page")
-    public void openLandingPage() {
+    private void openLandingPage() {
         component.open(getProperty("password.tools.url"));
     }
 
@@ -34,13 +32,23 @@ public class LoginStep {
         component.getUsernameInput().sendKeys(username);
         component.getPasswordInput().sendKeys(pass);
         component.getSubmitButton().click();
-        component.assertThat(textToBe(className("toolbar__title"), "Passwords Tool"));
     }
 
     @Step("Log out")
     public void logout() {
         component.getDriver().manage().window().maximize();
         component.getLogoutButton().click();
+    }
+
+    @Step("Verify user' role after login")
+    public String getUserRole(){
+        return component.getUserRole().getText();
+    }
+
+    @Step("Check server error message for invalid login or password")
+    public boolean isServerErrorDisplayed(){
+        String text = "Incorrect login or password";
+        return component.getServerError().getText().contains(text);
     }
 
     @Step("Verify that user was successfully login")

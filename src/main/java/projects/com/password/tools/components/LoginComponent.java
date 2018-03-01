@@ -27,4 +27,12 @@ public class LoginComponent extends BaseComponent {
     public WebElement getLogoutButton(){
         return $(cssSelector(".btn-logout.btn"));
     }
+
+    public WebElement getServerError(){
+        return $(cssSelector(".error-block"));
+    }
+
+    public WebElement getUserRole(){
+        return $(cssSelector(".user-role"));
+    }
 }

@@ -7,9 +7,10 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.textToBe;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.By.tagName;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 
 public abstract class ConciseApi {
@@ -34,9 +35,14 @@ public abstract class ConciseApi {
         return (new WebDriverWait(getDriver(), 15)).until(condition);
     }
 
-    protected void waitForText(By by, String value){
+    public void waitForText(By by, String value){
         LOG.info("Wait for text to be '" + value + "' " + by);
         assertThat(textToBe(by, value));
+    }
+
+    public void waitForPartOfText(By by, String value){
+        LOG.info("Wait for part of text to be '" + value + "' " + by);
+        assertThat(textMatches(by, Pattern.compile(value)));
     }
 
     public boolean isElementPresent(By locator) {
@@ -69,5 +75,17 @@ public abstract class ConciseApi {
     public void actionClick(WebElement element){
         Actions actions = new Actions(getDriver());
         actions.moveToElement(element).click().build().perform();
+    }
+
+    public boolean isTextDisplayed(String text, String locator) {
+        boolean isDisplayed = false;
+        List<WebElement> list = getDriver().findElements(tagName((locator)));
+        for (WebElement element : list) {
+            if (element.getText().equals(text)) {
+                isDisplayed = true;
+                break;
+            }
+        }
+        return isDisplayed;
     }
 }

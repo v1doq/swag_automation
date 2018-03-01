@@ -13,4 +13,6 @@ public class DefaultConstant {
     //password tools
     public static final String USERNAME_PASS_TOOLS = getProperty("password.tools.login");
     public static final String PASSWORD_PASS_TOOLS = getProperty("password.tools.pass");
+    public static final String VALID_PASSWORD = "frDPgoZ#Y5"; //hash below
+    public static final String PASSWORD_HASH = "AQAAAAEAACcQAAAAELZ5azJTuJbzjx7ribdOqzPcgG3jEfqT2vtwV5hEAzgSnd723bMyBN6D1qnwQQV8Zw==";
 }

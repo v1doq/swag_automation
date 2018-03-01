@@ -4,6 +4,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.TableComponent;
 
+import static org.openqa.selenium.By.cssSelector;
+
 public class TableStep {
 
     private TableComponent component;
@@ -12,14 +14,21 @@ public class TableStep {
         this.component = new TableComponent(driver);
     }
 
-    @Step("Search in table")
+    @Step("Search value in table")
     public void searchInTable(String query){
-        component.getSearchInput().sendKeys(query);
+        component.clearAndType(component.getSearchInput(), query);
+        component.waitForPartOfText(cssSelector("tbody > tr:nth-child(1)"), query);
     }
 
-    @Step("Delete in table")
-    public void deleteInTable(String value){
-        searchInTable(value);
+    @Step("Delete value in table")
+    public void deleteDataInTable(){
         component.getDeleteButton().click();
+        component.waitForPartOfText(cssSelector(".card__text"), "Are you sure to delete");
+        component.jsClick(component.getYesButton());
+    }
+
+    @Step("Checking the presence of a value in the table")
+    public boolean isValueDisplayInTable(String value){
+        return component.isTextDisplayed(value, "td");
     }
 }

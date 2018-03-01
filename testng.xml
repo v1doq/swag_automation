@@ -7,5 +7,6 @@
     <suite-files>
         <suite-file path="src/main/resources/screening-smoke.xml"/>
         <suite-file path="src/main/resources/screening-regression.xml"/>
+        <!--<suite-file path="src/main/resources/password.tools-smoke.xml"/>-->
     </suite-files>
 </suite>
