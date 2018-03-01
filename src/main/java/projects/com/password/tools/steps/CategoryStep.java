@@ -16,7 +16,7 @@ public class CategoryStep {
         this.component = new CategoryComponent(driver);
     }
 
-    @Step("Create user in the database")
+    @Step("Create a category in the database")
     public void createCategoryInDB(String name){
         LOG.info("Try to create category in the database with name: " + name);
         SQLConnector connector = new SQLConnector();
