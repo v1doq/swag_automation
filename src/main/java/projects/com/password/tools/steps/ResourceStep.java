@@ -23,10 +23,10 @@ public class ResourceStep {
 
     @Step("Open resources page")
     public void openResourcePage() {
-        component.open(getProperty("password.tools.url") + "dashboard/resources");
+        component.open(getProperty("password.tools.url") + "dashboard/resources/");
     }
 
-    @Step("Create new user")
+    @Step("Create new resource")
     public void createResource(String categoryName, String type) {
         tableComponent.getCreateButton().click();
         component.getUsernameInput().sendKeys(randomAlphabetic(MIN_USERNAME_LENGTH));

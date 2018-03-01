@@ -33,8 +33,8 @@ public class ResourceTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "New user creation and authorization")
-    public void createNewUserAndLogin() {
+    @Test(groups = "smoke test", description = "Create new resource")
+    public void createNewResource() {
         String categoryName = randomAlphabetic(MAX_CATEGORY_LENGTH);
         categoryStep.createCategoryInDB(categoryName);
 
