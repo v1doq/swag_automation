@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.TableComponent;
 
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 
 public class TableStep {
 
@@ -25,6 +26,7 @@ public class TableStep {
         component.getDeleteButton().click();
         component.waitForPartOfText(cssSelector(".card__text"), "Are you sure to delete");
         component.jsClick(component.getYesButton());
+        component.assertThat(invisibilityOfElementLocated(cssSelector(".card__text")));
     }
 
     @Step("Checking the presence of a value in the table")

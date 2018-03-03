@@ -6,9 +6,6 @@ import projects.com.password.tools.components.EmployeeComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import static common.DefaultConstant.PASSWORD_HASH;
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -98,16 +95,7 @@ public class EmployeeStep {
     public int getIsDeletedUserStatusInDB(String username){
         LOG.info("Get user's isDeleted status in the database with email: " + username);
         SQLConnector connector = new SQLConnector();
-        int isDeleted = 0;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM PasswordsTool.dbo.Users WHERE UserName='" + username + "'");
-            result.next();
-            isDeleted = result.getInt("IsDeleted");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return isDeleted;
+        String query = "SELECT * FROM PasswordsTool.dbo.Users WHERE UserName='" + username + "'";
+        return connector.getIntValueInDB(query, "IsDeleted");
     }
 }
