@@ -13,32 +13,36 @@ public class EmployeeComponent extends BaseComponent {
     }
 
     public WebElement getNameInput(){
-        return $(name("name"));
+        return $(name("create-employee-name"));
     }
 
     public WebElement getUsernameInput(){
-        return $(name("username"));
+        return $(name("create-employee-username"));
     }
 
     public WebElement getTitleInput(){
-        return $(name("title"));
+        return $(name("create-employee-title"));
     }
 
     public WebElement getEmailInput(){
-        return $(name("email"));
+        return $(name("create-employee-email"));
     }
 
     public WebElement getPasswordInput(){
-        return $(name("password"));
+        return $(name("create-employee-password"));
     }
 
     public WebElement getSubmitButton(){
-        return $(cssSelector("button:nth-child(6)"));
+        return $(xpath(".//*[@id='app']/div[3]/section/div/div/div/div/div/div[2]/form/button[2]"));
     }
 
     //pop up
+    public WebElement getYourPasswordInput(){
+        return $(name("change-password-password"));
+    }
+
     public WebElement getNewPasswordInput(){
-        return $(name("new password"));
+        return $(name("change-password-password-new-password"));
     }
 
     public WebElement getOkButton(){
@@ -46,8 +50,12 @@ public class EmployeeComponent extends BaseComponent {
     }
 
     //edit
+    public WebElement getEditUsernameInput(){
+        return $(name("edit-employee-username"));
+    }
+
     public WebElement getUpdateButton(){
-        return $(cssSelector("button:nth-child(5)"));
+        return $(xpath("//*[@id=\"profile-tab\"]/form/button[2]/div"));
     }
 
     public WebElement getProfileTab(){

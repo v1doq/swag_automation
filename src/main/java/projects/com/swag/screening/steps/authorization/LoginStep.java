@@ -30,7 +30,7 @@ public class LoginStep {
     @Step("Authorize by existing user")
     public void authorization(){
         openLandingPage();
-        login(USERNAME, PASSWORD);
+        login(SCREENING_USERNAME, SCREENING_PASSWORD);
     }
 
     @Step("Login with user credential")

@@ -31,8 +31,8 @@ public class LoginTest extends BaseTest {
     public void authorizationWithSpaceBeforeAndAfterUsernameAndPass() {
         loginStep.openLandingPage();
         loginStep.openLoginPopUp();
-        loginStep.fillUsernameField(" " + USERNAME + " ");
-        loginStep.fillPasswordField(" " + PASSWORD + " ");
+        loginStep.fillUsernameField(" " + SCREENING_USERNAME + " ");
+        loginStep.fillPasswordField(" " + SCREENING_PASSWORD + " ");
         loginStep.submitForm();
 
         assertTrue(loginStep.isLogoutButtonDisplayed());
@@ -43,8 +43,8 @@ public class LoginTest extends BaseTest {
     public void authorizationWithUsernameInUppercase() {
         loginStep.openLandingPage();
         loginStep.openLoginPopUp();
-        loginStep.fillUsernameField(USERNAME.toUpperCase());
-        loginStep.fillPasswordField(PASSWORD);
+        loginStep.fillUsernameField(SCREENING_USERNAME.toUpperCase());
+        loginStep.fillPasswordField(SCREENING_PASSWORD);
         loginStep.submitForm();
 
         assertTrue(loginStep.isLogoutButtonDisplayed());
@@ -55,7 +55,7 @@ public class LoginTest extends BaseTest {
     public void submitWithIncorrectPass() {
         loginStep.openLandingPage();
         loginStep.openLoginPopUp();
-        loginStep.fillUsernameField(USERNAME);
+        loginStep.fillUsernameField(SCREENING_USERNAME);
         loginStep.fillPasswordField(randomAlphabetic(MIN_PASSWORD_LENGTH));
         loginStep.submitForm();
 
@@ -69,7 +69,7 @@ public class LoginTest extends BaseTest {
         loginStep.openLandingPage();
         loginStep.openLoginPopUp();
         loginStep.fillUsernameField(userName);
-        loginStep.fillPasswordField(PASSWORD);
+        loginStep.fillPasswordField(SCREENING_PASSWORD);
         loginStep.submitForm();
 
         assertTrue(loginStep.isServerErrorDisplayed());

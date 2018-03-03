@@ -125,7 +125,7 @@ public class RegistrationTest extends BaseTest {
     @Test(groups = "register negative", description = "Try to create user with existing email")
     public void duplicateEmail() {
         registerStep.openLandingPage();
-        registerStep.createNewUser(USERNAME, PASSWORD);
+        registerStep.createNewUser(SCREENING_USERNAME, SCREENING_PASSWORD);
 
         assertTrue(registerStep.checkServerError());
     }
