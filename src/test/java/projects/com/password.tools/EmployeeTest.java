@@ -1,4 +1,4 @@
-package projects.com.password.tools.employee;
+package projects.com.password.tools;
 
 import common.BaseTest;
 import io.qameta.allure.Feature;
@@ -15,7 +15,8 @@ import static common.DefaultConstant.VALID_PASSWORD;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.password.tools.steps.EmployeeStep.MAX_NAME_LENGTH;
+import static projects.com.password.tools.steps.EmployeeStep.MAX_EMPLOYEE_NAME_LENGTH;
+import static common.DefaultConstant.USER_ROLE;
 
 @Feature("Employee")
 @Story("Functional tests for CRUD employee")
@@ -37,42 +38,42 @@ public class EmployeeTest extends BaseTest {
     @Test(groups = "smoke test", description = "New user creation and authorization")
     public void createNewUserAndLogin() {
         String pass = VALID_PASSWORD;
-        String username = randomAlphabetic(MAX_NAME_LENGTH);
-
+        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH);
         employeeStep.createUser(username, pass);
+
         loginStep.logout();
         loginStep.login(username, pass);
+        assertTrue(loginStep.isUserLogin());
 
-        assertEquals(loginStep.getUserRole(), "User");
         employeeStep.deleteUserInDB(username);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Change user's data and login with new credential")
     public void changeUsernameAndPassThanLogin() {
-        String username = randomAlphabetic(MAX_NAME_LENGTH / 2);
-        employeeStep.createUserInDB(username);
+        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH / 2);
+        employeeStep.createUserInDB(username, USER_ROLE);
 
         tableStep.searchInTable(username);
         String pass = "ytatQNRO4#";
         employeeStep.changeUserPass(pass);
 
         tableStep.searchInTable(username);
-        String newUsername = randomAlphabetic(MAX_NAME_LENGTH);
+        String newUsername = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH);
         employeeStep.changeUsername(newUsername);
 
         loginStep.logout();
         loginStep.login(newUsername, pass);
-
         assertTrue(loginStep.isUserLogin());
+
         employeeStep.deleteUserInDB(newUsername);
     }
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Delete user, try to login, check status in DB")
     public void deleteUserInTable() {
-        String username = randomAlphabetic(MAX_NAME_LENGTH / 2);
-        employeeStep.createUserInDB(username);
+        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH / 2);
+        employeeStep.createUserInDB(username, USER_ROLE);
         tableStep.searchInTable(username);
         tableStep.deleteDataInTable();
 

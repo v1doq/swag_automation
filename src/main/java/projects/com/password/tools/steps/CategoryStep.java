@@ -22,8 +22,17 @@ public class CategoryStep {
         SQLConnector connector = new SQLConnector();
         connector.executeQuery("DECLARE @Id uniqueidentifier SET @Id = NEWID()\n" +
                 "INSERT INTO PasswordsTool.dbo.ResourceCategories (Id, Description, Name)\n" +
-                "VALUES(@Id, 'autotest', '" + name + "');");
+                "VALUES(@Id, 'desc', '" + name + "');");
         connector.closeConnection();
         LOG.info("Successfully created");
+    }
+
+    @Step("Delete the category in the database")
+    public void deleteCategoryInDB(String name) {
+        LOG.info("Try to delete category in the database with name: " + name);
+        SQLConnector connector = new SQLConnector();
+        connector.executeQuery("DELETE FROM PasswordsTool.dbo.ResourceCategories WHERE Name='" + name + "'");
+        connector.closeConnection();
+        LOG.info("Successfully deleted");
     }
 }

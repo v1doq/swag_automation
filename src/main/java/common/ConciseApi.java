@@ -88,4 +88,8 @@ public abstract class ConciseApi {
         }
         return isDisplayed;
     }
+
+    public void fullScreenMode(){
+        getDriver().manage().window().maximize();
+    }
 }

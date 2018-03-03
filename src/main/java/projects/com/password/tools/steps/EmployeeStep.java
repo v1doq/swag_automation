@@ -19,7 +19,7 @@ public class EmployeeStep {
     private EmployeeComponent component;
     private TableComponent tableComponent;
     private static final int MIN_NAME_LENGTH = 1;
-    public static final int MAX_NAME_LENGTH = 50;
+    public static final int MAX_EMPLOYEE_NAME_LENGTH = 50;
     private static final int MIN_TITLE_LENGTH = 1;
     private String email = randomAlphabetic(9) + "@" + randomAlphabetic(2) + "." + randomAlphabetic(2);
 
@@ -42,7 +42,7 @@ public class EmployeeStep {
     @Step("Change user's password")
     public void changeUserPass(String pass){
         tableComponent.getActionButton().click();
-        component.getPasswordInput().sendKeys(PASSWORD_PASS_TOOLS);
+        component.getYourPasswordInput().sendKeys(PASSWORD_PASS_TOOLS);
         component.getNewPasswordInput().sendKeys(pass);
         component.getOkButton().click();
     }
@@ -51,21 +51,36 @@ public class EmployeeStep {
     public void changeUsername(String username){
         tableComponent.jsClick(tableComponent.getEditButton());
         component.getProfileTab().click();
-        component.clearAndType(component.getUsernameInput(), username);
+        component.clearAndType(component.getEditUsernameInput(), username);
         component.getUpdateButton().click();
     }
 
     @Step("Create user in the database")
-    public void createUserInDB(String username){
-        //PASSWORD_HASH is hash of VALID_PASSWORD(frDPgoZ#Y5)
+    public void createUserInDB(String username, int userRole){
         LOG.info("Try to create user in the database with username: " + username);
         SQLConnector connector = new SQLConnector();
         connector.executeQuery("DECLARE @Id uniqueidentifier SET @Id = NEWID()\n" +
                 "INSERT INTO PasswordsTool.dbo.Users\n" +
                 "(Id, AccessFailedCount, Email, EmailConfirmed, IsAdmin, IsDeleted, LockoutEnabled, Name, " +
                 "PasswordHash, PhoneNumberConfirmed, Title, TwoFactorEnabled, UserName, DeletionToken)\n" +
-                "VALUES(@Id, 0, '" + email + "', 0, 0, 0, 0, 'autotest', " +
-                "'" + PASSWORD_HASH + "', 0, 'u', 0, '" + username + "', '');");
+                "VALUES(@Id, 0, '" + email + "', 0, " + userRole + ", 0, 0, 'name', " +
+                "'" + PASSWORD_HASH + "', 0, 'title', 0, '" + username + "', '');");
+        //PASSWORD_HASH is hash of VALID_PASSWORD(frDPgoZ#Y5)
+        connector.closeConnection();
+        LOG.info("Successfully created");
+    }
+
+    @Step("Create user in the database")
+    public void createUserInDB(String username, String name, int userRole){
+        LOG.info("Try to create user in the database with username: " + username);
+        SQLConnector connector = new SQLConnector();
+        connector.executeQuery("DECLARE @Id uniqueidentifier SET @Id = NEWID()\n" +
+                "INSERT INTO PasswordsTool.dbo.Users\n" +
+                "(Id, AccessFailedCount, Email, EmailConfirmed, IsAdmin, IsDeleted, LockoutEnabled, Name, " +
+                "PasswordHash, PhoneNumberConfirmed, Title, TwoFactorEnabled, UserName, DeletionToken)\n" +
+                "VALUES(@Id, 0, '" + email + "', 0, " + userRole + ", 0, 0, '" + name + "', " +
+                "'" + PASSWORD_HASH + "', 0, 'title', 0, '" + username + "', '');");
+        //PASSWORD_HASH is hash of VALID_PASSWORD(frDPgoZ#Y5)
         connector.closeConnection();
         LOG.info("Successfully created");
     }

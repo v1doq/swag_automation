@@ -36,13 +36,8 @@ public class LoginStep {
 
     @Step("Log out")
     public void logout() {
-        component.getDriver().manage().window().maximize();
+        component.fullScreenMode();
         component.getLogoutButton().click();
-    }
-
-    @Step("Verify user' role after login")
-    public String getUserRole(){
-        return component.getUserRole().getText();
     }
 
     @Step("Check server error message for invalid login or password")
@@ -53,6 +48,7 @@ public class LoginStep {
 
     @Step("Verify that user was successfully login")
     public boolean isUserLogin(){
+        component.fullScreenMode();
         return component.getLogoutButton().isDisplayed();
     }
 }
