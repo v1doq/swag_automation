@@ -2,19 +2,20 @@ package projects.com.swag.screening.steps.authorization;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import settings.SQLConnector;
 import projects.com.swag.screening.components.authorization.RegisterComponent;
+import settings.SQLConnector;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
 
+import static common.ConciseApi.clearAndType;
+import static common.ConciseApi.sleep;
 import static java.util.Arrays.asList;
-import static org.apache.commons.lang.RandomStringUtils.*;
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static org.apache.commons.lang.RandomStringUtils.randomNumeric;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
-import static common.ConciseApi.sleep;
 
 public class RegisterStep {
 
@@ -25,7 +26,7 @@ public class RegisterStep {
     public static final int MIN_PASSWORD_LENGTH = 8;
     static final int MAX_PASSWORD_LENGTH = 128;
 
-    public RegisterStep(WebDriver driver){
+    public RegisterStep(WebDriver driver) {
         this.component = new RegisterComponent(driver);
     }
 
@@ -35,7 +36,7 @@ public class RegisterStep {
     }
 
     @Step("Create new user")
-    public void createNewUser(String userName, String pass){
+    public void createNewUser(String userName, String pass) {
         component.openRegistrationPopUp();
         component.getFirstNameInput().sendKeys(randomAlphabetic(MIN_NAME_LENGTH));
         component.getLastNameInput().sendKeys(randomAlphabetic(MIN_NAME_LENGTH));
@@ -59,47 +60,38 @@ public class RegisterStep {
     }
 
     @Step("Fill first and last name fields")
-    public void fillNamesFields(String name){
-        component.clearAndType(component.getFirstNameInput(), name);
-        component.clearAndType(component.getLastNameInput(), name);
+    public void fillNamesFields(String name) {
+        clearAndType(component.getFirstNameInput(), name);
+        clearAndType(component.getLastNameInput(), name);
     }
 
     @Step("Fill email fields")
-    public void fillEmailField(String email){
-        component.clearAndType(component.getEmailInput(), email);
+    public void fillEmailField(String email) {
+        clearAndType(component.getEmailInput(), email);
     }
 
     @Step("Fill password fields")
-    public void fillPasswordField(String pass){
-        component.clearAndType(component.getPasswordInput(), pass);
+    public void fillPasswordField(String pass) {
+        clearAndType(component.getPasswordInput(), pass);
     }
 
     @Step("Fill repeat password fields")
-    public void fillRepeatPasswordField(String pass){
-        component.clearAndType(component.getRepeatPasswordInput(), pass);
+    public void fillRepeatPasswordField(String pass) {
+        clearAndType(component.getRepeatPasswordInput(), pass);
     }
 
     @Step("Check server error message for duplicate email")
-    public boolean checkServerError(){
+    public boolean checkServerError() {
         String text = "User with provided email already exists";
         return component.getServerError(text).getText().contains(text);
     }
 
     @Step("Check that user was created in database")
-    public String getUsernameInDB(String email){
+    public String getUsernameInDB(String email) {
         LOG.info("Get username in database with email: " + email);
         SQLConnector connector = new SQLConnector();
-        String name = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Users WHERE UserName = '" + email + "'");
-            result.next();
-            name = result.getString("UserName");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return name;
+        String query = "SELECT * FROM SwagScreening.dbo.Users WHERE UserName = '" + email + "'";
+        return connector.getStringValueInDB(query, "UserName");
     }
 
     public void deleteUserInDB(String email) {

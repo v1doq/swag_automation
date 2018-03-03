@@ -6,6 +6,7 @@ import projects.com.password.tools.components.PropertyComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
+import static common.ConciseApi.clearAndType;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
@@ -37,7 +38,7 @@ public class PropertyStep {
     @Step("Update property")
     public void updateProperty(String newName) {
         component.getEditButton().click();
-        component.clearAndType(component.getEditNameInput(), newName);
+        clearAndType(component.getEditNameInput(), newName);
         component.getOkButton().click();
     }
 

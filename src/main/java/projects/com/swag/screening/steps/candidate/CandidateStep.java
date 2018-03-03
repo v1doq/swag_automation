@@ -1,13 +1,10 @@
 package projects.com.swag.screening.steps.candidate;
 
 import common.DefaultConstant;
-import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.swag.screening.components.candidate.CandidateComponent;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import settings.SQLConnector;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static settings.SeleniumListener.LOG;
@@ -41,39 +38,6 @@ public class CandidateStep {
         component.waitForSearchResult(candidateEmail);
     }
 
-    @Step("Check that candidate was created in database")
-    public String getCandidateEmailInDB(String email){
-        LOG.info("Get candidate in the database with email: " + email);
-        SQLConnector connector = new SQLConnector();
-        String name = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'");
-            result.next();
-            name = result.getString("Email");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return name;
-    }
-
-    public String getCandidateIdInDB(String email){
-        LOG.info("Get candidate's ID in the database with email: " + email);
-        SQLConnector connector = new SQLConnector();
-        String id = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'");
-            result.next();
-            id = result.getString("Id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return id;
-    }
-
     @Step("Create a candidate in the database")
     public void createCandidateInDB(String email){
         LOG.info("Create a candidate in the database");
@@ -84,6 +48,21 @@ public class CandidateStep {
                 "(Id, Comment, Email, FirstName, IsActive, LastName, ManagerId)\n" +
                 "VALUES(@candidateId, '', '" + email + "', 'test', 1, 'test', '" + DefaultConstant.MANAGER_ID + "');");
         connector.closeConnection();
+    }
+
+    @Step("Check that candidate was created in database")
+    public String getCandidateEmailInDB(String email){
+        LOG.info("Get candidate in the database with email: " + email);
+        SQLConnector connector = new SQLConnector();
+        String query = "SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'";
+        return connector.getStringValueInDB(query, "Email");
+    }
+
+    public String getCandidateIdInDB(String email){
+        LOG.info("Get candidate's ID in the database with email: " + email);
+        SQLConnector connector = new SQLConnector();
+        String query = "SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'";
+        return connector.getStringValueInDB(query, "Id");
     }
 
     @Step("Delete all candidates in the database")

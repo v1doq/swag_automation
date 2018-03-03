@@ -6,13 +6,17 @@ import projects.com.swag.screening.components.authorization.LoginComponent;
 
 import java.util.List;
 
-import static common.DefaultConstant.*;
+import static common.ConciseApi.clearAndType;
+import static common.DefaultConstant.SCREENING_PASSWORD;
+import static common.DefaultConstant.SCREENING_USERNAME;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+import static projects.com.swag.screening.steps.authorization.RegisterStep.MAX_PASSWORD_LENGTH;
+import static projects.com.swag.screening.steps.authorization.RegisterStep.MIN_PASSWORD_LENGTH;
 import static settings.TestConfig.getProperty;
-import static projects.com.swag.screening.steps.authorization.RegisterStep.*;
 
 public class LoginStep {
 
@@ -56,12 +60,12 @@ public class LoginStep {
 
     @Step("Fill username field")
     public void fillUsernameField(String username) {
-        component.clearAndType(component.getUsernameInput(), username);
+        clearAndType(component.getUsernameInput(), username);
     }
 
     @Step("Fill password field")
     public void fillPasswordField(String pass) {
-        component.clearAndType(component.getPasswordInput(), pass);
+        clearAndType(component.getPasswordInput(), pass);
     }
 
     @Step("Submit login form")
