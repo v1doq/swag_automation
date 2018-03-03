@@ -6,6 +6,7 @@ import projects.com.password.tools.components.EmployeeComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
+import static common.ConciseApi.clearAndType;
 import static common.DefaultConstant.PASSWORD_HASH;
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -48,7 +49,7 @@ public class EmployeeStep {
     public void changeUsername(String username){
         tableComponent.jsClick(tableComponent.getEditButton());
         component.getProfileTab().click();
-        component.clearAndType(component.getEditUsernameInput(), username);
+        clearAndType(component.getEditUsernameInput(), username);
         component.getUpdateButton().click();
     }
 

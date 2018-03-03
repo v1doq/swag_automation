@@ -24,18 +24,6 @@ public class SQLConnector {
         }
     }
 
-    public ResultSet executeSelectQuery(String query) {
-        ResultSet resultSet = null;
-        try {
-            connection = getConnection(dbUrl, username, password);
-            Statement statement = connection.createStatement();
-            resultSet = statement.executeQuery(query);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return resultSet;
-    }
-
     public String getStringValueInDB(String query, String columnName){
         String data = null;
         try {

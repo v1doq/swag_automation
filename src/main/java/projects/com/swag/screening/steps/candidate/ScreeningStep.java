@@ -1,15 +1,13 @@
 package projects.com.swag.screening.steps.candidate;
 
-import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.swag.screening.components.candidate.ScreeningComponent;
+import settings.SQLConnector;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import static common.DefaultConstant.CANDIDATE_ACCESS_CODE;
+import static common.DefaultConstant.MANAGER_ID;
 import static settings.SeleniumListener.LOG;
-import static common.DefaultConstant.*;
 
 public class ScreeningStep {
 
@@ -59,33 +57,15 @@ public class ScreeningStep {
     public String getCandidateIdInScreeningTableInDB(String candidateId){
         LOG.info("Select screening in database with candidate ID: " + candidateId);
         SQLConnector connector = new SQLConnector();
-        String id = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'");
-            result.next();
-            id = result.getString("CandidateId");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return id;
+        String query = "SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'";
+        return connector.getStringValueInDB(query, "CandidateId");
     }
 
     public String getCandidateAccessCodeInScreeningTableInDB(String candidateId){
         LOG.info("Get candidate's access code in screening table in database: " + candidateId);
         SQLConnector connector = new SQLConnector();
-        String candidateAccessCode = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'");
-            result.next();
-            candidateAccessCode = result.getString("CandidateAccessCode");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return candidateAccessCode;
+        String query = "SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'";
+        return connector.getStringValueInDB(query, "CandidateAccessCode");
     }
 
     @Step("Delete the screening in the database")

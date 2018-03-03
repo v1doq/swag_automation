@@ -1,17 +1,14 @@
 package projects.com.swag.screening.steps.problem;
 
-import settings.SQLConnector;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.swag.screening.components.problem.ProblemComponent;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import settings.SQLConnector;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static projects.com.swag.screening.steps.problem.TestCaseStep.PATTERN;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
-import static projects.com.swag.screening.steps.problem.TestCaseStep.PATTERN;
 
 public class ProblemStep {
 
@@ -48,39 +45,6 @@ public class ProblemStep {
         component.waitForSearchResult(problemName);
     }
 
-    @Step("Check that problem was created in the database")
-    public String getProblemNameInDB(String problemName){
-        LOG.info("Get the problem in the database with name: " + problemName);
-        SQLConnector connector = new SQLConnector();
-        String name = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'");
-            result.next();
-            name = result.getString("Name");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return name;
-    }
-
-    public String getProblemIdInDB(String problemName){
-        LOG.info("Get the problem's ID in the database with name: " + problemName);
-        SQLConnector connector = new SQLConnector();
-        String id = null;
-        try {
-            ResultSet result = connector.
-                    executeSelectQuery("SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'");
-            result.next();
-            id = result.getString("Id");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        connector.closeConnection();
-        return id;
-    }
-
     @Step("Create a problem in the database")
     public void createProblemInDB(String problemName){
         LOG.info("Create a problem in the database");
@@ -91,6 +55,21 @@ public class ProblemStep {
                 "(Id, Description, ExecutionMemoryLimit, ExecutionTimeLimit, Name, [Time])\n" +
                 "VALUES(@problemId, 'test', 100, 100, '" + problemName + "', '01:40:00.000');");
         connector.closeConnection();
+    }
+
+    @Step("Check that problem was created in the database")
+    public String getProblemNameInDB(String problemName){
+        LOG.info("Get the problem in the database with name: " + problemName);
+        SQLConnector connector = new SQLConnector();
+        String query = "SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'";
+        return connector.getStringValueInDB(query, "Name");
+    }
+
+    public String getProblemIdInDB(String problemName){
+        LOG.info("Get the problem's ID in the database with name: " + problemName);
+        SQLConnector connector = new SQLConnector();
+        String query = "SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'";
+        return connector.getStringValueInDB(query, "Id");
     }
 
     @Step("Create a problem with test case in the database")

@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.TableComponent;
 
+import static common.ConciseApi.clearAndType;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 
@@ -17,7 +18,7 @@ public class TableStep {
 
     @Step("Search value in table")
     public void searchInTable(String query){
-        component.clearAndType(component.getSearchInput(), query);
+        clearAndType(component.getSearchInput(), query);
         component.waitForPartOfText(cssSelector("tbody > tr:nth-child(1)"), query);
     }
 

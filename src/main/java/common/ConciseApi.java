@@ -35,7 +35,7 @@ public abstract class ConciseApi {
         return (new WebDriverWait(getDriver(), 15)).until(condition);
     }
 
-    public void waitForText(By by, String value){
+    protected void waitForText(By by, String value){
         LOG.info("Wait for text to be '" + value + "' " + by);
         assertThat(textToBe(by, value));
     }
@@ -58,7 +58,7 @@ public abstract class ConciseApi {
         LOG.info("Successfully clicked");
     }
 
-    public void clearAndType(WebElement element, String text) {
+    public static void clearAndType(WebElement element, String text) {
         element.sendKeys(Keys.CONTROL, "a");
         element.sendKeys(Keys.DELETE);
         element.sendKeys(text);
