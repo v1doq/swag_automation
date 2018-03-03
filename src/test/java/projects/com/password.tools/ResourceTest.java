@@ -19,7 +19,7 @@ import static projects.com.password.tools.steps.PropertyStep.MAX_PROPERTY_LENGTH
 import static projects.com.password.tools.steps.ResourceStep.MAX_RESOURCE_USERNAME_LENGTH;
 
 @Feature("Resources")
-@Story("Functional tests for CRUD resource")
+@Story("Functional tests for CRUD and share resource")
 public class ResourceTest extends BaseTest {
 
     private TableStep tableStep;

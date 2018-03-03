@@ -1,6 +1,7 @@
 package projects.com.password.tools.steps;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.LoginComponent;
 
@@ -30,8 +31,8 @@ public class LoginStep {
     @Step("Login with user credential")
     public void login(String username, String pass) {
         component.getUsernameInput().sendKeys(username);
-        component.getPasswordInput().sendKeys(pass);
-        component.getSubmitButton().click();
+        component.getPasswordInput().sendKeys(pass, Keys.ENTER);
+        component.jsClick(component.getSubmitButton());
     }
 
     @Step("Log out")
