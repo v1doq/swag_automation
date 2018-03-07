@@ -15,7 +15,7 @@ import static common.DefaultConstant.VALID_PASSWORD;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.password.tools.steps.EmployeeStep.MAX_EMPLOYEE_NAME_LENGTH;
+import static projects.com.password.tools.steps.EmployeeStep.MAX_USER_NAME_LENGTH;
 import static common.DefaultConstant.USER_ROLE;
 
 @Feature("Employee")
@@ -38,7 +38,7 @@ public class EmployeeTest extends BaseTest {
     @Test(groups = "smoke test", description = "New user creation and authorization")
     public void createNewUserAndLogin() {
         String pass = VALID_PASSWORD;
-        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH);
+        String username = randomAlphabetic(MAX_USER_NAME_LENGTH);
         employeeStep.createUser(username, pass);
 
         loginStep.logout();
@@ -51,15 +51,14 @@ public class EmployeeTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Change user's data and login with new credential")
     public void changeUsernameAndPassThanLogin() {
-        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH / 2);
+        String username = randomAlphabetic(MAX_USER_NAME_LENGTH / 2);
         employeeStep.createUserInDB(username, USER_ROLE);
 
         tableStep.searchInTable(username);
         String pass = "ytatQNRO4#";
         employeeStep.changeUserPass(pass);
 
-        tableStep.searchInTable(username);
-        String newUsername = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH);
+        String newUsername = randomAlphabetic(MAX_USER_NAME_LENGTH);
         employeeStep.changeUsername(newUsername);
 
         loginStep.logout();
@@ -72,7 +71,7 @@ public class EmployeeTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Delete user, try to login, check status in DB")
     public void deleteUserInTable() {
-        String username = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH / 2);
+        String username = randomAlphabetic(MAX_USER_NAME_LENGTH / 2);
         employeeStep.createUserInDB(username, USER_ROLE);
         tableStep.searchInTable(username);
         tableStep.deleteDataInTable();
@@ -81,7 +80,7 @@ public class EmployeeTest extends BaseTest {
         loginStep.login(username, VALID_PASSWORD);
         assertTrue(loginStep.isServerErrorDisplayed());
 
-        int status = employeeStep.getIsDeletedUserStatusInDB(username);
+        int status = employeeStep.getIntValueInDB(username, "IsDeleted");
         assertEquals(1, status);
 
         employeeStep.deleteUserInDB(username);

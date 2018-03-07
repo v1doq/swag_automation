@@ -7,7 +7,6 @@ import settings.SQLConnector;
 
 import java.util.List;
 
-import static common.ConciseApi.clearAndType;
 import static common.ConciseApi.sleep;
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -61,23 +60,23 @@ public class RegisterStep {
 
     @Step("Fill first and last name fields")
     public void fillNamesFields(String name) {
-        clearAndType(component.getFirstNameInput(), name);
-        clearAndType(component.getLastNameInput(), name);
+        component.clearAndSendKeys(component.getFirstNameInput(), name);
+        component.clearAndSendKeys(component.getLastNameInput(), name);
     }
 
     @Step("Fill email fields")
     public void fillEmailField(String email) {
-        clearAndType(component.getEmailInput(), email);
+        component.clearAndSendKeys(component.getEmailInput(), email);
     }
 
     @Step("Fill password fields")
     public void fillPasswordField(String pass) {
-        clearAndType(component.getPasswordInput(), pass);
+        component.clearAndSendKeys(component.getPasswordInput(), pass);
     }
 
     @Step("Fill repeat password fields")
     public void fillRepeatPasswordField(String pass) {
-        clearAndType(component.getRepeatPasswordInput(), pass);
+        component.clearAndSendKeys(component.getRepeatPasswordInput(), pass);
     }
 
     @Step("Check server error message for duplicate email")

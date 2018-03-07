@@ -7,6 +7,7 @@ import projects.com.password.tools.components.LoginComponent;
 
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static common.DefaultConstant.USERNAME_PASS_TOOLS;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static settings.TestConfig.getProperty;
 
 public class LoginStep {
@@ -24,7 +25,7 @@ public class LoginStep {
     }
 
     @Step("Open landing page")
-    private void openLandingPage() {
+    public void openLandingPage() {
         component.open(getProperty("password.tools.url"));
     }
 
@@ -32,12 +33,12 @@ public class LoginStep {
     public void login(String username, String pass) {
         component.getUsernameInput().sendKeys(username);
         component.getPasswordInput().sendKeys(pass, Keys.ENTER);
-        component.jsClick(component.getSubmitButton());
+        component.actionClick(component.getSubmitButton());
     }
 
     @Step("Log out")
     public void logout() {
-        component.fullScreenMode();
+        component.assertThat(visibilityOf(component.getLogoutButton()));
         component.getLogoutButton().click();
     }
 
@@ -49,7 +50,6 @@ public class LoginStep {
 
     @Step("Verify that user was successfully login")
     public boolean isUserLogin(){
-        component.fullScreenMode();
         return component.getLogoutButton().isDisplayed();
     }
 }

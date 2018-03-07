@@ -21,19 +21,23 @@ public class TableComponent extends BaseComponent {
         return $(name("Search"));
     }
 
-    public WebElement getActionButton(){
-        return $(cssSelector(".btn-row-action"));
-    }
-
     public WebElement getEditButton(){
         return $(cssSelector("td:nth-child(2) > a"));
     }
 
+    public WebElement getChangePassButton(){
+        return $(cssSelector("span:nth-child(1) > span > button"));
+    }
+
+    public WebElement getActivatePassButton(){
+        return $(cssSelector("span:nth-child(2) > span > button"));
+    }
+
     public WebElement getDeleteButton(){
-        return $(cssSelector(".btn-row-action:nth-of-type(2)"));
+        return $(cssSelector("span:nth-child(3) > span > button"));
     }
 
     public WebElement getYesButton(){
-        return $(cssSelector("button:nth-child(2)"));
+        return $(name("delete-confirm"));
     }
 }

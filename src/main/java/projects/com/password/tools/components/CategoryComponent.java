@@ -14,19 +14,15 @@ public class CategoryComponent extends BaseComponent {
     }
 
     public WebElement getNameInput(){
-        return $(name("create-category-name"));
+        return $(name("create-name"));
     }
 
     public WebElement getDescInput(){
-        return $(name("create-category-description"));
+        return $(name("create-description"));
     }
 
     public WebElement getOkCreateButton(){
-        return $(cssSelector("#createDialogForm > div > div.card__actions > button:nth-child(1) > div"));
-    }
-
-    public WebElement getOkEditButton(){
-        return $(cssSelector("#editDialogForm > div > div.card__actions > button:nth-child(1) > div"));
+        return $(name("create-confirm"));
     }
 
     public WebElement getEditButton(){
@@ -34,11 +30,15 @@ public class CategoryComponent extends BaseComponent {
     }
 
     public WebElement getEditNameInput(){
-        return $(name("edit-category-name"));
+        return $(name("edit-name"));
     }
 
     public WebElement getEditDescInput(){
-        return $(name("edit-category-description"));
+        return $(name("edit-description"));
+    }
+
+    public WebElement getOkEditButton(){
+        return $(name("edit-confirm"));
     }
 
     public WebElement getDeleteButton(){

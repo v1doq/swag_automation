@@ -35,7 +35,7 @@ public abstract class ConciseApi {
         return (new WebDriverWait(getDriver(), 15)).until(condition);
     }
 
-    protected void waitForText(By by, String value){
+    public void waitForText(By by, String value){
         LOG.info("Wait for text to be '" + value + "' " + by);
         assertThat(textToBe(by, value));
     }
@@ -58,9 +58,12 @@ public abstract class ConciseApi {
         LOG.info("Successfully clicked");
     }
 
-    public static void clearAndType(WebElement element, String text) {
-        element.sendKeys(Keys.CONTROL, "a");
-        element.sendKeys(Keys.DELETE);
+    public void clearAndSendKeys(WebElement element, String text){
+        assertThat(elementToBeClickable(element));
+        assertThat(visibilityOf(element));
+        sleep(1000);
+        element.click();
+        element.clear();
         element.sendKeys(text);
     }
 
@@ -91,5 +94,10 @@ public abstract class ConciseApi {
 
     public void fullScreenMode(){
         getDriver().manage().window().maximize();
+        sleep(500);
+    }
+
+    protected void refreshPage(){
+        getDriver().navigate().refresh();
     }
 }

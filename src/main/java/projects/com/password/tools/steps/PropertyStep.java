@@ -6,7 +6,7 @@ import projects.com.password.tools.components.PropertyComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.clearAndType;
+import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
@@ -32,24 +32,24 @@ public class PropertyStep {
     public void createProperty(String name) {
         tableComponent.getCreateButton().click();
         component.getNameInput().sendKeys(name);
-        component.getOkButton().click();
+        component.getCreateButton().click();
     }
 
     @Step("Update property")
     public void updateProperty(String newName) {
         component.getEditButton().click();
-        clearAndType(component.getEditNameInput(), newName);
-        component.getOkButton().click();
+        component.clearAndSendKeys(component.getEditNameInput(), newName);
+        component.getUpdateButton().click();
     }
 
     @Step("Delete property")
     public void deleteProperty() {
         component.getDeleteButton().click();
-        component.waitForPartOfText(cssSelector(".card__text"), "Are you sure to delete");
+        component.waitForPartOfText(cssSelector(".card__text"), "Are you sure, you want to delete");
         component.jsClick(tableComponent.getYesButton());
         component.assertThat(invisibilityOfElementLocated(cssSelector(".card__text")));
+        sleep(1000);
     }
-
 
     @Step("Create a property in the database")
     public void createPropertyInDB(String name){

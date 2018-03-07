@@ -11,12 +11,13 @@ import projects.com.password.tools.steps.*;
 
 import static common.DefaultConstant.VALID_PASSWORD;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static projects.com.password.tools.steps.CategoryStep.MAX_CATEGORY_LENGTH;
-import static projects.com.password.tools.steps.EmployeeStep.MAX_EMPLOYEE_NAME_LENGTH;
-import static common.DefaultConstant.USER_ROLE;
+import static projects.com.password.tools.steps.EmployeeStep.MAX_USER_NAME_LENGTH;
 import static projects.com.password.tools.steps.PropertyStep.MAX_PROPERTY_LENGTH;
 import static projects.com.password.tools.steps.ResourceStep.MAX_RESOURCE_USERNAME_LENGTH;
+import static projects.com.password.tools.steps.ResourceStep.RESOURCE_SHARED_TYPE;
 
 @Feature("Resources")
 @Story("Functional tests for CRUD and share resource")
@@ -45,20 +46,19 @@ public class ResourceTest extends BaseTest {
     public void createResourceShareItWithUser() {
         String categoryName = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
         String propertyName = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
-        String employeeUsername = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH);
-        String employeeName = randomAlphabetic(MAX_EMPLOYEE_NAME_LENGTH / 3);
+        String user = randomAlphabetic(MAX_USER_NAME_LENGTH);
         categoryStep.createCategoryInDB(categoryName);
         propertyStep.createPropertyInDB(propertyName);
-        employeeStep.createUserInDB(employeeUsername, employeeName, USER_ROLE);
+        employeeStep.createUser(user, VALID_PASSWORD);
 
         resourceStep.openResourcePage();
         String resourceUsername = randomAlphabetic(MAX_RESOURCE_USERNAME_LENGTH / 3);
-        resourceStep.createResource(resourceUsername, categoryName, "Shared", propertyName);
+        resourceStep.createResource(resourceUsername, categoryName, RESOURCE_SHARED_TYPE, propertyName);
         tableStep.searchInTable(resourceUsername);
-        resourceStep.shareResourceWithUser(employeeName);
+        resourceStep.shareResourceWithUser(user);
 
         loginStep.logout();
-        loginStep.login(employeeUsername, VALID_PASSWORD);
+        loginStep.login(user, VALID_PASSWORD);
         tableStep.searchInTable(resourceUsername);
 
         assertTrue(tableStep.isValueDisplayInTable(resourceUsername));
@@ -66,6 +66,26 @@ public class ResourceTest extends BaseTest {
         resourceStep.deleteResourceInDB(resourceUsername);
         categoryStep.deleteCategoryInDB(categoryName);
         propertyStep.deletePropertyInDB(propertyName);
-        employeeStep.deleteUserInDB(employeeUsername);
+        employeeStep.deleteUserInDB(user);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "smoke test", description = "Create individual resource ")
+    public void createIndividualResource() {
+        String categoryName = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
+        String propertyName = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
+        categoryStep.createCategoryInDB(categoryName);
+        propertyStep.createPropertyInDB(propertyName);
+
+        resourceStep.openResourcePage();
+        String resourceUsername = randomAlphabetic(MAX_RESOURCE_USERNAME_LENGTH / 3);
+        resourceStep.createResource(resourceUsername, categoryName, "Individual", propertyName);
+        tableStep.searchInTable(resourceUsername);
+
+        assertFalse(tableStep.isValueDisplayInTable(RESOURCE_SHARED_TYPE));
+
+        resourceStep.deleteResourceInDB(resourceUsername);
+        categoryStep.deleteCategoryInDB(categoryName);
+        propertyStep.deletePropertyInDB(propertyName);
     }
 }
