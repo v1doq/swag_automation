@@ -14,15 +14,19 @@ public class PropertyComponent extends BaseComponent {
     }
 
     public WebElement getNameInput(){
-        return $(name("create-category-name"));
+        return $(name("create-name"));
     }
 
     public WebElement getDescInput(){
-        return $(name("create-category-description"));
+        return $(name("create-description"));
     }
 
-    public WebElement getOkButton(){
-        return $(cssSelector(".dialog__content__active>div>form>div>div.card__actions>button:nth-child(1)"));
+    public WebElement getCreateButton(){
+        return $(name("create-confirm"));
+    }
+
+    public WebElement getUpdateButton(){
+        return $(name("edit-confirm"));
     }
 
     public WebElement getEditButton(){
@@ -30,11 +34,11 @@ public class PropertyComponent extends BaseComponent {
     }
 
     public WebElement getEditNameInput(){
-        return $(name("edit-category-name"));
+        return $(name("edit-name"));
     }
 
     public WebElement getEditDescInput(){
-        return $(name("edit-category-description"));
+        return $(name("edit-description"));
     }
 
     public WebElement getDeleteButton(){

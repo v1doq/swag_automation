@@ -6,7 +6,6 @@ import projects.com.swag.screening.components.authorization.LoginComponent;
 
 import java.util.List;
 
-import static common.ConciseApi.clearAndType;
 import static common.DefaultConstant.SCREENING_PASSWORD;
 import static common.DefaultConstant.SCREENING_USERNAME;
 import static java.util.Arrays.asList;
@@ -60,12 +59,12 @@ public class LoginStep {
 
     @Step("Fill username field")
     public void fillUsernameField(String username) {
-        clearAndType(component.getUsernameInput(), username);
+        component.clearAndSendKeys(component.getUsernameInput(), username);
     }
 
     @Step("Fill password field")
     public void fillPasswordField(String pass) {
-        clearAndType(component.getPasswordInput(), pass);
+        component.clearAndSendKeys(component.getPasswordInput(), pass);
     }
 
     @Step("Submit login form")

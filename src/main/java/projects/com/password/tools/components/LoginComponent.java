@@ -4,7 +4,8 @@ import common.BaseComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.*;
+import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.name;
 
 public class LoginComponent extends BaseComponent {
 

@@ -24,6 +24,10 @@ public class ResourceComponent extends BaseComponent {
         return $(name("category"));
     }
 
+    public WebElement getItemInDropdown(){
+        return $(cssSelector(".menuable__content__active > div > ul"));
+    }
+
     public WebElement getTypeDropdown(){
         return $(name("type"));
     }
@@ -33,11 +37,11 @@ public class ResourceComponent extends BaseComponent {
     }
 
     public WebElement getIndividualTypeInDropdown(){
-        return $(cssSelector("li:nth-child(2)"));
+        return $(cssSelector(".menuable__content__active > div > ul > li:nth-child(1)"));
     }
 
     public WebElement getPropertyDropdown(){
-        return $(xpath(".//*[@id='app']/div[6]/section/div/div/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div[1]/input"));
+        return $(name("property"));
     }
 
     public WebElement getPassInput(){
@@ -53,11 +57,11 @@ public class ResourceComponent extends BaseComponent {
     }
 
     public WebElement getShareDropdown(){
-        return $(cssSelector(".input-group--select__autocomplete"));
+        return $(name("share-to"));
     }
 
-    public WebElement getYourPassInput(){
-        return $(cssSelector("input[type=\"password\"]"));
+    public WebElement getYourPassInSharePopUpInput(){
+        return $(name("share-password-password"));
     }
 
     public WebElement getShareButton(){

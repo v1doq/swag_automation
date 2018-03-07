@@ -6,9 +6,7 @@ import projects.com.password.tools.components.CategoryComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.clearAndType;
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -38,16 +36,15 @@ public class CategoryStep {
     @Step("Update category")
     public void updateCategory(String newName) {
         component.getEditButton().click();
-        clearAndType(component.getEditNameInput(), newName);
+        component.clearAndSendKeys(component.getEditNameInput(), newName);
         component.getOkEditButton().click();
     }
 
     @Step("Delete category")
     public void deleteCategory() {
         component.getDeleteButton().click();
-        component.waitForPartOfText(cssSelector(".card__text"), "Are you sure to delete");
         component.jsClick(tableComponent.getYesButton());
-        component.assertThat(invisibilityOfElementLocated(cssSelector(".card__text")));
+        component.assertThat(invisibilityOf(tableComponent.getYesButton()));
     }
 
     @Step("Create a category in the database")
