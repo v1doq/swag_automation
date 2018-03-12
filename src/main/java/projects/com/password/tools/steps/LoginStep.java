@@ -32,8 +32,9 @@ public class LoginStep {
     @Step("Login with user credential")
     public void login(String username, String pass) {
         component.getUsernameInput().sendKeys(username);
-        component.getPasswordInput().sendKeys(pass, Keys.ENTER);
-        component.actionClick(component.getSubmitButton());
+        component.getPasswordInput().sendKeys(pass);
+        component.getPasswordInput().sendKeys(Keys.ENTER);
+        component.getSubmitButton().click();
     }
 
     @Step("Log out")

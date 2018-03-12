@@ -42,6 +42,6 @@ public class CategoryComponent extends BaseComponent {
     }
 
     public WebElement getDeleteButton(){
-        return $(cssSelector("td:nth-child(3) > button"));
+        return $(cssSelector("td:nth-child(3) > span > span > button"));
     }
 }

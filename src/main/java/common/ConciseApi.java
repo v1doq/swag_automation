@@ -61,9 +61,9 @@ public abstract class ConciseApi {
     public void clearAndSendKeys(WebElement element, String text){
         assertThat(elementToBeClickable(element));
         assertThat(visibilityOf(element));
-        sleep(1000);
-        element.click();
-        element.clear();
+        while(element.getAttribute("value").length() > 0) {
+            element.sendKeys(Keys.BACK_SPACE);
+        }
         element.sendKeys(text);
     }
 
@@ -81,6 +81,7 @@ public abstract class ConciseApi {
     }
 
     public boolean isTextDisplayed(String text, String locator) {
+        sleep(1000);
         boolean isDisplayed = false;
         List<WebElement> list = getDriver().findElements(tagName((locator)));
         for (WebElement element : list) {

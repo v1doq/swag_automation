@@ -22,7 +22,7 @@ public class TableComponent extends BaseComponent {
     }
 
     public WebElement getEditButton(){
-        return $(cssSelector("td:nth-child(2) > a"));
+        return $(cssSelector("td:nth-child(2) > span > span > a"));
     }
 
     public WebElement getChangePassButton(){

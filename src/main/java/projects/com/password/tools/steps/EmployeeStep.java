@@ -26,6 +26,7 @@ public class EmployeeStep {
 
     @Step("Create new user")
     public void createUser(String username, String pass){
+        component.assertThat(elementToBeClickable(tableComponent.getCreateButton()));
         tableComponent.getCreateButton().click();
         component.getNameInput().sendKeys(username);
         component.getUsernameInput().sendKeys(username);

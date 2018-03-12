@@ -10,6 +10,7 @@ import settings.SQLConnector;
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static common.DefaultConstant.VALID_PASSWORD;
 import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
@@ -33,6 +34,7 @@ public class ResourceStep {
 
     @Step("Create new resource")
     public void createResource(String username, String categoryName, String type, String property) {
+        component.assertThat(elementToBeClickable(tableComponent.getCreateButton()));
         tableComponent.getCreateButton().click();
         component.getUsernameInput().sendKeys(username);
         component.getDescriptionInput().sendKeys(username);
