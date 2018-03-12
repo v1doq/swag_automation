@@ -8,6 +8,7 @@ import settings.SQLConnector;
 
 import static common.DefaultConstant.PASSWORD_PASS_TOOLS;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
@@ -31,6 +32,7 @@ public class AdminStep {
 
     @Step("Create new admin")
     public void createAdmin(String username, String pass){
+        component.assertThat(elementToBeClickable(tableComponent.getCreateButton()));
         tableComponent.getCreateButton().click();
         component.getNameInput().sendKeys(username);
         component.getUsernameInput().sendKeys(username);

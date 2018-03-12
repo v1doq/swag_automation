@@ -53,7 +53,7 @@ public class ResourceComponent extends BaseComponent {
     }
 
     public WebElement getShareButtonInTable(){
-        return $(cssSelector("td:nth-child(7) > button"));
+        return $(cssSelector("span:nth-child(2) > span > button"));
     }
 
     public WebElement getShareDropdown(){

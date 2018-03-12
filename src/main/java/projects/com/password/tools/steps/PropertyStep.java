@@ -8,6 +8,7 @@ import settings.SQLConnector;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
@@ -30,6 +31,7 @@ public class PropertyStep {
 
     @Step("Create property")
     public void createProperty(String name) {
+        component.assertThat(elementToBeClickable(tableComponent.getCreateButton()));
         tableComponent.getCreateButton().click();
         component.getNameInput().sendKeys(name);
         component.getCreateButton().click();

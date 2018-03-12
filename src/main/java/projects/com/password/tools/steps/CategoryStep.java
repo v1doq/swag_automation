@@ -6,7 +6,7 @@ import projects.com.password.tools.components.CategoryComponent;
 import projects.com.password.tools.components.TableComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -28,6 +28,7 @@ public class CategoryStep {
 
     @Step("Create category")
     public void createCategory(String name) {
+        component.assertThat(elementToBeClickable(tableComponent.getCreateButton()));
         tableComponent.getCreateButton().click();
         component.getNameInput().sendKeys(name);
         component.getOkCreateButton().click();
@@ -44,7 +45,6 @@ public class CategoryStep {
     public void deleteCategory() {
         component.getDeleteButton().click();
         component.jsClick(tableComponent.getYesButton());
-        component.assertThat(invisibilityOf(tableComponent.getYesButton()));
     }
 
     @Step("Create a category in the database")
