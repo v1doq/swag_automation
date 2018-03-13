@@ -61,9 +61,9 @@ public class EmployeeStep {
         connector.executeQuery("DECLARE @Id uniqueidentifier SET @Id = NEWID()\n" +
                 "INSERT INTO PasswordsTool.dbo.Users\n" +
                 "(Id, AccessFailedCount, Email, EmailConfirmed, IsAdmin, IsDeleted, LockoutEnabled, Name, " +
-                "PasswordHash, PhoneNumberConfirmed, Title, TwoFactorEnabled, UserName, DeletionToken)\n" +
+                "PasswordHash, PhoneNumberConfirmed, Title, TwoFactorEnabled, UserName, DeletionToken, IsActive)\n" +
                 "VALUES(@Id, 0, '" + email + "', 0, " + userRole + ", 0, 0, 'name', " +
-                "'" + PASSWORD_HASH + "', 0, 'title', 0, '" + username + "', '');");
+                "'" + PASSWORD_HASH + "', 0, 'title', 0, '" + username + "', '', 1);");
         //PASSWORD_HASH is hash of VALID_PASSWORD(frDPgoZ#Y5)
         connector.closeConnection();
         LOG.info("Successfully created");

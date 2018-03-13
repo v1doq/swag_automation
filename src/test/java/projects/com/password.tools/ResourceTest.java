@@ -16,8 +16,7 @@ import static org.testng.Assert.assertTrue;
 import static projects.com.password.tools.steps.CategoryStep.MAX_CATEGORY_LENGTH;
 import static projects.com.password.tools.steps.EmployeeStep.MAX_USER_NAME_LENGTH;
 import static projects.com.password.tools.steps.PropertyStep.MAX_PROPERTY_LENGTH;
-import static projects.com.password.tools.steps.ResourceStep.MAX_RESOURCE_USERNAME_LENGTH;
-import static projects.com.password.tools.steps.ResourceStep.RESOURCE_SHARED_TYPE;
+import static projects.com.password.tools.steps.ResourceStep.*;
 
 @Feature("Resources")
 @Story("Functional tests for CRUD and share resource")
@@ -60,17 +59,14 @@ public class ResourceTest extends BaseTest {
         loginStep.logout();
         loginStep.login(user, VALID_PASSWORD);
         tableStep.searchInTable(resourceUsername);
-
         assertTrue(tableStep.isValueDisplayInTable(resourceUsername));
 
-        resourceStep.deleteResourceInDB(resourceUsername);
-        categoryStep.deleteCategoryInDB(categoryName);
-        propertyStep.deletePropertyInDB(propertyName);
+        cleanDB(resourceUsername, categoryName, propertyName);
         employeeStep.deleteUserInDB(user);
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "smoke test", description = "Create individual resource ")
+    @Test(groups = "smoke test", description = "Create individual resource, verify status on front and in the database")
     public void createIndividualResource() {
         String categoryName = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
         String propertyName = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
@@ -81,11 +77,39 @@ public class ResourceTest extends BaseTest {
         String resourceUsername = randomAlphabetic(MAX_RESOURCE_USERNAME_LENGTH / 3);
         resourceStep.createResource(resourceUsername, categoryName, "Individual", propertyName);
         tableStep.searchInTable(resourceUsername);
-
         assertFalse(tableStep.isValueDisplayInTable(RESOURCE_SHARED_TYPE));
 
-        resourceStep.deleteResourceInDB(resourceUsername);
-        categoryStep.deleteCategoryInDB(categoryName);
-        propertyStep.deletePropertyInDB(propertyName);
+        cleanDB(resourceUsername, categoryName, propertyName);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "smoke test", description = "Try to delete category and property which used in resource")
+    public void tryToDeleteCategoryAndPropertyUsedInResource() {
+        String category = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
+        String property = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
+        String username = randomAlphabetic(MAX_RESOURCE_USERNAME_LENGTH);
+        categoryStep.createCategoryInDB(category);
+        propertyStep.createPropertyInDB(property);
+        String categoryId = categoryStep.getCategoryValueInDB(category, "Id");
+        String propId = propertyStep.getPropertyValueInDB(property, "Id");
+        resourceStep.createResourceInDB(username, categoryId, propId);
+
+        categoryStep.openCategoryPage();
+        tableStep.searchInTable(category);
+        categoryStep.deleteCategory();
+        assertTrue(categoryStep.isServerErrorDisplayed());
+
+        propertyStep.openPropertyPage();
+        tableStep.searchInTable(property);
+        propertyStep.deleteProperty();
+        assertTrue(propertyStep.isServerErrorDisplayed());
+
+        cleanDB(username, category, property);
+    }
+
+    private void cleanDB(String username, String category, String property){
+        resourceStep.deleteResourceInDB(username);
+        categoryStep.deleteCategoryInDB(category);
+        propertyStep.deletePropertyInDB(property);
     }
 }

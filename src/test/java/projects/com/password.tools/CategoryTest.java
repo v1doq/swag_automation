@@ -37,13 +37,13 @@ public class CategoryTest extends BaseTest {
         String categoryName = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
         categoryStep.openCategoryPage();
         categoryStep.createCategory(categoryName);
-        String nameInDB = categoryStep.getCategoryNameInDB(categoryName);
+        String nameInDB = categoryStep.getCategoryValueInDB(categoryName, "Name");
         assertEquals(categoryName, nameInDB);
 
         tableStep.searchInTable(categoryName);
         String newCategoryName = randomAlphabetic(MAX_CATEGORY_LENGTH / 3);
         categoryStep.updateCategory(newCategoryName);
-        String newNameInDB = categoryStep.getCategoryNameInDB(newCategoryName);
+        String newNameInDB = categoryStep.getCategoryValueInDB(newCategoryName, "Name");
         assertEquals(newCategoryName, newNameInDB);
 
         tableStep.searchInTable(newCategoryName);

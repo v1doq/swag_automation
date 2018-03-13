@@ -1,6 +1,7 @@
 package projects.com.password.tools.steps;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.CategoryComponent;
 import projects.com.password.tools.components.TableComponent;
@@ -67,11 +68,18 @@ public class CategoryStep {
         LOG.info("Successfully deleted");
     }
 
-    @Step("Verify that category is saved in DB")
-    public String getCategoryNameInDB(String name){
-        LOG.info("Get category name in the database");
+    @Step("Get category value in the database")
+    public String getCategoryValueInDB(String name, String columnName){
+        LOG.info("Get category value in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM PasswordsTool.dbo.ResourceCategories WHERE Name='" + name + "'";
-        return connector.getStringValueInDB(query, "Name");
+        return connector.getStringValueInDB(query, columnName);
+    }
+
+    @Step("Verify that category used in resource")
+    public boolean isServerErrorDisplayed(){
+        String text = "The action can't be completed";
+        component.waitForPartOfText(By.cssSelector(".delete-error-message"), text);
+        return component.getServerError().getText().contains(text);
     }
 }

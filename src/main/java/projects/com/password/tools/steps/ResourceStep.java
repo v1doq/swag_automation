@@ -61,6 +61,20 @@ public class ResourceStep {
         component.assertThat(invisibilityOfElementLocated(name("share-password-password")));
     }
 
+    @Step("Create resource in the database")
+    public void createResourceInDB(String username, String categoryId, String propertyId){
+        LOG.info("Try to create resource in the database with username: " + username);
+        SQLConnector connector = new SQLConnector();
+        connector.executeQuery("DECLARE @Id uniqueidentifier SET @Id = NEWID()\n" +
+                "INSERT INTO PasswordsTool.dbo.Resources\n" +
+                "(Id, CategoryId, CreatedByAdmin, Description, ExpirationDate, Lifetime, NeedPasswordChange, " +
+                "PropertyId, [Type], UserName, IsDeleted)\n" +
+                "VALUES(@Id, '" + categoryId + "', 1, 'YbIXoGQSmKlHlObY', '00:00:00', 1, 1, '" + propertyId + "', " +
+                "2, '" + propertyId + "', 0);");
+        connector.closeConnection();
+        LOG.info("Successfully created");
+    }
+
     @Step("Delete the resource in the database")
     public void deleteResourceInDB(String resourceName) {
         LOG.info("Try to delete resource in the database with name: " + resourceName);

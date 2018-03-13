@@ -1,6 +1,7 @@
 package projects.com.password.tools.steps;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.PropertyComponent;
 import projects.com.password.tools.components.TableComponent;
@@ -9,7 +10,6 @@ import settings.SQLConnector;
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -49,7 +49,6 @@ public class PropertyStep {
         component.getDeleteButton().click();
         component.waitForPartOfText(cssSelector(".card__text"), "Are you sure, you want to delete");
         component.jsClick(tableComponent.getYesButton());
-        component.assertThat(invisibilityOfElementLocated(cssSelector(".card__text")));
         sleep(1000);
     }
 
@@ -73,11 +72,18 @@ public class PropertyStep {
         LOG.info("Successfully deleted");
     }
 
-    @Step("Verify that property is saved in DB")
-    public String getPropertyNameInDB(String name){
-        LOG.info("Get property name in the database");
+    @Step("Get property value in the database")
+    public String getPropertyValueInDB(String name, String columnName){
+        LOG.info("Get property value in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM PasswordsTool.dbo.ResourceProperties WHERE Name='" + name + "'";
-        return connector.getStringValueInDB(query, "Name");
+        return connector.getStringValueInDB(query, columnName);
+    }
+
+    @Step("Verify that property used in resource")
+    public boolean isServerErrorDisplayed(){
+        String text = "The action can't be completed";
+        component.waitForPartOfText(By.cssSelector(".delete-error-message"), text);
+        return component.getServerError().getText().contains(text);
     }
 }
