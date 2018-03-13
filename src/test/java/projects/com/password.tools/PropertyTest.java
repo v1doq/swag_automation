@@ -37,13 +37,13 @@ public class PropertyTest extends BaseTest {
         String propertyName = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
         propertyStep.openPropertyPage();
         propertyStep.createProperty(propertyName);
-        String nameInDB = propertyStep.getPropertyNameInDB(propertyName);
+        String nameInDB = propertyStep.getPropertyValueInDB(propertyName, "Name");
         assertEquals(propertyName, nameInDB);
 
         tableStep.searchInTable(propertyName);
         String newPropertyName = randomAlphabetic(MAX_PROPERTY_LENGTH / 3);
         propertyStep.updateProperty(newPropertyName);
-        String newNameInDB = propertyStep.getPropertyNameInDB(newPropertyName);
+        String newNameInDB = propertyStep.getPropertyValueInDB(newPropertyName, "Name");
         assertEquals(newPropertyName, newNameInDB);
 
         tableStep.searchInTable(newPropertyName);

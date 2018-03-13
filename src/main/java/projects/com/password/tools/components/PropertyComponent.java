@@ -44,4 +44,9 @@ public class PropertyComponent extends BaseComponent {
     public WebElement getDeleteButton(){
         return $(cssSelector("td:nth-child(3) > span > span > button"));
     }
+
+
+    public WebElement getServerError(){
+        return $(cssSelector(".delete-error-message"));
+    }
 }
