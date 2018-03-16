@@ -25,7 +25,7 @@ public class ProfileStep {
         component.assertThat(visibilityOf(component.getUsernameInput()));
     }
 
-    @Step("Open profile pop up")
+    @Step("Edit username and password")
     public void editUsernameAndPass(String username, String userPass, String newPass) {
         component.clearAndSendKeys(component.getUsernameInput(), username);
         component.getChangePassButton().click();

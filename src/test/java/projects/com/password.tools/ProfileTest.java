@@ -35,7 +35,7 @@ public class ProfileTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Edit user profile, login with old and new credential")
+    @Test(groups = "smoke test", description = "Create admin and edit profile, login with old and new credential")
     public void createAdminAndEditProfile() {
         String username = randomAlphabetic(MAX_USER_NAME_LENGTH);
         String userPass = VALID_PASSWORD;
