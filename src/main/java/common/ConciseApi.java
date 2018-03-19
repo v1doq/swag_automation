@@ -3,6 +3,7 @@ package common;
 import com.google.common.base.Function;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -65,6 +66,11 @@ public abstract class ConciseApi {
             element.sendKeys(Keys.BACK_SPACE);
         }
         element.sendKeys(text);
+    }
+
+    public static void select(WebElement element, String text) {
+        Select dropdown = new Select(element);
+        dropdown.selectByVisibleText(text);
     }
 
     public static void sleep(long time){
