@@ -13,8 +13,11 @@ import static settings.TestConfig.getProperty;
 public class FiltersStep {
 
     private FiltersComponent component;
-    public static String EQUAL = "Equal";
-    public static String FIRST_NAME = "First Name";
+    public static final String EQUAL_CRITERION = "Equal";
+    public static final String START_WITH = "Starts With";
+    public static final String FIRST_NAME = "First Name";
+    public static final String ID = "Id";
+    private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
     public FiltersStep(WebDriver driver) {
         this.component = new FiltersComponent(driver);
@@ -32,7 +35,6 @@ public class FiltersStep {
         component.getValueInput().sendKeys(value);
     }
 
-    @Step("Verify count of records in counter")
     public void waitForRecordsResult(int records) {
         component.waitForPartOfText(className("filter-count"), String.valueOf(records));
     }
@@ -43,11 +45,18 @@ public class FiltersStep {
         return component.getCounterValue().getText().replace(text, "");
     }
 
-    @Step("Get contact count in the database")
-    public int getContactsCountInDB(String name, String column){
-        LOG.info("Get contact count in the database");
+    @Step("Get contact's count in the database")
+    public int getValueByCriterion(String column, String criterion, String value) {
+        String query = QUERY + column + criterion + "'" + value + "'";
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE " + column + "='" + name + "'";
         return connector.getIntValueInDB(query, "total");
+    }
+
+    @Step("Get value in contact table in the database")
+    public String getValueInContactTableDB(String column){
+        LOG.info("Get value in contact table in the database");
+        SQLConnector connector = new SQLConnector();
+        String query = "SELECT " + column + " FROM CommunicationTool.dbo.Contact";
+        return connector.getStringValueInDB(query, column);
     }
 }

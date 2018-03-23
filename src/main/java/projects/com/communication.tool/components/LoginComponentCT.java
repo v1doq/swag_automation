@@ -31,6 +31,6 @@ public class LoginComponentCT extends BaseComponent {
     }
 
     public WebElement getLogoutButton(){
-        return $(className(".menu-popup-link"));
+        return $(className("menu-popup-link"));
     }
 }

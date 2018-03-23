@@ -12,6 +12,8 @@ import projects.com.communication.tool.steps.LoginStepCT;
 
 import static org.testng.Assert.assertEquals;
 import static projects.com.communication.tool.steps.FiltersStep.*;
+import static settings.SQLConnector.EQUAL;
+import static settings.SQLConnector.LIKE;
 
 @Feature("Filters")
 @Story("Functional tests for filters")
@@ -31,10 +33,33 @@ public class FiltersTest extends BaseTest {
     public void selectFilterAndVerifyContactsInCounter() {
         String value = "rebecca";
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(FIRST_NAME, EQUAL, value);
-        int count = filtersStep.getContactsCountInDB(value, "FirstName");
+        filtersStep.applyAllFilters(FIRST_NAME, EQUAL_CRITERION, value);
+        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
         filtersStep.waitForRecordsResult(count);
 
-        assertEquals(String.valueOf(count), filtersStep.getRecordsCounter());
+        assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = "filters", description = "Check count of records with filter by start with criterion")
+    public void checkCountOfRecordsByStartWithCriterion() {
+        String value = "rebecca";
+        filtersStep.openContactsPage();
+        filtersStep.applyAllFilters(FIRST_NAME, START_WITH, value);
+        int count = filtersStep.getValueByCriterion("LastName", LIKE, value + "%");
+        filtersStep.waitForRecordsResult(count);
+
+        assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "filters", description = "Check count of records with filter by ID")
+    public void checkCountOfRecordsWithFilterById(){
+        String value = filtersStep.getValueInContactTableDB(ID);
+        filtersStep.openContactsPage();
+        filtersStep.applyAllFilters(ID, EQUAL_CRITERION, value);
+        filtersStep.waitForRecordsResult(1);
+
+        assertEquals(filtersStep.getRecordsCounter(), "1");
     }
 }
