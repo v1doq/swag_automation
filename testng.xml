@@ -5,9 +5,10 @@
         <listener class-name="settings.TestNGListener" />
     </listeners>
     <suite-files>
-        <suite-file path="src/main/resources/screening-smoke.xml"/>
-        <suite-file path="src/main/resources/screening-regression.xml"/>
-        <suite-file path="src/main/resources/password.tools-smoke.xml"/>
-        <suite-file path="src/main/resources/communication.tools-smoke.xml"/>
+        <suite-file path="src/main/resources/screening/screening-smoke.xml"/>
+        <suite-file path="src/main/resources/screening/screening-regression.xml"/>
+        <suite-file path="src/main/resources/password.tools/password.tools-smoke.xml"/>
+        <suite-file path="src/main/resources/communication.tools/communication.tools-smoke.xml"/>
+        <suite-file path="src/main/resources/communication.tools/communication.tools-filters.xml"/>
     </suite-files>
 </suite>

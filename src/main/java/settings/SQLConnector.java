@@ -13,6 +13,8 @@ public class SQLConnector {
     private String dbUrl = getProperty("db.url");
     private String username = getProperty("db.user.name");
     private String password = getProperty("db.user.password");
+    public static final String LIKE = " LIKE ";
+    public static final String EQUAL = " = ";
 
     public void executeQuery(String query) {
         try {
