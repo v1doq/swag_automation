@@ -5,58 +5,58 @@ import javax.mail.search.SearchTerm;
 import java.io.IOException;
 import java.util.Properties;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static common.ConciseApi.sleep;
 import static settings.SeleniumListener.LOG;
 
 public class MailReader {
-    private static final String USER = "communication.tool@outlook.com";
-    private static final String PASS = "Passcommunication1";
-    private static final String HOST = "imap.outlook.com";
 
-    public static void readEmail(String fromEmail, int messageCount, String subject, String body) {
+    private static Folder folder;
+    private static Store store;
+    private static Message[] messages;
+
+    public static void openMailFolder(){
         try {
             Properties props = new Properties();
             props.put("mail.store.protocol", "imaps");
             Session session = Session.getInstance(props);
-            Store store = session.getStore();
-            store.connect(HOST, USER, PASS);
-
-            Folder folder = store.getFolder("Junk");
+            store = session.getStore();
+            store.connect("imap.outlook.com", "communication.tool@outlook.com", "Passcommunication1");
+            folder = store.getFolder("inbox");
             folder.open(Folder.READ_WRITE);
-            folder.setFlags(folder.getMessages(), new Flags(Flags.Flag.DELETED), true);
-
-            SearchTerm searchCondition = getSearchTerm(fromEmail);
-            Message[] messages = folder.search(searchCondition);
-            while (messages.length == 0) {
-                LOG.info("messages.length: " + messages.length);
-                Thread.sleep(500);
-            }
-            assertEquals(messageCount, messages.length);
-
-            for (int i = 0; i < messages.length; i++) {
-                Message message = messages[i];
-                LOG.info("Email Number " + (i + 1));
-                LOG.info("Subject: " + message.getSubject());
-                LOG.info("From: " + message.getFrom()[0]);
-                LOG.info("Text: " + getText(message));
-                assertEquals(message.getSubject(), subject);
-                String text = getText(message);
-                if (text != null){
-                    assertTrue(text.contains(body));
-                }
-            }
-            folder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
-            folder.close(true);
-            store.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
+        }
+    }
+
+    public static Message[] receiveMail(String fromEmail) {
+        try {
+            SearchTerm searchCondition = getSearchTerm(fromEmail);
+            messages = folder.search(searchCondition);
+            while (messages.length == 0) {
+                LOG.info("messages.length: " + messages.length);
+                sleep(500);
+            }
+        } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        try {
+            return folder.getMessages();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return new Message[0];
+    }
+
+    public static void deleteMessages(){
+        try {
+            folder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
+            folder.close(true);
+            store.close();
+        } catch (MessagingException e) {
             e.printStackTrace();
         }
     }
@@ -72,8 +72,6 @@ public class MailReader {
                             return true;
                         }
                     }
-                } catch (MessageRemovedException e){
-                    e.printStackTrace();
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
@@ -82,7 +80,7 @@ public class MailReader {
         };
     }
 
-    public static String getText(Part p) throws MessagingException, IOException {
+    public static String getMessageBody(Part p) throws MessagingException, IOException {
         if (p.isMimeType("text/*")) {
             return (String) p.getContent();
         }
@@ -93,16 +91,16 @@ public class MailReader {
                 Part bp = mp.getBodyPart(i);
                 if (bp.isMimeType("text/*")) {
                     if (text == null)
-                        text = getText(bp);
+                        text = getMessageBody(bp);
                 } else {
-                    return getText(bp);
+                    return getMessageBody(bp);
                 }
             }
             return text;
         } else if (p.isMimeType("multipart/*")) {
             Multipart mp = (Multipart) p.getContent();
             for (int i = 0; i < mp.getCount(); i++) {
-                String s = getText(mp.getBodyPart(i));
+                String s = getMessageBody(mp.getBodyPart(i));
                 if (s != null)
                     return s;
             }
