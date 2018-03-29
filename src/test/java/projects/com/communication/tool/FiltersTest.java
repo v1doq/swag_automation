@@ -46,7 +46,7 @@ public class FiltersTest extends BaseTest {
         String value = "rebecca";
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(FIRST_NAME, START_WITH, value);
-        int count = filtersStep.getValueByCriterion("LastName", LIKE, value + "%");
+        int count = filtersStep.getValueByCriterion("FirstName", LIKE, value + "%");
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
