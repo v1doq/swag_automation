@@ -4,7 +4,6 @@ import common.BaseComponent;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.name;
 
@@ -26,11 +25,11 @@ public class LoginComponentCT extends BaseComponent {
         return $(cssSelector("button"));
     }
 
-    public WebElement getUserBlockButton(){
-        return $(className("btn-user-block"));
+    public WebElement getUserMenuButton(){
+        return $(cssSelector("div.nav-right.is-flex.user-block > div > div > button"));
     }
 
     public WebElement getLogoutButton(){
-        return $(className("menu-popup-link"));
+        return $(cssSelector("div.menu__content.menuable__content__active > div > div > a"));
     }
 }

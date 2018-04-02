@@ -9,6 +9,7 @@
         </groups>
         <classes>
             <class name="projects.com.communication.tool.FiltersTest"/>
+            <class name="projects.com.communication.tool.CampaignTest"/>
         </classes>
     </test>
 </suite>
