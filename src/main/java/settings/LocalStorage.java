@@ -3,6 +3,8 @@ package settings;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 
+import static settings.SeleniumListener.LOG;
+
 public class LocalStorage {
     private JavascriptExecutor js;
 
@@ -18,7 +20,8 @@ public class LocalStorage {
         return !(js.executeScript(String.format("return window.localStorage.getItem('%s');", item)) == null);
     }
 
-    public String getItemFromLocalStorage(String key) {
+    public String getValueFromLocalStorage(String key) {
+        LOG.info("Get value by: '" + key + "' key from local storage");
         return (String) js.executeScript(String.format("return window.localStorage.getItem('%s');", key));
     }
 
@@ -30,8 +33,9 @@ public class LocalStorage {
         return (Long) js.executeScript("return window.localStorage.length;");
     }
 
-    public void setItemInLocalStorage(String item, String value) {
-        js.executeScript(String.format("window.localStorage.setItem('%s','%s');", item, value));
+    public void setItemInLocalStorage(String key, String value) {
+        LOG.info("Set to local storage key: '" + key + "' and value: '" + value + "'");
+        js.executeScript(String.format("window.localStorage.setItem('%s','%s');", key, value));
     }
 
     public void clearLocalStorage() {

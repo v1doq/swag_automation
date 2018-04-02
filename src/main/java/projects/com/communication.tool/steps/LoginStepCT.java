@@ -4,7 +4,9 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.LoginComponentCT;
 
-import static common.DefaultConstant.*;
+import static common.ConciseApi.sleep;
+import static common.DefaultConstant.PASSWORD_COMMUNICATION_TOOLS;
+import static common.DefaultConstant.USERNAME_COMMUNICATION_TOOLS;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static settings.TestConfig.getProperty;
 
@@ -20,6 +22,7 @@ public class LoginStepCT {
     public void authorization(){
         openLandingPage();
         login(USERNAME_COMMUNICATION_TOOLS, PASSWORD_COMMUNICATION_TOOLS);
+        sleep(1000);
     }
 
     @Step("Open landing page")
@@ -36,8 +39,8 @@ public class LoginStepCT {
 
     @Step("Log out")
     public void logout() {
-        component.assertThat(visibilityOf(component.getUserBlockButton()));
-        component.getUserBlockButton().click();
+        component.assertThat(visibilityOf(component.getUserMenuButton()));
+        component.getUserMenuButton().click();
         component.getLogoutButton().click();
     }
 

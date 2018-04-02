@@ -107,4 +107,11 @@ public abstract class ConciseApi {
     protected void refreshPage(){
         getDriver().navigate().refresh();
     }
+
+    protected void addCookies(){
+        LOG.info("Try to add cookies with name: 'rememberMe' and value: 'false'");
+        Cookie cookie = new Cookie("rememberMe", "false");
+        getDriver().manage().addCookie(cookie);
+        LOG.info("Successfully added");
+    }
 }
