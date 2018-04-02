@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
-import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 
@@ -86,10 +85,9 @@ public abstract class ConciseApi {
         actions.moveToElement(element).click().build().perform();
     }
 
-    public boolean isTextDisplayed(String text, String locator) {
-        sleep(1000);
+    public boolean isTextDisplayed(String text, By locator) {
         boolean isDisplayed = false;
-        List<WebElement> list = getDriver().findElements(tagName((locator)));
+        List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
             if (element.getText().equals(text)) {
                 isDisplayed = true;
