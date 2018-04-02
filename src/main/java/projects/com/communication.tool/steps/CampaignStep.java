@@ -5,6 +5,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.CampaignComponent;
 
+import static org.openqa.selenium.By.tagName;
 import static settings.TestConfig.getProperty;
 
 public class CampaignStep {
@@ -31,11 +32,11 @@ public class CampaignStep {
 
     @Step("Verify that company is displayed in list")
     public boolean isCompanyDisplayedInList(String companyName) {
-        return component.isTextDisplayed(companyName, "h3");
+        return component.isTextDisplayed(companyName, tagName("h3"));
     }
 
     @Step("Verify that campaign is displayed in list")
     public boolean isCampaignDisplayedInList(String campaignName) {
-        return component.isTextDisplayed(campaignName, "li");
+        return component.isTextDisplayed(campaignName, tagName("li"));
     }
 }

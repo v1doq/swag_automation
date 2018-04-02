@@ -1,9 +1,11 @@
 package projects.com.password.tools.steps;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.TableComponent;
 
+import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 
@@ -30,6 +32,7 @@ public class TableStep {
 
     @Step("Checking the presence of a value in the table")
     public boolean isValueDisplayInTable(String value){
-        return component.isTextDisplayed(value, "td");
+        sleep(1000);
+        return component.isTextDisplayed(value, By.tagName("td"));
     }
 }
