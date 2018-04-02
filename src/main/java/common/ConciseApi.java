@@ -31,6 +31,11 @@ public abstract class ConciseApi {
         return element;
     }
 
+    protected By by(By locator){
+        assertThat(visibilityOfElementLocated(locator));
+        return locator;
+    }
+
     public <V> V assertThat(Function<? super WebDriver, V> condition) {
         return (new WebDriverWait(getDriver(), 15)).until(condition);
     }
@@ -86,6 +91,7 @@ public abstract class ConciseApi {
     }
 
     public boolean isTextDisplayed(String text, By locator) {
+        assertThat(visibilityOfElementLocated(locator));
         boolean isDisplayed = false;
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
@@ -95,6 +101,17 @@ public abstract class ConciseApi {
             }
         }
         return isDisplayed;
+    }
+
+    public WebElement getElementInList(String text, By locator) {
+        assertThat(visibilityOfElementLocated(locator));
+        List<WebElement> list = getDriver().findElements(locator);
+        for (WebElement element : list) {
+            if (element.getText().equals(text)){
+                return element;
+            }
+        }
+        return null;
     }
 
     public void fullScreenMode(){
