@@ -5,10 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import projects.com.communication.tool.steps.*;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -36,14 +33,15 @@ public class CampaignTest extends SuiteTestCT {
         openBrowser();
         loginWithToken();
         campaignStep = new CampaignStep(driver);
+        campaignStep.cleanDb();
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, randomAlphabetic(5));
     }
 
-    @AfterClass(description = "Delete campaign in the database", alwaysRun = true)
-    public void deleteCampaign(){
+    @AfterClass(description = "Clean database", alwaysRun = true)
+    public void cleanDb(){
         campaignStep = new CampaignStep(driver);
-        campaignStep.deleteCampaignInDB(campaignName);
+        campaignStep.cleanDb();
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
@@ -57,6 +55,7 @@ public class CampaignTest extends SuiteTestCT {
         loginWithToken();
     }
 
+    @Ignore
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Create new company and add campaign to it")
     public void createNewCompanyAndAddCampaignToIt() {
@@ -68,8 +67,6 @@ public class CampaignTest extends SuiteTestCT {
         assertTrue(campaignStep.isCompanyDisplayedInList(companyName));
         assertTrue(campaignStep.isCampaignDisplayedInList(campaignName));
         assertTrue(campaignStep.isCampaignAssignToCompany(companyName, campaignName));
-
-        campaignStep.deleteCampaignInDB(campaignName);
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -81,8 +78,6 @@ public class CampaignTest extends SuiteTestCT {
 
         gatewayStep.createGateway(fromName);
         assertTrue(gatewayStep.isFromNameDisplayedInGateway(fromName));
-
-        gatewayStep.deleteGatewayInDB();
     }
 
     @Severity(SeverityLevel.CRITICAL)
