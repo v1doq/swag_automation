@@ -78,7 +78,7 @@ public class BaseTest {
         }
     }
 
-    void addCookies(){
+    protected void addCookies(){
         LOG.info("Try to add cookies with name: 'rememberMe' and value: 'false'");
         Cookie cookie = new Cookie("rememberMe", "false");
         driver.manage().addCookie(cookie);

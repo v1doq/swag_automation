@@ -1,5 +1,7 @@
 package settings;
 
+import io.qameta.allure.Step;
+
 import javax.mail.*;
 import javax.mail.search.SearchTerm;
 import java.io.IOException;
@@ -14,6 +16,7 @@ public class MailReader {
     private static Store store;
     private static Message[] messages;
 
+    @Step("Open mail folder")
     public static void openMailFolder(){
         try {
             Properties props = new Properties();
@@ -22,6 +25,11 @@ public class MailReader {
             store = session.getStore();
             store.connect("imap.outlook.com", "communication.tool@outlook.com", "Passcommunication1");
             folder = store.getFolder("inbox");
+            folder = store.getFolder("junk");
+            Folder[] folders = store.getDefaultFolder().list();
+            for (Folder folder : folders) {
+                LOG.info(folder.getFullName() + ": " + folder.getMessageCount());
+            }
             folder.open(Folder.READ_WRITE);
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
@@ -30,7 +38,9 @@ public class MailReader {
         }
     }
 
+    @Step("Receive all messages")
     public static Message[] receiveMail(String fromEmail) {
+        LOG.info("Receive all messages from email: " + fromEmail);
         try {
             SearchTerm searchCondition = getSearchTerm(fromEmail);
             messages = folder.search(searchCondition);
@@ -48,10 +58,13 @@ public class MailReader {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        LOG.info("Successfully received");
         return new Message[0];
     }
 
+    @Step("Delete all messages in mail")
     public static void deleteMessages(){
+        LOG.info("Try to delete all messages");
         try {
             folder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
             folder.close(true);
@@ -59,6 +72,7 @@ public class MailReader {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
+        LOG.info("Successfully deleted");
     }
 
     private static SearchTerm getSearchTerm(final String email) {

@@ -28,7 +28,7 @@ public class ContactsStep {
         component.getSaveContactsButton().click();
     }
 
-    @Step("Add contacts to campaign")
+    @Step("Verify that contacts are displayed in the contact's table")
     public boolean isContactsAddedToCampaign(String value) {
         By locator = component.getContactsTable();
         component.waitForText(locator, value);
