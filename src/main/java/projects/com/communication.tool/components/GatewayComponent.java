@@ -26,12 +26,20 @@ public class GatewayComponent extends BaseComponent {
         return $(name("email"));
     }
 
-    public WebElement getHostInput(){
-        return $(name("host"));
+    public WebElement getSmtpHostInput(){
+        return $(name("smtpHost"));
     }
 
-    public WebElement getPortInput(){
-        return $(name("port"));
+    public WebElement getSmtpPortInput(){
+        return $(name("smtpPort"));
+    }
+
+    public WebElement getImapHostInput(){
+        return $(name("imapHost"));
+    }
+
+    public WebElement getImapPortInput(){
+        return $(name("imapPort"));
     }
 
     public WebElement getLoginInput(){

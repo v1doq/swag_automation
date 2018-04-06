@@ -1,6 +1,7 @@
 package common;
 
 import io.qameta.allure.Attachment;
+import org.openqa.selenium.Cookie;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -20,15 +21,11 @@ import settings.TestConfig;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.getProperty;
+import static settings.SeleniumListener.LOG;
 
-public class BaseTest extends ConciseApi {
+public class BaseTest {
 
     protected WebDriver driver;
-
-    @Override
-    public WebDriver getDriver() {
-        return driver;
-    }
 
     @BeforeMethod(description = "Open browser", alwaysRun = true)
     public void openBrowser() {
@@ -81,8 +78,15 @@ public class BaseTest extends ConciseApi {
         }
     }
 
+    void addCookies(){
+        LOG.info("Try to add cookies with name: 'rememberMe' and value: 'false'");
+        Cookie cookie = new Cookie("rememberMe", "false");
+        driver.manage().addCookie(cookie);
+        LOG.info("Successfully added");
+    }
+
     @Attachment(value = "Screenshot", type = "image/png")
     private byte[] captureScreenshot() {
-        return ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.BYTES);
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 }

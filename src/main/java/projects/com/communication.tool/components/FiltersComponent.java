@@ -1,6 +1,7 @@
 package projects.com.communication.tool.components;
 
 import common.BaseComponent;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -14,11 +15,11 @@ public class FiltersComponent extends BaseComponent {
     }
 
     public WebElement getFieldSelect(){
-        return $(cssSelector("div:nth-child(1) > div > select"));
+        return $(cssSelector(".is-grouped > div:nth-child(1) > div > select"));
     }
 
     public WebElement getCriterionSelect(){
-        return $(cssSelector("div:nth-child(2) > div > select"));
+        return $(cssSelector(".is-grouped > div:nth-child(2) > div > select"));
     }
 
     public WebElement getValueInput(){
@@ -27,5 +28,9 @@ public class FiltersComponent extends BaseComponent {
 
     public WebElement getCounterValue(){
         return $(className("filter-count"));
+    }
+
+    public By getCounter(){
+        return by(className("filter-count"));
     }
 }

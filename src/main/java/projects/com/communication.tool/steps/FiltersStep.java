@@ -6,7 +6,6 @@ import projects.com.communication.tool.components.FiltersComponent;
 import settings.SQLConnector;
 
 import static common.ConciseApi.select;
-import static org.openqa.selenium.By.className;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -36,7 +35,7 @@ public class FiltersStep {
     }
 
     public void waitForRecordsResult(int records) {
-        component.waitForPartOfText(className("filter-count"), String.valueOf(records));
+        component.waitForPartOfText(component.getCounter(), String.valueOf(records));
     }
 
     @Step("Verify count of records in counter")

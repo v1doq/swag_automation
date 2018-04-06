@@ -10,7 +10,8 @@ import static settings.TestConfig.getProperty;
 
 public class SQLConnector {
     private Connection connection;
-    private String dbUrl = getProperty("db.url");
+    private String dbUrl = "jdbc:sqlserver://web.lumiglass.io:1433;databaseName=SwagScreening";
+    private String dbUrlCT = "jdbc:sqlserver://54.219.253.104:1433;databaseName=CommunicationTool";
     private String username = getProperty("db.user.name");
     private String password = getProperty("db.user.password");
     public static final String LIKE = " LIKE ";
@@ -18,7 +19,11 @@ public class SQLConnector {
 
     public void executeQuery(String query) {
         try {
-            connection = getConnection(dbUrl, username, password);
+            if (query.contains("CommunicationTool")){
+                connection = getConnection(dbUrlCT, username, password);
+            } else {
+                connection = getConnection(dbUrl, username, password);
+            }
             Statement statement = connection.createStatement();
             statement.execute(query);
         } catch (SQLException e) {
@@ -29,7 +34,11 @@ public class SQLConnector {
     public String getStringValueInDB(String query, String columnName){
         String data = null;
         try {
-            connection = getConnection(dbUrl, username, password);
+            if (query.contains("CommunicationTool")){
+                connection = getConnection(dbUrlCT, username, password);
+            } else {
+                connection = getConnection(dbUrl, username, password);
+            }
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             resultSet.next();
@@ -44,7 +53,11 @@ public class SQLConnector {
     public int getIntValueInDB(String query, String columnName){
         int data = 0;
         try {
-            connection = getConnection(dbUrl, username, password);
+            if (query.contains("CommunicationTool")){
+                connection = getConnection(dbUrlCT, username, password);
+            } else {
+                connection = getConnection(dbUrl, username, password);
+            }
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             resultSet.next();

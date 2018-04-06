@@ -103,7 +103,7 @@ public abstract class ConciseApi {
         return isDisplayed;
     }
 
-    public WebElement getElementInList(String text, By locator) {
+    public WebElement getElementInListByText(String text, By locator) {
         assertThat(visibilityOfElementLocated(locator));
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
@@ -117,16 +117,5 @@ public abstract class ConciseApi {
     public void fullScreenMode(){
         getDriver().manage().window().maximize();
         sleep(500);
-    }
-
-    protected void refreshPage(){
-        getDriver().navigate().refresh();
-    }
-
-    protected void addCookies(){
-        LOG.info("Try to add cookies with name: 'rememberMe' and value: 'false'");
-        Cookie cookie = new Cookie("rememberMe", "false");
-        getDriver().manage().addCookie(cookie);
-        LOG.info("Successfully added");
     }
 }

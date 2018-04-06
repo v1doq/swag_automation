@@ -6,7 +6,7 @@ import projects.com.swag.screening.steps.candidate.CandidateStep;
 import projects.com.swag.screening.steps.candidate.ScreeningStep;
 import projects.com.swag.screening.steps.problem.ProblemStep;
 
-public class SuiteTest extends BaseTest {
+public class SuiteTestPT extends BaseTest {
 
     @BeforeSuite(description = "Clean database before suite", alwaysRun = true)
     public void setUp() {

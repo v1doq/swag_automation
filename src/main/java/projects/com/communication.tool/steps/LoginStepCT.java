@@ -18,7 +18,6 @@ public class LoginStepCT {
         this.component = new LoginComponentCT(driver);
     }
 
-    @Step("Authorize by existing user")
     public void authorization(){
         openLandingPage();
         login(USERNAME_COMMUNICATION_TOOLS, PASSWORD_COMMUNICATION_TOOLS);

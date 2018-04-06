@@ -38,8 +38,8 @@ public class CampaignStep {
 
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
-        WebElement element = component.getElementInList(campaignName, component.getCampaignItemsInList());
-        element.click();
+        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignItemsInList());
+        campaignItem.click();
         component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 
@@ -58,17 +58,17 @@ public class CampaignStep {
     public boolean isCampaignAssignToCompany(String companyName, String campaignName) {
         LOG.info("Get company id in the database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT Id FROM CommunicationTool.dbo.Client WHERE Name = '" + companyName + "'";
+        String query = "SELECT Id FROM CommunicationTool.dbo.Company WHERE Name = '" + companyName + "'";
         String companyId = connector.getStringValueInDB(query, "Id");
         LOG.info("Get campaign name in the database");
-        String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE ClientId = '" + companyId + "'";
+        String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'";
         String campaignNameInDb = connector.getStringValueInDB(queryCampaign, "Name");
         connector.closeConnection();
         return campaignNameInDb.equals(campaignName);
     }
 
     @Step("Delete company in the database")
-    public void deleteCompanyInDB(String companyName, String campaignName) {
+    public void deleteCampaignInDB(String campaignName) {
         LOG.info("Get campaign id in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT Id FROM CommunicationTool.dbo.Campaign WHERE Name = '" + campaignName + "'";
@@ -76,29 +76,12 @@ public class CampaignStep {
         LOG.info("Delete email communication in the database where CampaignId = '" + id + "'");
         connector.executeQuery("DELETE FROM CommunicationTool.dbo.EmailCommunication WHERE CampaignId = '" + id + "'");
         LOG.info("Successfully deleted");
-        LOG.info("Delete company in the database where company name = '" + companyName + "'");
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.Client WHERE Name = '" + companyName + "'");
+        LOG.info("Delete representative campaign in the database where CampaignId = '" + id + "'");
+        connector.executeQuery("DELETE FROM CommunicationTool.dbo.RepresentativeCampaign WHERE CampaignId = '" + id + "'");
         LOG.info("Successfully deleted");
-        connector.closeConnection();
-    }
-
-    @Step("Create campaign in the database")
-    public void createCampaignInDB(String campaignName, String companyName) {
-        LOG.info("Create campaign in the database");
-        SQLConnector connector = new SQLConnector();
-        String query = "DECLARE @clientId uniqueidentifier SET @clientId = NEWID() " +
-                "DECLARE @campaignId uniqueidentifier SET @campaignId = NEWID() " +
-                "DECLARE @communicationId uniqueidentifier SET @communicationId = NEWID() " +
-                "INSERT INTO CommunicationTool.dbo.Client (Id, Name) VALUES(@clientId, '" + companyName + "'); " +
-                "INSERT INTO CommunicationTool.dbo.Campaign (Id,ClientId,Name) " +
-                "VALUES(@campaignId, @clientId, '" + campaignName + "'); " +
-                "INSERT INTO CommunicationTool.dbo.EmailCommunication " +
-                "(Id, CampaignId, CreatedAt, Schedule_EndTime, Schedule_Interval, Schedule_StartTime, " +
-                "Schedule_TimeZone, Schedule_WeekDays, Template_Body, Template_Subject, Status) " +
-                "VALUES(@communicationId, @campaignId, {ts '2018-04-02 10:14:33.019'},'17:00:00.000', 2,'08:00:00.000'" +
-                ",'FLE Standard Time', 124, 'body', 'subject', 1);";
-        connector.executeQuery(query);
-        LOG.info("Successfully created");
+        LOG.info("Delete campaign in the database where campaign name = '" + campaignName + "'");
+        connector.executeQuery("DELETE FROM CommunicationTool.dbo.Campaign WHERE Name = '" + campaignName + "'");
+        LOG.info("Successfully deleted");
         connector.closeConnection();
     }
 }
