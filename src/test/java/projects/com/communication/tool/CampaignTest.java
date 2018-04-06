@@ -5,7 +5,10 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.testng.annotations.*;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.*;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -25,11 +28,15 @@ public class CampaignTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private FiltersStep filtersStep;
     private ScheduleStep scheduleStep;
+    private TemplateStep templateStep;
     private String campaignName = randomAlphabetic(5);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign(){
+        openBrowser();
+        loginWithToken();
         campaignStep = new CampaignStep(driver);
+        campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, randomAlphabetic(5));
     }
 
@@ -46,6 +53,7 @@ public class CampaignTest extends SuiteTestCT {
         scheduleStep = new ScheduleStep(driver);
         filtersStep = new FiltersStep(driver);
         gatewayStep = new GatewayStep(driver);
+        templateStep = new TemplateStep(driver);
         loginWithToken();
     }
 
@@ -79,7 +87,7 @@ public class CampaignTest extends SuiteTestCT {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Add contacts to campaign")
-    public void addContactsToGateway() {
+    public void addContactsToCampaign() {
         String value = "Test";
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
@@ -98,7 +106,7 @@ public class CampaignTest extends SuiteTestCT {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Update schedule parameters")
-    public void updateScheduleParameters() {
+    public void updateScheduleParametersAndCheckItInDb() {
         String interval = "1";
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
@@ -108,5 +116,20 @@ public class CampaignTest extends SuiteTestCT {
         String intervalInDb = scheduleStep.getScheduleIntervalInDB(campaignName);
 
         assertEquals(intervalInDb, interval);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = "smoke test", description = "Update template values")
+    public void updateTemplateAndCheckItInDb() {
+        String subj = randomAlphabetic(10);
+        String body = randomAlphabetic(10);
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
+
+        templateStep.openTemplateTab();
+        templateStep.updateTemplate(subj, body);
+        String subjInDb = templateStep.getTemplateSubjInDB(campaignName);
+
+        assertEquals(subjInDb, subj);
     }
 }

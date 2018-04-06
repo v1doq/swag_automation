@@ -30,6 +30,10 @@ public class CampaignComponent extends BaseComponent {
         return $(name("company"));
     }
 
+    public WebElement getSearchInput(){
+        return $(name("search"));
+    }
+
     public WebElement getSubmitButton(){
         return $(cssSelector("div.modal-dialog__actions > button"));
     }

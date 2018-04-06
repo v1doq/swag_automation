@@ -13,7 +13,7 @@ public class SuiteTestCT extends BaseTest {
     private LocalStorage storage;
 
     @BeforeSuite(description = "Get authorization token", alwaysRun = true)
-    public void getToken() {
+    public void loginAndGetToken() {
         openBrowser();
         storage = new LocalStorage(driver);
         loginStep = new LoginStepCT(driver);
@@ -24,6 +24,7 @@ public class SuiteTestCT extends BaseTest {
     @Step("Login with token")
     protected void loginWithToken(){
         storage = new LocalStorage(driver);
+        loginStep = new LoginStepCT(driver);
         loginStep.openLandingPage();
         storage.setItemInLocalStorage(KEY, VALUE);
         addCookies();
