@@ -55,7 +55,7 @@ public class ProfileTest extends BaseTest {
         loginStep.logout();
         loginStep.login(username, userPass);
         assertTrue(loginStep.isServerErrorDisplayed());
-        refreshPage();
+        driver.navigate().refresh();
 
         loginStep.login(newUsername, newPass);
         assertTrue(loginStep.isUserLogin());

@@ -12,16 +12,14 @@ public class GatewayStep {
 
     private GatewayComponent component;
     public static final byte MIN_FROM_NAME_LENGTH = 1;
-    private static final String EMAIL = "communication.tool.test@gmail.com";
-    private static final String HOST = "smtp.gmail.com";
-    private static final String PORT = "587";
-    private static final String PASS = "passcommunication";
+    private static final String EMAIL = "communication.tool@outlook.com";
+    private static final String PASS = "Passcommunication1";
 
     public GatewayStep(WebDriver driver) {
         this.component = new GatewayComponent(driver);
     }
 
-    @Step("Open gateways page")
+    @Step("Open gateways tab")
     public void openGatewayTab() {
         component.getGatewaysTab().click();
     }
@@ -31,8 +29,6 @@ public class GatewayStep {
         component.assertThat(elementToBeClickable(component.getFromNameInput()));
         component.getFromNameInput().sendKeys(fromName);
         component.getFromEmailInput().sendKeys(EMAIL);
-        component.getHostInput().sendKeys(HOST);
-        component.getPortInput().sendKeys(PORT);
         component.getLoginInput().sendKeys(EMAIL);
         component.getPasswordInput().sendKeys(PASS);
         component.getSubmitButton().click();
@@ -44,11 +40,11 @@ public class GatewayStep {
         return component.isTextDisplayed(fromName, component.getFromNameValue());
     }
 
-    @Step("Delete company in the database")
-    public void deleteGatewayInDB(String fromName) {
+    @Step("Delete gateway in the database")
+    public void deleteGatewayInDB() {
         LOG.info("Delete gateway in the database");
         SQLConnector connector = new SQLConnector();
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.EmailGateway WHERE Name = '" + fromName + "'");
+        connector.executeQuery("DELETE FROM CommunicationTool.dbo.EmailGateway WHERE Login = '" + EMAIL + "'");
         LOG.info("Successfully deleted");
         connector.closeConnection();
     }

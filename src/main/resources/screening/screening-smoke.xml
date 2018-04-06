@@ -8,7 +8,7 @@
             </run>
         </groups>
         <classes>
-            <class name="common.SuiteTest"/>
+            <class name="common.SuiteTestPT"/>
             <class name="projects.com.swag.screening.authorization.RegistrationTest"/>
             <class name="projects.com.swag.screening.candidate.CandidateTest"/>
             <class name="projects.com.swag.screening.problem.ProblemTest"/>

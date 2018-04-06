@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Communication tools - regression tests" parallel="false" thread-count="2">
+<suite name="Communication tools - sanity tests for filters" parallel="false" thread-count="2">
     <test name="Registration tests">
         <groups>
             <run>

@@ -27,7 +27,7 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public WebElement getCompanyInput(){
-        return $(name("client"));
+        return $(name("company"));
     }
 
     public WebElement getSubmitButton(){
