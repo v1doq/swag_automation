@@ -34,7 +34,7 @@ public class LocalStorage {
     }
 
     public void setItemInLocalStorage(String key, String value) {
-        LOG.info("Set to local storage key: '" + key + "' and value: '" + value + "'");
+        LOG.info("Set to local storage key with value");
         js.executeScript(String.format("window.localStorage.setItem('%s','%s');", key, value));
     }
 

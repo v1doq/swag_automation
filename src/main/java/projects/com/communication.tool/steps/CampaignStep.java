@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 import projects.com.communication.tool.components.CampaignComponent;
 import settings.SQLConnector;
 
+import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
@@ -51,7 +52,7 @@ public class CampaignStep {
 
     @Step("Verify that campaign is displayed in list")
     public boolean isCampaignDisplayedInList(String campaignName) {
-        return component.isTextDisplayed(campaignName, tagName("li"));
+        return component.isTextDisplayed(campaignName, cssSelector("li"));
     }
 
     @Step("Verify that campaign is assign to company")
@@ -67,21 +68,14 @@ public class CampaignStep {
         return campaignNameInDb.equals(campaignName);
     }
 
-    @Step("Delete company in the database")
-    public void deleteCampaignInDB(String campaignName) {
-        LOG.info("Get campaign id in the database");
+    public void cleanDb(){
+        LOG.info("Try to clean database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT Id FROM CommunicationTool.dbo.Campaign WHERE Name = '" + campaignName + "'";
-        String id = connector.getStringValueInDB(query, "Id");
-        LOG.info("Delete email communication in the database where CampaignId = '" + id + "'");
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.EmailCommunication WHERE CampaignId = '" + id + "'");
-        LOG.info("Successfully deleted");
-        LOG.info("Delete representative campaign in the database where CampaignId = '" + id + "'");
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.RepresentativeCampaign WHERE CampaignId = '" + id + "'");
-        LOG.info("Successfully deleted");
-        LOG.info("Delete campaign in the database where campaign name = '" + campaignName + "'");
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.Campaign WHERE Name = '" + campaignName + "'");
-        LOG.info("Successfully deleted");
+        connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM Conversation; " +
+                "DELETE FROM EmailCommunication; DELETE FROM EmailGateway; DELETE FROM RepresentativeCampaign; " +
+                "DELETE FROM RepresentativePlaceholder; DELETE FROM Representative; DELETE FROM Campaign; " +
+                "DELETE FROM CompanyPlaceholder; DELETE FROM Company;");
+        LOG.info("Successfully cleaned");
         connector.closeConnection();
     }
 }

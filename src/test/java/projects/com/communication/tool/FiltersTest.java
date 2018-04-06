@@ -29,7 +29,7 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
-        String value = "rebecca";
+        String value = "Test";
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(FIRST_NAME, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
@@ -41,7 +41,7 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "filters", description = "Check count of records with filter by start with criterion")
     public void checkCountOfRecordsByStartWithCriterion() {
-        String value = "rebecca";
+        String value = "Test";
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(FIRST_NAME, START_WITH, value);
         int count = filtersStep.getValueByCriterion("FirstName", LIKE, value + "%");

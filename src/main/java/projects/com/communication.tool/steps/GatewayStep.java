@@ -3,10 +3,8 @@ package projects.com.communication.tool.steps;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.GatewayComponent;
-import settings.SQLConnector;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static settings.SeleniumListener.LOG;
 
 public class GatewayStep {
 
@@ -38,14 +36,5 @@ public class GatewayStep {
     @Step("Verify that gateway was created")
     public boolean isFromNameDisplayedInGateway(String fromName) {
         return component.isTextDisplayed(fromName, component.getFromNameValue());
-    }
-
-    @Step("Delete gateway in the database")
-    public void deleteGatewayInDB() {
-        LOG.info("Delete gateway in the database");
-        SQLConnector connector = new SQLConnector();
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.EmailGateway WHERE Login = '" + EMAIL + "'");
-        LOG.info("Successfully deleted");
-        connector.closeConnection();
     }
 }
