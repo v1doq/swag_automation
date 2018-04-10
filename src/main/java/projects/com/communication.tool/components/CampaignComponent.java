@@ -5,6 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.name;
 
@@ -39,11 +40,15 @@ public class CampaignComponent extends BaseComponent {
     }
 
 
-    public By getCampaignItemsInList(){
+    public By getCampaignNameInPreview(){
+        return by(cssSelector("button.editable__text"));
+    }
+
+    public By getCampaignInList(){
         return by(cssSelector(".campaign-item"));
     }
 
-    public By getCampaignNameInPreview(){
-        return by(cssSelector("button.editable__text"));
+    public By getCompanyInList(){
+        return by(className("card-header-title"));
     }
 }
