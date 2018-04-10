@@ -8,6 +8,7 @@ import projects.com.communication.tool.components.CampaignComponent;
 import settings.SQLConnector;
 
 import static common.ConciseApi.sleep;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -35,19 +36,29 @@ public class CampaignStep {
 
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
+        component.getSearchInput().sendKeys(campaignName);
         WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
         campaignItem.click();
         component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 
+    @Step("Activate communication")
+    public void activateCommunication() {
+        component.assertThat(elementToBeClickable(component.getStartCommunicationButton()));
+        component.getStartCommunicationButton().click();
+    }
+
+
     @Step("Verify that company is displayed in list")
     public boolean isCompanyDisplayedInList(String companyName) {
-        sleep(1000);
+        sleep(2000);
+        component.isElementPresent(component.getCompanyInList());
         return component.isTextDisplayed(companyName, component.getCompanyInList());
     }
 
     @Step("Verify that campaign is displayed in list")
     public boolean isCampaignDisplayedInList(String campaignName) {
+        component.isElementPresent(component.getCampaignInList());
         return component.isTextDisplayed(campaignName, component.getCampaignInList());
     }
 

@@ -15,6 +15,7 @@ public class FiltersStep {
     public static final String EQUAL_CRITERION = "Equal";
     public static final String START_WITH = "Starts With";
     public static final String FIRST_NAME = "First Name";
+    public static final String STREET = "Street";
     public static final String ID = "Id";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 

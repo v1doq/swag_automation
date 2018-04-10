@@ -21,7 +21,7 @@ public class LoginStepCT {
     public void authorization(){
         openLandingPage();
         login(USERNAME_COMMUNICATION_TOOLS, PASSWORD_COMMUNICATION_TOOLS);
-        sleep(2000);
+        sleep(1000);
     }
 
     @Step("Open landing page")

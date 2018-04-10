@@ -51,4 +51,8 @@ public class CampaignComponent extends BaseComponent {
     public By getCompanyInList(){
         return by(className("card-header-title"));
     }
+
+    public WebElement getStartCommunicationButton(){
+        return $(cssSelector("div.input-group--selection-controls__ripple"));
+    }
 }
