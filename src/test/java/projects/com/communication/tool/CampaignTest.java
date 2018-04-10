@@ -32,8 +32,8 @@ public class CampaignTest extends SuiteTestCT {
     public void createCampaign(){
         openBrowser();
         loginWithToken();
-        campaignStep = new CampaignStep(driver);
         cleanDatabase();
+        campaignStep = new CampaignStep(driver);
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, randomAlphabetic(5));
     }
