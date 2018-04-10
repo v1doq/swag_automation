@@ -25,12 +25,8 @@ public class MailReader {
             store = session.getStore();
             store.connect("imap.outlook.com", "communication.tool@outlook.com", "Passcommunication1");
             folder = store.getFolder("inbox");
-            folder = store.getFolder("junk");
-            Folder[] folders = store.getDefaultFolder().list();
-            for (Folder folder : folders) {
-                LOG.info(folder.getFullName() + ": " + folder.getMessageCount());
-            }
             folder.open(Folder.READ_WRITE);
+            messages = folder.getMessages();
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
@@ -39,32 +35,29 @@ public class MailReader {
     }
 
     @Step("Receive all messages")
-    public static Message[] receiveMail(String fromEmail) {
-        LOG.info("Receive all messages from email: " + fromEmail);
+    public static Message[] receiveMail(String fromEmail, int count) {
+        LOG.info("Receive messages in " + folder.getFullName().toUpperCase() + " folder from email: " + fromEmail);
         try {
             SearchTerm searchCondition = getSearchTerm(fromEmail);
-            messages = folder.search(searchCondition);
-            while (messages.length == 0) {
-                LOG.info("messages.length: " + messages.length);
-                sleep(500);
+            while (messages.length != count) {
+                LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
+                sleep(2000);
+                messages = folder.search(searchCondition);
             }
+            LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
+            getCountOfMessageInFolders();
+            return folder.getMessages();
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        try {
-            return folder.getMessages();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        LOG.info("Successfully received");
         return new Message[0];
     }
 
     @Step("Delete all messages in mail")
     public static void deleteMessages(){
-        LOG.info("Try to delete all messages");
+        LOG.info("Delete all messages in: " + folder.getFullName().toUpperCase());
         try {
             folder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
             folder.close(true);
@@ -72,7 +65,6 @@ public class MailReader {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-        LOG.info("Successfully deleted");
     }
 
     private static SearchTerm getSearchTerm(final String email) {
@@ -94,7 +86,19 @@ public class MailReader {
         };
     }
 
+    private static void getCountOfMessageInFolders(){
+        try {
+            Folder[] folders = store.getDefaultFolder().list();
+            for (Folder folder : folders) {
+                LOG.info(folder.getFullName() + ": " + folder.getMessageCount());
+            }
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String getMessageBody(Part p) throws MessagingException, IOException {
+        LOG.info("Get text of message");
         if (p.isMimeType("text/*")) {
             return (String) p.getContent();
         }

@@ -38,12 +38,6 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.createCampaign(campaignName, randomAlphabetic(5));
     }
 
-    @AfterClass(description = "Clean database", alwaysRun = true)
-    public void cleanDb(){
-        campaignStep = new CampaignStep(driver);
-        cleanDatabase();
-    }
-
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
     public void setUp() {
         campaignStep = new CampaignStep(driver);
@@ -87,14 +81,14 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.selectCampaignInList(campaignName);
         contactsStep.openContactsTab();
 
-        contactsStep.selectContacts();
+        contactsStep.openContactsPopUp();
         filtersStep.applyAllFilters(FIRST_NAME, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
 
         filtersStep.waitForRecordsResult(count);
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
 
-        contactsStep.addContactsToCampaign();
+        contactsStep.saveContactsInCampaign();
         assertTrue(contactsStep.isContactsAddedToCampaign(value));
     }
 

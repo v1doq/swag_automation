@@ -1,6 +1,7 @@
 package common;
 
 import io.qameta.allure.Step;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import projects.com.communication.tool.steps.LoginStepCT;
 import settings.LocalStorage;
@@ -33,14 +34,14 @@ public class SuiteTestCT extends BaseTest {
         addCookies();
     }
 
+    @AfterSuite(description = "Clean database", alwaysRun = true)
     protected void cleanDatabase(){
-        LOG.info("Try to clean database");
+        LOG.info("Clean database");
         SQLConnector connector = new SQLConnector();
         connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM Conversation; " +
                 "DELETE FROM EmailCommunication; DELETE FROM EmailGateway; DELETE FROM RepresentativeCampaign; " +
                 "DELETE FROM RepresentativePlaceholder; DELETE FROM Representative; DELETE FROM Campaign; " +
                 "DELETE FROM CompanyPlaceholder; DELETE FROM Company;");
-        LOG.info("Successfully cleaned");
         connector.closeConnection();
     }
 }

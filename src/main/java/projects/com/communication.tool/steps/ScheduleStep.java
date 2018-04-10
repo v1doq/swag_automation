@@ -30,8 +30,8 @@ public class ScheduleStep {
         component.clearAndSendKeys(component.getIntervalInput(), interval);
         select(component.getTimeZoneSelect(), KIEV_TIME_ZONE);
         selectAllDays();
-        component.getStartTimeInput().sendKeys("01:00");
-        component.getEndTimeInput().sendKeys("23:00");
+        component.getStartTimeInput().sendKeys("01:00 AM");
+        component.getEndTimeInput().sendKeys("11:00 PM");
         component.getSaveButton().click();
     }
 

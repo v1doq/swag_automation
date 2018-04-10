@@ -17,11 +17,11 @@ public class ContactsComponent extends BaseComponent {
         return $(cssSelector("div.tabs>ul>li:nth-child(4)"));
     }
 
-    public WebElement getAddContactsButton(){
-        return $(cssSelector(".btn-add"));
+    public WebElement getOpenPopUpButton(){
+        return $(cssSelector("div.campaign-preview__contacts-header > div > button"));
     }
 
-    public WebElement getSaveContactsButton(){
+    public WebElement getAddContactToCampaignButton(){
         return $(cssSelector(".is-horizontal>button"));
     }
 
