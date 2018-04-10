@@ -7,10 +7,7 @@ import org.openqa.selenium.WebElement;
 import projects.com.communication.tool.components.CampaignComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.tagName;
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
+import static common.ConciseApi.sleep;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -34,25 +31,24 @@ public class CampaignStep {
         component.actionClick(component.getCompanySelect());
         component.getCompanyInput().sendKeys(companyName, Keys.ENTER);
         component.getSubmitButton().click();
-        component.assertThat(invisibilityOf(component.getSubmitButton()));
     }
 
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
-        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignItemsInList());
+        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
         campaignItem.click();
         component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 
     @Step("Verify that company is displayed in list")
     public boolean isCompanyDisplayedInList(String companyName) {
-        component.assertThat(elementToBeClickable(component.getCampaignItemsInList()));
-        return component.isTextDisplayed(companyName, tagName("h3"));
+        sleep(1000);
+        return component.isTextDisplayed(companyName, component.getCompanyInList());
     }
 
     @Step("Verify that campaign is displayed in list")
     public boolean isCampaignDisplayedInList(String campaignName) {
-        return component.isTextDisplayed(campaignName, cssSelector("li"));
+        return component.isTextDisplayed(campaignName, component.getCampaignInList());
     }
 
     @Step("Verify that campaign is assign to company")
@@ -66,16 +62,5 @@ public class CampaignStep {
         String campaignNameInDb = connector.getStringValueInDB(queryCampaign, "Name");
         connector.closeConnection();
         return campaignNameInDb.equals(campaignName);
-    }
-
-    public void cleanDb(){
-        LOG.info("Try to clean database");
-        SQLConnector connector = new SQLConnector();
-        connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM Conversation; " +
-                "DELETE FROM EmailCommunication; DELETE FROM EmailGateway; DELETE FROM RepresentativeCampaign; " +
-                "DELETE FROM RepresentativePlaceholder; DELETE FROM Representative; DELETE FROM Campaign; " +
-                "DELETE FROM CompanyPlaceholder; DELETE FROM Company;");
-        LOG.info("Successfully cleaned");
-        connector.closeConnection();
     }
 }

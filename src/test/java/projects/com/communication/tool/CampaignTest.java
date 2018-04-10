@@ -33,7 +33,7 @@ public class CampaignTest extends SuiteTestCT {
         openBrowser();
         loginWithToken();
         campaignStep = new CampaignStep(driver);
-        campaignStep.cleanDb();
+        cleanDatabase();
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, randomAlphabetic(5));
     }
@@ -41,7 +41,7 @@ public class CampaignTest extends SuiteTestCT {
     @AfterClass(description = "Clean database", alwaysRun = true)
     public void cleanDb(){
         campaignStep = new CampaignStep(driver);
-        campaignStep.cleanDb();
+        cleanDatabase();
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)

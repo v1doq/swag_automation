@@ -65,7 +65,7 @@ public class SeleniumListener implements WebDriverEventListener {
     }
 
     public void afterFindBy(By by, WebElement element, WebDriver driver) {
-        LOG.info("Successfully found");
+
     }
 
     public void beforeClickOn(WebElement element, WebDriver driver) {
@@ -73,7 +73,7 @@ public class SeleniumListener implements WebDriverEventListener {
     }
 
     public void afterClickOn(WebElement element, WebDriver driver) {
-        LOG.info("Successfully clicked");
+
     }
 
     public void beforeChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
@@ -81,7 +81,7 @@ public class SeleniumListener implements WebDriverEventListener {
     }
 
     public void afterChangeValueOf(WebElement element, WebDriver driver, CharSequence[] keysToSend) {
-        LOG.info("Successfully sent");
+
     }
 
     public void beforeScript(String script, WebDriver driver) {
