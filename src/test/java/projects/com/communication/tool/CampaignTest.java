@@ -55,7 +55,6 @@ public class CampaignTest extends SuiteTestCT {
         loginWithToken();
     }
 
-    @Ignore
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Create new company and add campaign to it")
     public void createNewCompanyAndAddCampaignToIt() {
