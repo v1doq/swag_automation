@@ -36,7 +36,6 @@ public class CampaignStep {
 
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
-        component.getSearchInput().sendKeys(campaignName);
         WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
         campaignItem.click();
         component.waitForText(component.getCampaignNameInPreview(), campaignName);

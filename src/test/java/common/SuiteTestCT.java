@@ -1,7 +1,6 @@
 package common;
 
 import io.qameta.allure.Step;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeSuite;
 import projects.com.communication.tool.steps.LoginStepCT;
 import settings.LocalStorage;
@@ -16,7 +15,7 @@ public class SuiteTestCT extends BaseTest {
     private LoginStepCT loginStep;
     private LocalStorage storage;
 
-    @BeforeSuite(description = "Get authorization token", alwaysRun = true)
+    @BeforeSuite(groups = { "smoke test", "mail" }, description = "Get authorization token", alwaysRun = true)
     public void loginAndGetToken() {
         openBrowser();
         storage = new LocalStorage(driver);
@@ -34,7 +33,6 @@ public class SuiteTestCT extends BaseTest {
         addCookies();
     }
 
-    @AfterSuite(description = "Clean database", alwaysRun = true)
     protected void cleanDatabase(){
         LOG.info("Clean database");
         SQLConnector connector = new SQLConnector();
