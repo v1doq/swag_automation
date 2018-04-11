@@ -29,7 +29,6 @@ public class GatewayStep {
         component.assertThat(elementToBeClickable(component.getFromNameInput()));
         component.getFromNameInput().sendKeys(fromName);
         component.getFromEmailInput().sendKeys(GATEWAY_OUTLOOK_EMAIL);
-        component.getLoginInput().sendKeys(GATEWAY_OUTLOOK_EMAIL);
         component.getPasswordInput().sendKeys(GATEWAY_OUTLOOK_PASS);
         component.getSubmitButton().click();
         component.waitForText(component.getFromNameValue(), fromName);
@@ -43,7 +42,6 @@ public class GatewayStep {
         component.getFromEmailInput().sendKeys(GATEWAY_GMAIL_EMAIL);
         component.clearAndSendKeys(component.getSmtpHostInput(), "smtp.gmail.com:587");
         component.clearAndSendKeys(component.getImapHostInput(), "imap.gmail.com:993");
-        component.getLoginInput().sendKeys(GATEWAY_GMAIL_EMAIL);
         component.getPasswordInput().sendKeys(GATEWAY_GMAIL_PASS);
         component.getSubmitButton().click();
         component.waitForText(component.getFromNameValue(), fromName);

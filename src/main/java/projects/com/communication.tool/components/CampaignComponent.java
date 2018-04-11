@@ -55,4 +55,8 @@ public class CampaignComponent extends BaseComponent {
     public WebElement getStartCommunicationButton(){
         return $(cssSelector("div.input-group--selection-controls__ripple"));
     }
+
+    public By getSendingStatus(){
+        return by(className("campaign-preview__progress-status"));
+    }
 }

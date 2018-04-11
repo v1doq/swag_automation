@@ -6,8 +6,8 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.ContactsComponent;
 
 import static common.ConciseApi.sleep;
-import static projects.com.communication.tool.steps.FiltersStep.STREET;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
+import static projects.com.communication.tool.steps.FiltersStep.STREET;
 import static settings.SQLConnector.EQUAL;
 
 public class ContactsStep {
@@ -32,7 +32,7 @@ public class ContactsStep {
 
     @Step("Add contacts to campaign")
     public void saveContactsInCampaign() {
-        component.getAddContactToCampaignButton().click();
+        component.getAddContactButton().click();
         sleep(1000);
     }
 

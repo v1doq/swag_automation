@@ -35,8 +35,7 @@ public class MailTest extends SuiteTestCT {
     @BeforeClass(description = "Clean database and mail", alwaysRun = true)
     public void setUp() {
         cleanDatabase();
-        openMailFolder();
-        deleteMessages();
+        cleanMailFolders();
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
@@ -62,15 +61,15 @@ public class MailTest extends SuiteTestCT {
         campaignStep.selectCampaignInList(campaignName);
 
         gatewayStep.createGmailGateway(fromName);
-        scheduleStep.openScheduleTab();
-        scheduleStep.updateSchedule("5");
         templateStep.openTemplateTab();
         templateStep.updateTemplate(subj, body);
+        scheduleStep.openScheduleTab();
+        scheduleStep.updateSchedule("5");
         contactsStep.openContactsTab();
         int contactsCount = contactsStep.addContactToCampaign("523 Broadway E");
         campaignStep.activateCommunication();
 
-        openMailFolder();
+        openMailFolder(INBOX);
         Message[] messages = receiveMail(fromEmail, contactsCount);
         assertEquals(messages.length, contactsCount);
 
