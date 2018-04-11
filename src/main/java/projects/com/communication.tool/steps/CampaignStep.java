@@ -45,8 +45,8 @@ public class CampaignStep {
     public void activateCommunication() {
         component.assertThat(elementToBeClickable(component.getStartCommunicationButton()));
         component.getStartCommunicationButton().click();
+        component.waitForPartOfText(component.getSendingStatus(), "In progress");
     }
-
 
     @Step("Verify that company is displayed in list")
     public boolean isCompanyDisplayedInList(String companyName) {

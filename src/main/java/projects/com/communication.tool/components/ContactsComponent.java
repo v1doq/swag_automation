@@ -21,7 +21,7 @@ public class ContactsComponent extends BaseComponent {
         return $(cssSelector("div.campaign-preview__contacts-header > div > button"));
     }
 
-    public WebElement getAddContactToCampaignButton(){
+    public WebElement getAddContactButton(){
         return $(cssSelector(".is-horizontal>button"));
     }
 

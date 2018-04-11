@@ -21,7 +21,7 @@ public class LocalStorage {
     }
 
     public String getValueFromLocalStorage(String key) {
-        LOG.info("Get value by: '" + key + "' key from local storage");
+        LOG.info("Get value by: '" + key + "' from local storage");
         return (String) js.executeScript(String.format("return window.localStorage.getItem('%s');", key));
     }
 

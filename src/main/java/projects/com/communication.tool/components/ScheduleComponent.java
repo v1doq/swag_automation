@@ -38,6 +38,6 @@ public class ScheduleComponent extends BaseComponent {
     }
 
     public By getDaysCheckbox() {
-        return by(cssSelector("input[type=\"checkbox\"]"));
+        return by(cssSelector(".input-group.checkbox"));
     }
 }

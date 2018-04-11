@@ -15,16 +15,20 @@ public class MailReader {
     private static Folder folder;
     private static Store store;
     private static Message[] messages;
+    public static final String INBOX = "inbox";
+    private static final String JUNK = "junk";
+    private static final String SENT = "sent";
 
     @Step("Open mail folder")
-    public static void openMailFolder(){
+    public static void openMailFolder(String folderName){
+        LOG.info("Open mail folder: " + folderName.toUpperCase());
         try {
             Properties props = new Properties();
             props.put("mail.store.protocol", "imaps");
             Session session = Session.getInstance(props);
             store = session.getStore();
             store.connect("imap.outlook.com", "communication.tool@outlook.com", "Passcommunication1");
-            folder = store.getFolder("inbox");
+            folder = store.getFolder(folderName);
             folder.open(Folder.READ_WRITE);
             messages = folder.getMessages();
         } catch (NoSuchProviderException e) {
@@ -56,7 +60,16 @@ public class MailReader {
     }
 
     @Step("Delete all messages in mail")
-    public static void deleteMessages(){
+    public static void cleanMailFolders(){
+        openMailFolder(INBOX);
+        deleteMessages();
+        openMailFolder(JUNK);
+        deleteMessages();
+        openMailFolder(SENT);
+        deleteMessages();
+    }
+
+    private static void deleteMessages(){
         LOG.info("Delete all messages in: " + folder.getFullName().toUpperCase());
         try {
             folder.setFlags(messages, new Flags(Flags.Flag.DELETED), true);
@@ -98,7 +111,6 @@ public class MailReader {
     }
 
     public static String getMessageBody(Part p) throws MessagingException, IOException {
-        LOG.info("Get text of message");
         if (p.isMimeType("text/*")) {
             return (String) p.getContent();
         }
