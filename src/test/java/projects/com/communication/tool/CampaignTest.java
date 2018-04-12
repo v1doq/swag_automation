@@ -14,6 +14,7 @@ import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
 import static projects.com.communication.tool.steps.FiltersStep.FIRST_NAME;
 import static projects.com.communication.tool.steps.GatewayStep.MIN_FROM_NAME_LENGTH;
+import static projects.com.communication.tool.steps.GatewayStep.OUTLOOK;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Campaign")
@@ -30,12 +31,9 @@ public class CampaignTest extends SuiteTestCT {
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign(){
-        openBrowser();
-        loginWithToken();
         cleanDatabase();
         campaignStep = new CampaignStep(driver);
-        campaignStep.openCampaignPage();
-        campaignStep.createCampaign(campaignName, randomAlphabetic(5));
+        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
@@ -69,7 +67,7 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
 
-        gatewayStep.createGateway(fromName);
+        gatewayStep.createGateway(OUTLOOK, fromName);
         assertTrue(gatewayStep.isFromNameDisplayedInGateway(fromName));
     }
 

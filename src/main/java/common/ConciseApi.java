@@ -72,6 +72,14 @@ public abstract class ConciseApi {
         element.sendKeys(text);
     }
 
+    public void jsClearAndSendKeys(WebElement element, String text){
+        assertThat(elementToBeClickable(element));
+        assertThat(visibilityOf(element));
+        element.click();
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].value ='';", element);
+        element.sendKeys(text);
+    }
+
     public static void select(WebElement element, String text) {
         Select dropdown = new Select(element);
         dropdown.selectByVisibleText(text);

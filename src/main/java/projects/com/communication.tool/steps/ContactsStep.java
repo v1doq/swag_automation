@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.ContactsComponent;
 
 import static common.ConciseApi.sleep;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
 import static projects.com.communication.tool.steps.FiltersStep.STREET;
 import static settings.SQLConnector.EQUAL;
@@ -33,6 +34,7 @@ public class ContactsStep {
     @Step("Add contacts to campaign")
     public void saveContactsInCampaign() {
         component.getAddContactButton().click();
+        component.assertThat(attributeContains(component.getAddContactButton(), "disabled", "true"));
         sleep(1000);
     }
 
