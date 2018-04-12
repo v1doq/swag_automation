@@ -85,7 +85,7 @@ public class SeleniumListener implements WebDriverEventListener {
     }
 
     public void beforeScript(String script, WebDriver driver) {
-
+        LOG.info("Send script: " + script);
     }
 
     public void afterScript(String script, WebDriver driver) {

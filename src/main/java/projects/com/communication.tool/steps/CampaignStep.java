@@ -73,4 +73,24 @@ public class CampaignStep {
         connector.closeConnection();
         return campaignNameInDb.equals(campaignName);
     }
+
+    @Step("Create campaign in the database")
+    public void createCampaignInDB(String campaignName, String companyName) {
+        LOG.info("Create campaign in the database");
+        SQLConnector connector = new SQLConnector();
+        String query = "DECLARE @companyId uniqueidentifier SET @companyId = NEWID() " +
+                "DECLARE @campaignId uniqueidentifier SET @campaignId = NEWID() " +
+                "DECLARE @communicationId uniqueidentifier SET @communicationId = NEWID() " +
+                "INSERT INTO CommunicationTool.dbo.Company (Id, Name) VALUES(@companyId, '" + companyName + "'); " +
+                "INSERT INTO CommunicationTool.dbo.Campaign (Id, CompanyId, Name) " +
+                "VALUES(@campaignId, @companyId, '" + campaignName + "'); " +
+                "INSERT INTO CommunicationTool.dbo.EmailCommunication " +
+                "(Id, CampaignId, CreatedAt, Schedule_EndTime, Schedule_Interval, Schedule_StartTime, " +
+                "Schedule_TimeZone, Schedule_WeekDays, Template_Body, Template_Subject, Status) " +
+                "VALUES(@communicationId, @campaignId, {ts '2018-04-02 10:14:33.019'},'17:00:00.000', 2,'08:00:00.000'" +
+                ",'FLE Standard Time', 124, 'body', 'subject', 1);";
+        connector.executeQuery(query);
+        LOG.info("Successfully created");
+        connector.closeConnection();
+    }
 }

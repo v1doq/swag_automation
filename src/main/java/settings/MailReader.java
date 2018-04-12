@@ -43,6 +43,7 @@ public class MailReader {
         LOG.info("Receive messages in " + folder.getFullName().toUpperCase() + " folder from email: " + fromEmail);
         try {
             SearchTerm searchCondition = getSearchTerm(fromEmail);
+            messages = folder.search(searchCondition);
             while (messages.length != count) {
                 LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
                 sleep(2000);
@@ -50,7 +51,7 @@ public class MailReader {
             }
             LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
             getCountOfMessageInFolders();
-            return folder.getMessages();
+            return messages;
         } catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (MessagingException e) {

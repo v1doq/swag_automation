@@ -20,7 +20,7 @@ public class TemplateStep {
         component.getTemplateTab().click();
     }
 
-    @Step("Open template tab")
+    @Step("Update template")
     public void updateTemplate(String subj, String body) {
         component.getSubjectInput().clear();
         component.getSubjectInput().sendKeys(subj);
