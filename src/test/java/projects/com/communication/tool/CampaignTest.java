@@ -12,7 +12,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.FiltersStep.FIRST_NAME;
+import static projects.com.communication.tool.steps.FiltersStep.FIRST_NAME_FILTER;
 import static projects.com.communication.tool.steps.GatewayStep.MIN_FROM_NAME_LENGTH;
 import static projects.com.communication.tool.steps.GatewayStep.OUTLOOK;
 import static settings.SQLConnector.EQUAL;
@@ -80,7 +80,7 @@ public class CampaignTest extends SuiteTestCT {
         contactsStep.openContactsTab();
 
         contactsStep.openContactsPopUp();
-        filtersStep.applyAllFilters(FIRST_NAME, EQUAL_CRITERION, value);
+        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
 
         filtersStep.waitForRecordsResult(count);
