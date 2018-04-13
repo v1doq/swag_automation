@@ -16,6 +16,8 @@ public class SQLConnector {
     private String password = getProperty("db.user.password");
     public static final String LIKE = " LIKE ";
     public static final String EQUAL = " = ";
+    public static final String NOT_EQUAL = " != ";
+    public static final String IN = " IN ";
 
     public void executeQuery(String query) {
         try {

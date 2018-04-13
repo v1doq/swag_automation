@@ -12,7 +12,6 @@ import projects.com.communication.tool.steps.FiltersStep;
 import static org.testng.Assert.assertEquals;
 import static projects.com.communication.tool.steps.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
-import static settings.SQLConnector.LIKE;
 
 @Feature("Filters")
 @Story("Functional tests for filters")
@@ -31,20 +30,21 @@ public class FiltersTest extends SuiteTestCT {
     public void selectFilterAndVerifyContactsInCounter() {
         String value = "Test";
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(FIRST_NAME, EQUAL_CRITERION, value);
+        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
     }
 
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "filters", description = "Check count of records with filter by start with criterion")
-    public void checkCountOfRecordsByStartWithCriterion() {
-        String value = "Test";
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "filters", dataProvider = "Filters", dataProviderClass = FiltersStep.class
+            , description = "Check count of records with filter by names")
+    public void filteringByName(String column, String criterion, String value, String columnDb, String criterionDB,
+                                     String valueDB) {
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(FIRST_NAME, START_WITH, value);
-        int count = filtersStep.getValueByCriterion("FirstName", LIKE, value + "%");
+        filtersStep.applyAllFilters(column, criterion, value);
+        int count = filtersStep.getValueByCriterion(columnDb, criterionDB, valueDB);
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
