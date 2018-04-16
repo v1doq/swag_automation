@@ -30,6 +30,6 @@ public class LoginComponentCT extends BaseComponent {
     }
 
     public WebElement getLogoutButton(){
-        return $(cssSelector("div.menu__content.menuable__content__active > div > div > a"));
+        return $(cssSelector(".menuable__content__active > div > div:nth-child(2) > a"));
     }
 }

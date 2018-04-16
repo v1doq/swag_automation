@@ -31,8 +31,8 @@ public class LoginStepCT {
 
     @Step("Login with user credential")
     public void login(String username, String pass) {
-        component.getEmailInput().sendKeys(username);
-        component.getPasswordInput().sendKeys(pass);
+        component.jsClearAndSendKeys(component.getEmailInput(), username);
+        component.jsClearAndSendKeys(component.getPasswordInput(), pass);
         component.getSubmitButton().click();
     }
 
@@ -45,6 +45,6 @@ public class LoginStepCT {
 
     @Step("Verify that user was successfully login")
     public boolean isUserLogin(){
-        return component.getLogoutButton().isDisplayed();
+        return component.getUserMenuButton().isDisplayed();
     }
 }

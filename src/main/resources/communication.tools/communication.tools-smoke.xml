@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Communication tools - smoke tests" parallel="classes" thread-count="2">
+<suite name="Communication tools - smoke tests" parallel="classes" thread-count="3">
     <test name="Main functional">
         <groups>
             <run>
@@ -10,6 +10,7 @@
         <classes>
             <class name="projects.com.communication.tool.FiltersTest"/>
             <class name="projects.com.communication.tool.CampaignTest"/>
+            <class name="projects.com.communication.tool.UserTest"/>
         </classes>
     </test>
 </suite>
