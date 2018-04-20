@@ -23,6 +23,7 @@ public class ContactsStep {
 
     @Step("Open contacts tab")
     public void openContactsTab() {
+        component.scrollToElement(component.getContactsTab());
         component.getContactsTab().click();
     }
 
