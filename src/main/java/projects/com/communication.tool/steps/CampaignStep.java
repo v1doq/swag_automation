@@ -53,7 +53,7 @@ public class CampaignStep {
 
     @Step("Activate communication")
     public void activateCommunication() {
-        component.scrollToElement(component.getStartCommunicationButton());
+        component.scrollUp();
         component.assertThat(elementToBeClickable(component.getStartCommunicationButton()));
         component.getStartCommunicationButton().click();
         component.waitForPartOfText(component.getSendingStatus(), "In progress");

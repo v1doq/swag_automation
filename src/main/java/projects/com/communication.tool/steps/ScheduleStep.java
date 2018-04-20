@@ -22,7 +22,7 @@ public class ScheduleStep {
 
     @Step("Open schedule tab")
     public void openScheduleTab() {
-        component.scrollToElement(component.getScheduleTab());
+        component.scrollUp();
         component.getScheduleTab().click();
     }
 
