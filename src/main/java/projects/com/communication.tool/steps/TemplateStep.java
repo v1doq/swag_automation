@@ -17,6 +17,7 @@ public class TemplateStep {
 
     @Step("Open template tab")
     public void openTemplateTab() {
+        component.scrollToElement(component.getTemplateTab());
         component.getTemplateTab().click();
     }
 
