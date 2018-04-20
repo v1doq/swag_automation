@@ -7,19 +7,19 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.*;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import java.io.IOException;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.GatewayStep.*;
-import static settings.MailReader.*;
+import static projects.com.communication.tool.steps.MailStep.*;
+import static projects.com.communication.tool.steps.RepresentativeStep.*;
 import static settings.SeleniumListener.LOG;
 
 @Feature("Communication")
@@ -27,7 +27,7 @@ import static settings.SeleniumListener.LOG;
 public class MailTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
-    private GatewayStep gatewayStep;
+    private RepresentativeStep repsStep;
     private ContactsStep contactsStep;
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
@@ -46,7 +46,7 @@ public class MailTest extends SuiteTestCT {
         campaignStep = new CampaignStep(driver);
         contactsStep = new ContactsStep(driver);
         scheduleStep = new ScheduleStep(driver);
-        gatewayStep = new GatewayStep(driver);
+        repsStep = new RepresentativeStep(driver);
         templateStep = new TemplateStep(driver);
         loginWithToken();
         String campaignName = randomAlphabetic(5);
@@ -56,62 +56,40 @@ public class MailTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "mail", timeOut = 180000, description = "Create gmail communication and check mail")
-    public void createGmailCommunicationAndCheckMail() throws MessagingException, IOException {
-        String fromEmail = GATEWAY_GMAIL_EMAIL;
-        int messageCount = sendEmailsBy(GMAIL);
-
-        openMailFolder(INBOX);
-        Message[] messages = receiveMail(fromEmail, messageCount);
-        assertEquals(messages.length, messageCount);
-
-        for (int i = 0; i < messages.length; i++) {
-            Message message = messages[i];
-            String messageBody = getMessageBody(message);
-            assert messageBody != null;
-            LOG.info("Email Number " + (i + 1));
-            LOG.info("Subject: " + message.getSubject());
-            LOG.info("From: " + message.getFrom()[0]);
-            LOG.info("Text: " + messageBody);
-            assertEquals(message.getSubject(), subj);
-            assertTrue(message.getFrom()[0].toString().contains(fromEmail));
-            assertTrue(messageBody.contains(body));
-        }
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "mail", timeOut = 240000, description = "Create outlook communication and check mail")
-    public void createOutlookCommunicationAndCheckMail() throws MessagingException, IOException {
-        String fromEmail = GATEWAY_OUTLOOK_EMAIL;
-        int messageCount = sendEmailsBy(OUTLOOK);
-
-        openMailFolder(INBOX);
-        Message[] messages = receiveMail(fromEmail, messageCount);
-        assertEquals(messages.length, messageCount);
-
-        for (int i = 0; i < messages.length; i++) {
-            Message message = messages[i];
-            String messageBody = getMessageBody(message);
-            assert messageBody != null;
-            LOG.info("Email Number " + (i + 1));
-            LOG.info("Subject: " + message.getSubject());
-            LOG.info("From: " + message.getFrom()[0]);
-            LOG.info("Text: " + messageBody);
-            assertEquals(message.getSubject(), subj);
-            assertTrue(message.getFrom()[0].toString().contains(fromEmail));
-            assertTrue(messageBody.contains(body));
-        }
-    }
-
-    private int sendEmailsBy(String mailer){
-        gatewayStep.createGateway(mailer, fromName);
+    @Test(groups = "mail", timeOut = 180000, dataProvider = "Mail", description = "Create communication and check mail")
+    public void createCommunicationAndCheckMail(String email) throws MessagingException {
+        repsStep.createRepresentative(email, fromName);
         templateStep.openTemplateTab();
         templateStep.updateTemplate(subj, body);
         scheduleStep.openScheduleTab();
         scheduleStep.updateSchedule("5");
         contactsStep.openContactsTab();
-        int contactsCount = contactsStep.addContactToCampaign("450 Massachusetts Ave NW");
+        int messageCount = contactsStep.addContactToCampaign("Human Resources Coordinator");
         campaignStep.activateCommunication();
-        return contactsCount;
+
+        openMailFolder(INBOX);
+        Message[] messages = receiveMail(email, messageCount);
+        assertEquals(messages.length, messageCount);
+
+        for (int i = 0; i < messages.length; i++) {
+            Message message = messages[i];
+            String messageBody = getMessageBody(message);
+            assert messageBody != null;
+            LOG.info("Email Number " + (i + 1));
+            LOG.info("Subject: " + message.getSubject());
+            LOG.info("From: " + message.getFrom()[0]);
+            LOG.info("Text: " + messageBody);
+            assertEquals(message.getSubject(), subj);
+            assertTrue(message.getFrom()[0].toString().contains(email));
+            assertTrue(messageBody.contains(body));
+        }
+    }
+
+    @DataProvider(name = "Mail")
+    public Object[][] credentials() {
+        return new Object[][]{
+                {GATEWAY_GMAIL_EMAIL},
+                {GATEWAY_OUTLOOK_EMAIL}
+        };
     }
 }

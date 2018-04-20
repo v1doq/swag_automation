@@ -6,6 +6,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.FiltersStep;
 
@@ -28,7 +29,7 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
-        String value = "Test";
+        String value = "gilve";
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
@@ -37,6 +38,7 @@ public class FiltersTest extends SuiteTestCT {
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
     }
 
+    @Ignore
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "filters", dataProvider = "Filters", dataProviderClass = FiltersStep.class
             , description = "Check count of records with filter by names")
@@ -53,9 +55,9 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "filters", description = "Check count of records with filter by ID")
     public void checkCountOfRecordsWithFilterById(){
-        String value = filtersStep.getValueInContactTableDB(ID);
+        String value = filtersStep.getValueInContactTableDB(ID_FILTER);
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(ID, EQUAL_CRITERION, value);
+        filtersStep.applyAllFilters(ID_FILTER, EQUAL_CRITERION, value);
         filtersStep.waitForRecordsResult(1);
 
         assertEquals(filtersStep.getRecordsCounter(), "1");

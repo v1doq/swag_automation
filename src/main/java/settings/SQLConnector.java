@@ -17,11 +17,10 @@ public class SQLConnector {
     public static final String LIKE = " LIKE ";
     public static final String EQUAL = " = ";
     public static final String NOT_EQUAL = " != ";
-    public static final String IN = " IN ";
 
     public void executeQuery(String query) {
         try {
-            if (query.contains("CommunicationTool")){
+            if (query.contains("CommunicationTool")) {
                 connection = getConnection(dbUrlCT, username, password);
             } else {
                 connection = getConnection(dbUrl, username, password);
@@ -33,18 +32,19 @@ public class SQLConnector {
         }
     }
 
-    public String getStringValueInDB(String query, String columnName){
+    public String getStringValueInDB(String query, String columnName) {
         String data = null;
         try {
-            if (query.contains("CommunicationTool")){
+            if (query.contains("CommunicationTool")) {
                 connection = getConnection(dbUrlCT, username, password);
             } else {
                 connection = getConnection(dbUrl, username, password);
             }
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            resultSet.next();
-            data = resultSet.getString(columnName);
+            while (resultSet.next()) {
+                data = resultSet.getString(columnName);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -52,18 +52,19 @@ public class SQLConnector {
         return data;
     }
 
-    public int getIntValueInDB(String query, String columnName){
+    public int getIntValueInDB(String query, String columnName) {
         int data = 0;
         try {
-            if (query.contains("CommunicationTool")){
+            if (query.contains("CommunicationTool")) {
                 connection = getConnection(dbUrlCT, username, password);
             } else {
                 connection = getConnection(dbUrl, username, password);
             }
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
-            resultSet.next();
-            data = resultSet.getInt(columnName);
+            while (resultSet.next()) {
+                data = resultSet.getInt(columnName);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

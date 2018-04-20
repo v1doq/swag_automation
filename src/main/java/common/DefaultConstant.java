@@ -17,8 +17,4 @@ public class DefaultConstant {
     public static final String PASSWORD_HASH = "AQAAAAEAACcQAAAAELZ5azJTuJbzjx7ribdOqzPcgG3jEfqT2vtwV5hEAzgSnd723bMyBN6D1qnwQQV8Zw==";
     public static final int USER_ROLE = 0;
     public static final int ADMIN_ROLE = 1;
-
-    //communication tools
-    public static final String USERNAME_COMMUNICATION_TOOLS = getProperty("communication.tool.login");
-    public static final String PASSWORD_COMMUNICATION_TOOLS = getProperty("communication.tool.pass");
 }

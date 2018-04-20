@@ -1,4 +1,4 @@
-package settings;
+package projects.com.communication.tool.steps;
 
 import io.qameta.allure.Step;
 
@@ -10,7 +10,7 @@ import java.util.Properties;
 import static common.ConciseApi.sleep;
 import static settings.SeleniumListener.LOG;
 
-public class MailReader {
+public class MailStep {
 
     private static Folder folder;
     private static Store store;
@@ -31,8 +31,6 @@ public class MailReader {
             folder = store.getFolder(folderName);
             folder.open(Folder.READ_WRITE);
             messages = folder.getMessages();
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -52,8 +50,6 @@ public class MailReader {
             LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
             getCountOfMessageInFolders();
             return messages;
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
         }
@@ -111,30 +107,34 @@ public class MailReader {
         }
     }
 
-    public static String getMessageBody(Part p) throws MessagingException, IOException {
-        if (p.isMimeType("text/*")) {
-            return (String) p.getContent();
-        }
-        if (p.isMimeType("multipart/alternative")) {
-            Multipart mp = (Multipart) p.getContent();
-            String text = null;
-            for (int i = 0; i < mp.getCount(); i++) {
-                Part bp = mp.getBodyPart(i);
-                if (bp.isMimeType("text/*")) {
-                    if (text == null)
-                        text = getMessageBody(bp);
-                } else {
-                    return getMessageBody(bp);
+    public static String getMessageBody(Part p)  {
+        try {
+            if (p.isMimeType("text/*")) {
+                return (String) p.getContent();
+            }
+            if (p.isMimeType("multipart/alternative")) {
+                Multipart mp = (Multipart) p.getContent();
+                String text = null;
+                for (int i = 0; i < mp.getCount(); i++) {
+                    Part bp = mp.getBodyPart(i);
+                    if (bp.isMimeType("text/*")) {
+                        if (text == null)
+                            text = getMessageBody(bp);
+                    } else {
+                        return getMessageBody(bp);
+                    }
+                }
+                return text;
+            } else if (p.isMimeType("multipart/*")) {
+                Multipart mp = (Multipart) p.getContent();
+                for (int i = 0; i < mp.getCount(); i++) {
+                    String s = getMessageBody(mp.getBodyPart(i));
+                    if (s != null)
+                        return s;
                 }
             }
-            return text;
-        } else if (p.isMimeType("multipart/*")) {
-            Multipart mp = (Multipart) p.getContent();
-            for (int i = 0; i < mp.getCount(); i++) {
-                String s = getMessageBody(mp.getBodyPart(i));
-                if (s != null)
-                    return s;
-            }
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

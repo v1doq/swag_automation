@@ -22,10 +22,8 @@ public class TemplateStep {
 
     @Step("Update template")
     public void updateTemplate(String subj, String body) {
-        component.getSubjectInput().clear();
-        component.getSubjectInput().sendKeys(subj);
-        component.getBodyInput().clear();
-        component.getBodyInput().sendKeys(body);
+        component.jsClearAndSendKeys(component.getSubjectInput(), subj);
+        component.jsClearAndSendKeys(component.getBodyInput(), body);
         component.getSaveButton().click();
     }
 

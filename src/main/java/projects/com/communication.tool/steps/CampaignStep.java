@@ -28,9 +28,19 @@ public class CampaignStep {
     @Step("Create new campaign")
     public void createCampaign(String campaignName, String companyName) {
         component.getCreateCampaignButton().click();
-        component.getNameInput().sendKeys(campaignName);
-        component.actionClick(component.getCompanySelect());
         component.getCompanyInput().sendKeys(companyName, Keys.ENTER);
+        component.getNameInput().sendKeys(campaignName);
+        component.getModalTitle().click();
+        component.getSubmitButton().click();
+    }
+
+    @Step("Open campaign pop up")
+    public void openCampaignPopUp() {
+        component.getCreateCampaignButton().click();
+    }
+
+    @Step("Save campaign")
+    public void submitCampaign() {
         component.getSubmitButton().click();
     }
 
@@ -51,13 +61,12 @@ public class CampaignStep {
     @Step("Verify that company is displayed in list")
     public boolean isCompanyDisplayedInList(String companyName) {
         sleep(2000);
-        component.isElementPresent(component.getCompanyInList());
         return component.isTextDisplayed(companyName, component.getCompanyInList());
     }
 
     @Step("Verify that campaign is displayed in list")
     public boolean isCampaignDisplayedInList(String campaignName) {
-        component.isElementPresent(component.getCampaignInList());
+        sleep(2000);
         return component.isTextDisplayed(campaignName, component.getCampaignInList());
     }
 
@@ -68,7 +77,8 @@ public class CampaignStep {
         String query = "SELECT Id FROM CommunicationTool.dbo.Company WHERE Name = '" + companyName + "'";
         String companyId = connector.getStringValueInDB(query, "Id");
         LOG.info("Get campaign name in the database");
-        String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'";
+        String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'" +
+                "AND Name ='" + campaignName + "'";
         String campaignNameInDb = connector.getStringValueInDB(queryCampaign, "Name");
         connector.closeConnection();
         return campaignNameInDb.equals(campaignName);
@@ -76,7 +86,7 @@ public class CampaignStep {
 
     @Step("Create campaign in the database")
     public void createCampaignInDB(String campaignName, String companyName) {
-        LOG.info("Create campaign in the database");
+        LOG.info("Create campaign in the database with name: " + campaignName);
         SQLConnector connector = new SQLConnector();
         String query = "DECLARE @companyId uniqueidentifier SET @companyId = NEWID() " +
                 "DECLARE @campaignId uniqueidentifier SET @campaignId = NEWID() " +
@@ -92,5 +102,15 @@ public class CampaignStep {
         connector.executeQuery(query);
         LOG.info("Successfully created");
         connector.closeConnection();
+    }
+
+    @Step("Verify that error message is displayed for campaign field")
+    public boolean isCampaignErrorDisplayed() {
+        return component.isTextDisplayed("The name field is required.", component.getCampaignNameError());
+    }
+
+    @Step("Verify that error message is displayed for company field")
+    public boolean isCompanyErrorDisplayed() {
+        return component.isTextDisplayed("The company field is required.", component.getCompanyNameError());
     }
 }

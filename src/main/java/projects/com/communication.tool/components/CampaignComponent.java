@@ -20,15 +20,15 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public WebElement getNameInput(){
-        return $(cssSelector("div.modal-body > div.control.is-horizontal > div > div:nth-child(1) > input"));
-    }
-
-    public WebElement getCompanySelect(){
-        return $(cssSelector("div.multiselect__tags > span > span"));
+        return $(name("name"));
     }
 
     public WebElement getCompanyInput(){
         return $(name("company"));
+    }
+
+    public WebElement getModalTitle(){
+        return $(className("modal-title"));
     }
 
     public WebElement getSearchInput(){
@@ -36,7 +36,7 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public WebElement getSubmitButton(){
-        return $(cssSelector("div.modal-dialog__actions > button"));
+        return $(cssSelector(".modal-dialog__actions > button"));
     }
 
 
@@ -45,7 +45,7 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public By getCampaignInList(){
-        return by(cssSelector(".campaign-item"));
+        return by(className("campaign-item"));
     }
 
     public By getCompanyInList(){
@@ -54,6 +54,14 @@ public class CampaignComponent extends BaseComponent {
 
     public WebElement getStartCommunicationButton(){
         return $(cssSelector("div.input-group--selection-controls__ripple"));
+    }
+
+    public By getCampaignNameError(){
+        return by(cssSelector(".input-group__details > div"));
+    }
+
+    public By getCompanyNameError(){
+        return by(cssSelector("div:nth-child(2) > div > div.input-group__details > div"));
     }
 
     public By getSendingStatus(){

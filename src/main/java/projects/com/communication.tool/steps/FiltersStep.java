@@ -22,8 +22,8 @@ public class FiltersStep {
     private static final String VALUE = "t";
 
     public static final String FIRST_NAME_FILTER = "First Name";
-    static final String STREET = "Street";
-    public static final String ID = "Id";
+    public static final String POSITION_FILTER = "Position";
+    public static final String ID_FILTER = "Id";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
     public FiltersStep(WebDriver driver) {

@@ -14,16 +14,16 @@ public class GatewayComponent extends BaseComponent {
         super(driver);
     }
 
-    public WebElement getGatewaysTab(){
+    public WebElement getRepresentativeTab(){
         return $(cssSelector("div.tabs> ul>li:nth-child(2)"));
     }
 
     public WebElement getFromNameInput(){
-        return $(name("name"));
+        return $(cssSelector(".control__placeholder > div > div.input-group__input > input[type=\"text\"]"));
     }
 
     public WebElement getFromEmailInput(){
-        return $(name("email"));
+        return $(cssSelector("div:nth-child(2)>div.control__placeholder>div>div.input-group__input>input[type=\"text\"]"));
     }
 
     public WebElement getSmtpHostInput(){
@@ -51,7 +51,7 @@ public class GatewayComponent extends BaseComponent {
     }
 
     public WebElement getSubmitButton(){
-        return $(cssSelector("button.btn-save.btn-medium"));
+        return $(cssSelector(".btn-save.btn-medium"));
     }
 
     public By getFromNameValue(){
