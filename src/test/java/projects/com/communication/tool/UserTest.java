@@ -29,7 +29,7 @@ public class UserTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "CRUD user")
+    @Test(groups = "smoke test", description = "Create user and authorized with credential")
     public void createUser() {
         String email = randomAlphabetic(10) + "@i.ii";
         String pass = randomAlphabetic(MIN_PASSWORD_LENGTH);

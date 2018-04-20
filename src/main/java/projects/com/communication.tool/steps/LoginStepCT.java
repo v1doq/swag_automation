@@ -5,14 +5,14 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.LoginComponentCT;
 
 import static common.ConciseApi.sleep;
-import static common.DefaultConstant.PASSWORD_COMMUNICATION_TOOLS;
-import static common.DefaultConstant.USERNAME_COMMUNICATION_TOOLS;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
 import static settings.TestConfig.getProperty;
 
 public class LoginStepCT {
 
     private LoginComponentCT component;
+    private static final String USERNAME = getProperty("communication.tool.login");
+    private static final String PASSWORD = getProperty("communication.tool.pass");
 
     public LoginStepCT(WebDriver driver) {
         this.component = new LoginComponentCT(driver);
@@ -20,7 +20,7 @@ public class LoginStepCT {
 
     public void authorization(){
         openLandingPage();
-        login(USERNAME_COMMUNICATION_TOOLS, PASSWORD_COMMUNICATION_TOOLS);
+        login(USERNAME, PASSWORD);
         sleep(1000);
     }
 
