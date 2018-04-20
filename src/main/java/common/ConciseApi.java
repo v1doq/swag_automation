@@ -127,10 +127,9 @@ public abstract class ConciseApi {
         sleep(500);
     }
 
-    public void scrollToElement(WebElement element) {
-        LOG.info("Scroll to element with type: " + element.getTagName());
-        Actions actions = new Actions(getDriver());
-        actions.moveToElement(element);
-        actions.perform();
+    public void scrollUp() {
+        JavascriptExecutor js = (JavascriptExecutor) getDriver();
+        js.executeScript("scroll(0, -250);");
+        sleep(500);
     }
 }
