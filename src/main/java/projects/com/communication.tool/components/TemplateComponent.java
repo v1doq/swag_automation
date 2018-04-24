@@ -1,6 +1,7 @@
 package projects.com.communication.tool.components;
 
 import common.BaseComponent;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -27,5 +28,9 @@ public class TemplateComponent extends BaseComponent {
 
     public WebElement getSaveButton(){
         return $(cssSelector(".is-active > div > button"));
+    }
+
+    public By getPlaceholderButton(){
+        return by(cssSelector(".btn-tag--representative"));
     }
 }
