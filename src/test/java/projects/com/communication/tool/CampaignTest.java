@@ -83,6 +83,7 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.selectCampaignInList(campaignName);
 
         repsStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, fromName);
+        repsStep.submitReps(fromName);
         assertTrue(repsStep.isFromNameDisplayedInRepsCard(fromName));
     }
 

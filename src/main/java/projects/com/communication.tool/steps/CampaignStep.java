@@ -99,7 +99,7 @@ public class CampaignStep {
                 "(Id, CampaignId, CreatedAt, Schedule_EndTime, Schedule_Interval, Schedule_StartTime, " +
                 "Schedule_TimeZone, Schedule_WeekDays, Template_Body, Template_Subject, Status) " +
                 "VALUES(@communicationId, @campaignId, {ts '2018-04-02 10:14:33.019'},'17:00:00.000', 2,'08:00:00.000'" +
-                ",'FLE Standard Time', 124, 'body', 'subject', 1);";
+                ",'FLE Standard Time', 124, '', '', 1);";
         connector.executeQuery(query);
         LOG.info("Successfully created");
         connector.closeConnection();

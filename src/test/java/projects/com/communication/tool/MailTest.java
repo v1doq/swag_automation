@@ -31,9 +31,6 @@ public class MailTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
-    private String fromName = "Communication " + randomAlphanumeric(5);
-    private String subj = "Hi, this is " + randomAlphabetic(5);
-    private String body = "Good morning. Have a good day, see you soon " + randomAlphabetic(5);
 
     @BeforeClass(description = "Clean the database", alwaysRun = true)
     public void cleanDbAndCreateCompany() {
@@ -57,18 +54,24 @@ public class MailTest extends SuiteTestCT {
 
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "mail", timeOut = 180000, dataProvider = "Mail", description = "Create communication and check mail")
-    public void createCommunicationAndCheckMail(String email) throws MessagingException {
-        repsStep.createRepresentative(email, fromName);
+    public void createCommunicationAndCheckMail(String fromEmail) throws MessagingException {
+        String fromName = "Communication " + randomAlphanumeric(5);
+        String subj = "Hi, this is " + randomAlphabetic(5);
+        String body = "Good morning. Have a good day, see you soon " + randomAlphabetic(5);
+        String key = randomAlphabetic(1).toUpperCase() + randomAlphabetic(5).toLowerCase();
+        String value = randomAlphabetic(5);
+
+        repsStep.createRepsWithPlaceholder(fromEmail, fromName, key, value);
         templateStep.openTemplateTab();
-        templateStep.updateTemplate(subj, body);
+        templateStep.createTemplateWithPlaceholders(subj, body, "Name", "Email", key);
         scheduleStep.openScheduleTab();
         scheduleStep.updateSchedule("5");
         contactsStep.openContactsTab();
-        int messageCount = contactsStep.addContactToCampaign("Human Resources Coordinator");
+        int messageCount = contactsStep.addContactToCampaign("Regulatory Affairs Associate");
         campaignStep.activateCommunication();
 
         openMailFolder(INBOX);
-        Message[] messages = receiveMail(email, messageCount);
+        Message[] messages = receiveMail(fromEmail, messageCount);
         assertEquals(messages.length, messageCount);
 
         for (int i = 0; i < messages.length; i++) {
@@ -80,8 +83,8 @@ public class MailTest extends SuiteTestCT {
             LOG.info("From: " + message.getFrom()[0]);
             LOG.info("Text: " + messageBody);
             assertEquals(message.getSubject(), subj);
-            assertTrue(message.getFrom()[0].toString().contains(email));
-            assertTrue(messageBody.contains(body));
+            assertTrue(message.getFrom()[0].toString().contains(fromEmail));
+            assertTrue(messageBody.contains(body + fromName + fromEmail + value));
         }
     }
 

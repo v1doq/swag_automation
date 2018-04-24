@@ -5,12 +5,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.name;
 
-public class GatewayComponent extends BaseComponent {
+public class RepresentativeComponent extends BaseComponent {
 
-    public GatewayComponent(WebDriver driver) {
+    public RepresentativeComponent(WebDriver driver) {
         super(driver);
     }
 
@@ -50,8 +51,24 @@ public class GatewayComponent extends BaseComponent {
         return $(name("password"));
     }
 
+    public WebElement getRepsTitle(){
+        return $(className("card__title"));
+    }
+
     public WebElement getSubmitButton(){
         return $(cssSelector(".btn-save.btn-medium"));
+    }
+
+    public WebElement getNewPlaceholderButton(){
+        return $(cssSelector("div:nth-child(3) > button > div"));
+    }
+
+    public WebElement getPlaceholderKeyInput(){
+        return $(cssSelector("div.input-group__selections > input"));
+    }
+
+    public WebElement getPlaceholderValueInput(){
+        return $(cssSelector("div:nth-child(3)>div.control__placeholder>div>div.input-group__input>input[type=\"text\"]"));
     }
 
     public By getFromNameValue(){

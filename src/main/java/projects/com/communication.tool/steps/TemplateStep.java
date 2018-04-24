@@ -23,9 +23,22 @@ public class TemplateStep {
 
     @Step("Update template")
     public void updateTemplate(String subj, String body) {
-        component.jsClearAndSendKeys(component.getSubjectInput(), subj);
-        component.jsClearAndSendKeys(component.getBodyInput(), body);
+        component.getSubjectInput().sendKeys(subj);
+        component.getBodyInput().sendKeys(body);
         component.getSaveButton().click();
+    }
+
+    @Step("Add placeholder")
+    private void addPlaceholderToTemplate(String name, String email, String key) {
+        component.getElementInListByText(name, component.getPlaceholderButton()).click();
+        component.getElementInListByText(email, component.getPlaceholderButton()).click();
+        component.getElementInListByText(key, component.getPlaceholderButton()).click();
+    }
+
+    @Step("Create template with placeholders")
+    public void createTemplateWithPlaceholders(String subj, String body, String name, String email, String key) {
+        addPlaceholderToTemplate(name, email, key);
+        updateTemplate(subj, body);
     }
 
     @Step("Verify that template is successfully updated")
