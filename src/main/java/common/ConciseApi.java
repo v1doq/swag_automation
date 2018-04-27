@@ -85,6 +85,11 @@ public abstract class ConciseApi {
         dropdown.selectByVisibleText(text);
     }
 
+    public static String getFirstSelectedOption(WebElement element) {
+        Select dropdown = new Select(element);
+        return dropdown.getFirstSelectedOption().getText();
+    }
+
     public static void sleep(long time){
         try {
             Thread.sleep(time);
