@@ -14,8 +14,8 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.UserStep.MIN_PASSWORD_LENGTH;
 
-@Feature("Campaign")
-@Story("Functional tests for campaign")
+@Feature("User Management")
+@Story("Functional tests for user management")
 public class UserTest extends BaseTest {
 
     private UserStep userStep;
