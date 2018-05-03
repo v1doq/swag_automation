@@ -29,7 +29,7 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
-        String value = "gilve";
+        String value = "Norman";
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);

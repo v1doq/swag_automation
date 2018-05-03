@@ -32,9 +32,8 @@ public class MailTest extends SuiteTestCT {
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
 
-    @BeforeClass(description = "Clean the database", alwaysRun = true)
-    public void cleanDbAndCreateCompany() {
-        cleanDatabase();
+    @BeforeClass(description = "Clean the mail folder", alwaysRun = true)
+    public void cleanMailFolder() {
         cleanMailFolders();
     }
 

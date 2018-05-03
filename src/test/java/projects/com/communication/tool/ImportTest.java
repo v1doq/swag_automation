@@ -6,6 +6,7 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.ImportStep;
 import projects.com.communication.tool.steps.LoginStepCT;
@@ -25,6 +26,7 @@ public class ImportTest extends BaseTest {
         loginStep.authorization();
     }
 
+    @Ignore
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Upload valid file")
     public void uploadFile() {

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Communication tools - regression tests">
+<suite name="Communication tools - sanity tests for campaign" parallel="classes" thread-count="2">
     <test name="Filters tests">
         <groups>
             <run>
-                <include name="regression"/>
+                <include name="sanity campaign"/>
+                <include name="sanity reps"/>
             </run>
         </groups>
         <classes>
+            <class name="projects.com.communication.tool.RepresentativeTest"/>
             <class name="projects.com.communication.tool.CampaignTest"/>
         </classes>
     </test>
