@@ -7,6 +7,7 @@ import projects.com.communication.tool.components.ContactsComponent;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
 import static projects.com.communication.tool.steps.FiltersStep.POSITION_FILTER;
 import static settings.SQLConnector.EQUAL;
@@ -43,6 +44,7 @@ public class ContactsStep {
     public boolean isContactsAddedToCampaign(String value) {
         By locator = component.getContactsTable();
         component.waitForText(locator, value);
+        component.assertThat(visibilityOfElementLocated(locator));
         return component.isTextDisplayed(value, locator);
     }
 

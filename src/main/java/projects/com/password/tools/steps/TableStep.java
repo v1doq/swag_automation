@@ -1,13 +1,14 @@
 package projects.com.password.tools.steps;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import projects.com.password.tools.components.TableComponent;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.tagName;
 import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 
 public class TableStep {
 
@@ -33,6 +34,7 @@ public class TableStep {
     @Step("Checking the presence of a value in the table")
     public boolean isValueDisplayInTable(String value){
         sleep(1000);
-        return component.isTextDisplayed(value, By.tagName("td"));
+        component.assertThat(visibilityOfElementLocated(tagName("td")));
+        return component.isTextDisplayed(value, tagName("td"));
     }
 }

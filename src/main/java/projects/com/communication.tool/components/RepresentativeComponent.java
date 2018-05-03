@@ -5,9 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.*;
 
 public class RepresentativeComponent extends BaseComponent {
 
@@ -17,6 +15,10 @@ public class RepresentativeComponent extends BaseComponent {
 
     public WebElement getRepresentativeTab(){
         return $(cssSelector("div.tabs> ul>li:nth-child(2)"));
+    }
+
+    public WebElement getAddButton(){
+        return $(cssSelector(".gateways__add-new > button"));
     }
 
     public WebElement getFromNameInput(){
@@ -31,16 +33,8 @@ public class RepresentativeComponent extends BaseComponent {
         return $(name("smtpHost"));
     }
 
-    public WebElement getSmtpPortInput(){
-        return $(name("smtpPort"));
-    }
-
     public WebElement getImapHostInput(){
         return $(name("imapHost"));
-    }
-
-    public WebElement getImapPortInput(){
-        return $(name("imapPort"));
     }
 
     public WebElement getLoginInput(){

@@ -14,9 +14,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.FiltersStep.FIRST_NAME_FILTER;
-import static projects.com.communication.tool.steps.RepresentativeStep.GATEWAY_OUTLOOK_EMAIL;
-import static projects.com.communication.tool.steps.RepresentativeStep.MIN_FROM_NAME_LENGTH;
+import static projects.com.communication.tool.steps.FiltersStep.POSITION_FILTER;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Campaign")
@@ -24,7 +22,6 @@ import static settings.SQLConnector.EQUAL;
 public class CampaignTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
-    private RepresentativeStep repsStep;
     private ContactsStep contactsStep;
     private FiltersStep filtersStep;
     private ScheduleStep scheduleStep;
@@ -34,7 +31,6 @@ public class CampaignTest extends SuiteTestCT {
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {
-        cleanDatabase();
         campaignStep = new CampaignStep(driver);
         campaignStep.createCampaignInDB(campaignName, companyName);
     }
@@ -45,7 +41,6 @@ public class CampaignTest extends SuiteTestCT {
         contactsStep = new ContactsStep(driver);
         scheduleStep = new ScheduleStep(driver);
         filtersStep = new FiltersStep(driver);
-        repsStep = new RepresentativeStep(driver);
         templateStep = new TemplateStep(driver);
         loginWithToken();
     }
@@ -76,34 +71,22 @@ public class CampaignTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Create new representative")
-    public void createNewRepresentative() {
-        String fromName = randomAlphabetic(MIN_FROM_NAME_LENGTH);
-        campaignStep.openCampaignPage();
-        campaignStep.selectCampaignInList(campaignName);
-
-        repsStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, fromName);
-        repsStep.submitReps(fromName);
-        assertTrue(repsStep.isFromNameDisplayedInRepsCard(fromName));
-    }
-
-    @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Add contacts to campaign")
     public void addContactsToCampaign() {
-        String value = "Varg";
+        String value = "Regulatory Affairs Associate";
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
         contactsStep.openContactsTab();
 
         contactsStep.openContactsPopUp();
-        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
-        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
+        filtersStep.applyAllFilters(POSITION_FILTER, EQUAL_CRITERION, value);
+        int count = filtersStep.getValueByCriterion("[Position]", EQUAL, value);
 
         filtersStep.waitForRecordsResult(count);
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
 
         contactsStep.saveContactsInCampaign();
-        assertTrue(contactsStep.isContactsAddedToCampaign(value));
+        assertTrue(contactsStep.isContactsAddedToCampaign("Jaclyn"));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -136,7 +119,7 @@ public class CampaignTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "regression", description = "Check validation messages for empty mandatory fields")
+    @Test(groups = "sanity campaign", description = "Check validation messages for empty mandatory fields")
     public void checkValidationMessagesForAddNewCampaignFields() {
         campaignStep.openCampaignPage();
         campaignStep.openCampaignPopUp();

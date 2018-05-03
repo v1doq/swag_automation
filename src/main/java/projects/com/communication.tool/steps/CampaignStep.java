@@ -9,6 +9,7 @@ import settings.SQLConnector;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -107,11 +108,13 @@ public class CampaignStep {
 
     @Step("Verify that error message is displayed for campaign field")
     public boolean isCampaignErrorDisplayed() {
+        component.assertThat(visibilityOfElementLocated(component.getCampaignNameError()));
         return component.isTextDisplayed("The name field is required.", component.getCampaignNameError());
     }
 
     @Step("Verify that error message is displayed for company field")
     public boolean isCompanyErrorDisplayed() {
+        component.assertThat(visibilityOfElementLocated(component.getCompanyNameError()));
         return component.isTextDisplayed("The company field is required.", component.getCompanyNameError());
     }
 }

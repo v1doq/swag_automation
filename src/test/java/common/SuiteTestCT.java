@@ -17,6 +17,7 @@ public class SuiteTestCT extends BaseTest {
 
     @BeforeSuite(groups = { "smoke test", "mail" }, description = "Get authorization token", alwaysRun = true)
     public void loginAndGetToken() {
+        cleanDatabase();
         openBrowser();
         storage = new LocalStorage(driver);
         loginStep = new LoginStepCT(driver);
@@ -33,7 +34,7 @@ public class SuiteTestCT extends BaseTest {
         addCookies();
     }
 
-    protected void cleanDatabase(){
+    private void cleanDatabase(){
         LOG.info("Clean database");
         SQLConnector connector = new SQLConnector();
         connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM Conversation; " +

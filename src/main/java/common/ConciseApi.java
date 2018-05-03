@@ -51,6 +51,7 @@ public abstract class ConciseApi {
     }
 
     public boolean isElementPresent(By locator) {
+        LOG.info("Is element present: " + locator);
         getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         List<WebElement> list = getDriver().findElements(locator);
         getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
@@ -64,6 +65,7 @@ public abstract class ConciseApi {
     }
 
     public void clearAndSendKeys(WebElement element, String text){
+        LOG.info("Try to clear field and sent keys: " + text);
         assertThat(elementToBeClickable(element));
         assertThat(visibilityOf(element));
         while(element.getAttribute("value").length() > 0) {
@@ -73,6 +75,7 @@ public abstract class ConciseApi {
     }
 
     public void jsClearAndSendKeys(WebElement element, String text){
+        LOG.info("Try to clear field and sent keys: " + text);
         assertThat(elementToBeClickable(element));
         assertThat(visibilityOf(element));
         element.click();
@@ -81,16 +84,19 @@ public abstract class ConciseApi {
     }
 
     public static void select(WebElement element, String text) {
+        LOG.info("Try to select element in dropdown by text: " + text);
         Select dropdown = new Select(element);
         dropdown.selectByVisibleText(text);
     }
 
     public static String getFirstSelectedOption(WebElement element) {
+        LOG.info("Try to get text of first element in dropdown");
         Select dropdown = new Select(element);
         return dropdown.getFirstSelectedOption().getText();
     }
 
     public static void sleep(long time){
+        LOG.info("Sleep " + time + " milliseconds");
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
@@ -99,16 +105,17 @@ public abstract class ConciseApi {
     }
 
     public void actionClick(WebElement element){
+        LOG.info("Move to element: " + element + " and click");
         Actions actions = new Actions(getDriver());
         actions.moveToElement(element).click().build().perform();
     }
 
     public boolean isTextDisplayed(String text, By locator) {
-        assertThat(visibilityOfElementLocated(locator));
+        LOG.info("Is text displayed: " + text);
         boolean isDisplayed = false;
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
-            if (element.getText().equals(text)) {
+            if (element.getText().contains(text)) {
                 isDisplayed = true;
                 break;
             }
@@ -117,6 +124,7 @@ public abstract class ConciseApi {
     }
 
     public WebElement getElementInListByText(String text, By locator) {
+        LOG.info("Try to get element in list by text: " + text);
         assertThat(visibilityOfElementLocated(locator));
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
@@ -128,11 +136,13 @@ public abstract class ConciseApi {
     }
 
     public void fullScreenMode(){
+        LOG.info("Maximize window");
         getDriver().manage().window().maximize();
         sleep(500);
     }
 
     public void scrollUp() {
+        LOG.info("Try to scroll up");
         JavascriptExecutor js = (JavascriptExecutor) getDriver();
         js.executeScript("scroll(0, -250);");
         sleep(500);
