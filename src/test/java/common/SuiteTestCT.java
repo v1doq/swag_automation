@@ -2,7 +2,7 @@ package common;
 
 import io.qameta.allure.Step;
 import org.testng.annotations.BeforeSuite;
-import projects.com.communication.tool.steps.LoginStepCT;
+import projects.com.communication.tool.steps.user.LoginStepCT;
 import settings.LocalStorage;
 import settings.SQLConnector;
 
@@ -15,7 +15,7 @@ public class SuiteTestCT extends BaseTest {
     private LoginStepCT loginStep;
     private LocalStorage storage;
 
-    @BeforeSuite(groups = { "smoke test", "mail" }, description = "Get authorization token", alwaysRun = true)
+    @BeforeSuite(description = "Get authorization token", alwaysRun = true)
     public void loginAndGetToken() {
         cleanDatabase();
         openBrowser();

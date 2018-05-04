@@ -8,9 +8,13 @@
             </run>
         </groups>
         <classes>
-            <class name="projects.com.communication.tool.FiltersTest"/>
-            <class name="projects.com.communication.tool.CampaignTest"/>
-            <class name="projects.com.communication.tool.UserTest"/>
+            <class name="projects.com.communication.tool.campaign.CampaignTest"/>
+            <class name="projects.com.communication.tool.campaign.ContactsTest"/>
+            <class name="projects.com.communication.tool.campaign.RepresentativeTest"/>
+            <class name="projects.com.communication.tool.campaign.ScheduleTest"/>
+            <class name="projects.com.communication.tool.campaign.TemplateTest"/>
+            <class name="projects.com.communication.tool.contacts.FiltersTest"/>
+            <class name="projects.com.communication.tool.user.UserTest"/>
         </classes>
     </test>
 </suite>
