@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Communication tools - sanity tests for campaign" parallel="classes" thread-count="2">
-    <test name="Filters tests">
+<suite name="Communication tools - sanity tests for campaign" parallel="tests" thread-count="3">
+    <test name="Campaign creation tests">
         <groups>
             <run>
                 <include name="sanity campaign"/>
-                <include name="sanity reps"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="projects.com.communication.tool.campaign.CampaignTest"/>
+        </classes>
+    </test>
+    <test name="Representative positive tests">
+        <groups>
+            <run>
+                <include name="sanity positive gateway"/>
             </run>
         </groups>
         <classes>
             <class name="projects.com.communication.tool.campaign.RepresentativeTest"/>
-            <class name="projects.com.communication.tool.campaign.CampaignTest"/>
+        </classes>
+    </test>
+    <test name="Representative negative tests">
+        <groups>
+            <run>
+                <include name="sanity negative gateway"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="projects.com.communication.tool.campaign.RepresentativeTest"/>
         </classes>
     </test>
 </suite>
