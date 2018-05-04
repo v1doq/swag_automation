@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Communication tools - sanity tests for filters">
-    <test name="Filters tests">
+<suite name="Communication tools - communication test">
+    <test name="Send and receive email">
         <groups>
             <run>
-                <include name="filters"/>
+                <include name="mail"/>
             </run>
         </groups>
         <classes>
-            <class name="projects.com.communication.tool.contacts.FiltersTest"/>
+            <class name="projects.com.communication.tool.communication.MailTest"/>
         </classes>
     </test>
 </suite>
