@@ -51,7 +51,7 @@ public class RepresentativeStep {
     public boolean isRepresentativeCreated() {
         boolean isCreated = false;
         while (component.isElementPresent(name("login"))) {
-            sleep(1000);
+            sleep(2000);
             if (component.isTextDisplayed("settings error", className("error-message"))) {
                 isCreated = false;
                 break;

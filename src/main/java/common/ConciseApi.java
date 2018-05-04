@@ -52,9 +52,14 @@ public abstract class ConciseApi {
 
     public boolean isElementPresent(By locator) {
         LOG.info("Is element present: " + locator);
-        getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
-        List<WebElement> list = getDriver().findElements(locator);
-        getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        List<WebElement> list;
+        try {
+            getDriver().manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+            list = getDriver().findElements(locator);
+            getDriver().manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        } catch (StaleElementReferenceException e) {
+            return false;
+        }
         return list.size() != 0 && list.get(0).isDisplayed();
     }
 

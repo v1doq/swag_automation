@@ -13,6 +13,7 @@ import projects.com.communication.tool.steps.campaign.CampaignStep;
 import projects.com.communication.tool.steps.campaign.RepresentativeStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
 
@@ -23,6 +24,10 @@ public class RepresentativeTest extends SuiteTestCT {
     private CampaignStep campaignStep;
     private RepresentativeStep repsStep;
     private String campaignName = randomAlphabetic(5);
+    private String outlookEmail = GATEWAY_OUTLOOK_EMAIL;
+    private String outlookPass = GATEWAY_OUTLOOK_PASS;
+    private String gmailEmail = GATEWAY_GMAIL_EMAIL;
+    private String gmailPass = GATEWAY_GMAIL_PASS;
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {
@@ -51,8 +56,9 @@ public class RepresentativeTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "sanity reps", dataProvider = "Reps", description = "Create valid gateways")
-    public void createValidGateways(String smtp, String imap, String email, String pass) {
+    @Test(groups = "sanity positive gateway", dataProvider = "Valid", timeOut = 120000,
+            description = "Create gateway with valid credential")
+    public void createGatewaysWithValidCredential(String smtp, String imap, String email, String pass) {
         String fromName = randomAlphabetic(MIN_FROM_NAME_LENGTH);
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
@@ -64,19 +70,42 @@ public class RepresentativeTest extends SuiteTestCT {
         assertTrue(repsStep.isRepresentativeCreated());
     }
 
-    @DataProvider(name = "Reps")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity negative gateway", dataProvider = "Invalid", timeOut = 120000,
+            description = "Try to create gateway with invalid credential")
+    public void tryToCreateGatewayWithInvalidCredential(String smtp, String imap, String email, String pass) {
+        String fromName = randomAlphabetic(MIN_FROM_NAME_LENGTH);
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
+
+        repsStep.fillRepsFields(email, fromName);
+        repsStep.fillGatewayFields(email, pass, smtp, imap);
+        repsStep.saveRepresentative();
+
+        assertFalse(repsStep.isRepresentativeCreated());
+    }
+
+    @DataProvider(name = "Valid")
     public Object[][] validCredential() {
-        String outlookEmail = GATEWAY_OUTLOOK_EMAIL;
-        String outlookPass = GATEWAY_OUTLOOK_PASS;
-        String gmailEmail = GATEWAY_GMAIL_EMAIL;
-        String gmailPass = GATEWAY_GMAIL_PASS;
         return new Object[][]{
                 {"smtp.outlook.com:25", "imap-mail.outlook.com:993", outlookEmail, outlookPass},
                 {"smtp.outlook.com:587", "imap-mail.outlook.com:993", outlookEmail, outlookPass},
                 {"smtp-mail.outlook.com:587", "outlook.office365.com", outlookEmail, outlookPass},
                 {"smtp.office365.com:587", "imap.outlook.com:993", outlookEmail, outlookPass},
-                {"smtp.gmail.com:587", "imap.gmail.com:993", gmailEmail, gmailPass},
-                {"smtp.gmail.com:25", "imap.gmail.com:993", gmailEmail, gmailPass}
+                {"smtp.gmail.com:25", "imap.gmail.com:993", gmailEmail, gmailPass},
+                {"smtp.gmail.com:465", "imap.gmail.com:993", gmailEmail, gmailPass},
+                {"smtp.gmail.com:587", "imap.gmail.com:993", gmailEmail, gmailPass}
+        };
+    }
+
+    @DataProvider(name = "Invalid")
+    public Object[][] invalidCredential() {
+        return new Object[][]{
+                {"smtp.outlook.com:587", "imap.outlook.com:143", outlookEmail, outlookPass},
+                {"smtp.gmail.com:587", "imap.gmail.com:143", gmailEmail, gmailPass},
+                {"smtp.outlook.com:587", "imap.outlook.com:993", outlookEmail, randomAlphabetic(1)},
+                {"smtp.outlook.com:587", "imap.outlook.com:993", randomAlphabetic(1), outlookPass},
+                {"pop3.outlook.com:587", "imap.outlook.com:993", outlookEmail, outlookPass},
         };
     }
 }
