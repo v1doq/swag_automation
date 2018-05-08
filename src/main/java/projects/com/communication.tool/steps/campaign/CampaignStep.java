@@ -7,7 +7,6 @@ import org.openqa.selenium.WebElement;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
@@ -26,13 +25,21 @@ public class CampaignStep {
         component.open(getProperty("communication.tool.url") + "campaigns/");
     }
 
-    @Step("Create new campaign")
+    @Step("Create campaign")
     public void createCampaign(String campaignName, String companyName) {
-        component.getCreateCampaignButton().click();
+        openCampaignPopUp();
         component.getCompanyInput().sendKeys(companyName, Keys.ENTER);
         component.getNameInput().sendKeys(campaignName);
         component.getModalTitle().click();
-        component.getSubmitButton().click();
+        submitCampaign();
+    }
+
+    @Step("Select campaign in list")
+    public void selectCampaignInList(String campaignName) {
+        searchInCampaignList(campaignName);
+        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
+        campaignItem.click();
+        component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 
     @Step("Open campaign pop up")
@@ -45,13 +52,6 @@ public class CampaignStep {
         component.getSubmitButton().click();
     }
 
-    @Step("Select campaign in list")
-    public void selectCampaignInList(String campaignName) {
-        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
-        campaignItem.click();
-        component.waitForText(component.getCampaignNameInPreview(), campaignName);
-    }
-
     @Step("Activate communication")
     public void activateCommunication() {
         component.scrollUp();
@@ -60,16 +60,22 @@ public class CampaignStep {
         component.waitForPartOfText(component.getSendingStatus(), "In progress");
     }
 
-    @Step("Verify that company is displayed in list")
-    public boolean isCompanyDisplayedInList(String companyName) {
-        sleep(2000);
-        return component.isTextDisplayed(companyName, component.getCompanyInList());
+    @Step("Verify that company and campaign are displayed in list")
+    public boolean isCompanyAndCampaignInList(String companyName, String campaignName) {
+        searchInCampaignList(companyName);
+        component.waitForText(component.getCompanyInList(), companyName);
+        boolean isDisplayed = false;
+        if (component.isTextDisplayed(companyName, component.getCompanyInList())) {
+            isDisplayed = true;
+        }
+        if (component.isTextDisplayed(campaignName, component.getCampaignInList())) {
+            isDisplayed = true;
+        }
+        return isDisplayed;
     }
 
-    @Step("Verify that campaign is displayed in list")
-    public boolean isCampaignDisplayedInList(String campaignName) {
-        sleep(2000);
-        return component.isTextDisplayed(campaignName, component.getCampaignInList());
+    private void searchInCampaignList(String value) {
+        component.getSearchInput().sendKeys(value);
     }
 
     @Step("Verify that campaign is assign to company")
