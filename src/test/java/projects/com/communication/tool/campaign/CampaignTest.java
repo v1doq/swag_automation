@@ -41,8 +41,7 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
-        assertTrue(campaignStep.isCompanyDisplayedInList(companyName));
-        assertTrue(campaignStep.isCampaignDisplayedInList(campaignName));
+        assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
         assertTrue(campaignStep.isCampaignAssignToCompany(companyName, campaignName));
     }
 
@@ -53,8 +52,7 @@ public class CampaignTest extends SuiteTestCT {
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
-        assertTrue(campaignStep.isCompanyDisplayedInList(companyName));
-        assertTrue(campaignStep.isCampaignDisplayedInList(campaignName));
+        assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
         assertTrue(campaignStep.isCampaignAssignToCompany(companyName, campaignName));
     }
 
