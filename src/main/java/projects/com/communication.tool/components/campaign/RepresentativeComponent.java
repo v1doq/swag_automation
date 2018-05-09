@@ -13,10 +13,6 @@ public class RepresentativeComponent extends BaseComponent {
         super(driver);
     }
 
-    public WebElement getRepresentativeTab(){
-        return $(cssSelector("div.tabs> ul>li:nth-child(2)"));
-    }
-
     public WebElement getAddButton(){
         return $(cssSelector(".gateways__add-new > button"));
     }
@@ -65,7 +61,19 @@ public class RepresentativeComponent extends BaseComponent {
         return $(cssSelector("div:nth-child(3)>div.control__placeholder>div>div.input-group__input>input[type=\"text\"]"));
     }
 
-    public By getFromNameValue(){
-        return by(cssSelector(".card__textfield"));
+    public WebElement getFromNameValue(){
+        return $(cssSelector(".card__textfield"));
+    }
+
+    public WebElement getEditRepsButton(){
+        return $(cssSelector(".btn--icon.btn--small"));
+    }
+
+    public WebElement getDeleteRepsButton(){
+        return $(cssSelector(".btn-delete"));
+    }
+
+    public By getRepsActions(){
+        return by(className("menu-popup-link"));
     }
 }

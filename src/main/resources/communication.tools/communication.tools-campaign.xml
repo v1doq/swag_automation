@@ -14,7 +14,7 @@
     <test name="Representative positive tests">
         <groups>
             <run>
-                <include name="sanity positive gateway"/>
+                <include name="sanity positive reps"/>
             </run>
         </groups>
         <classes>
@@ -24,7 +24,7 @@
     <test name="Representative negative tests">
         <groups>
             <run>
-                <include name="sanity negative gateway"/>
+                <include name="sanity negative reps"/>
             </run>
         </groups>
         <classes>
