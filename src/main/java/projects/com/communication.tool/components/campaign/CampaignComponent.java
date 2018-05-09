@@ -16,7 +16,7 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public WebElement getCreateCampaignButton(){
-        return $(cssSelector("div.campaigns__filter-header > div > button"));
+        return $(className("campaigns__add-new"));
     }
 
     public WebElement getNameInput(){
