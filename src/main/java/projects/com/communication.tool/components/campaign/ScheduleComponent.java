@@ -21,10 +21,6 @@ public class ScheduleComponent extends BaseComponent {
         return $(id("schedule-interval"));
     }
 
-    public WebElement getTimeZoneSelect() {
-        return $(id("schedule-timezone"));
-    }
-
     public WebElement getStartTimeInput() {
         return $(name("startTime"));
     }

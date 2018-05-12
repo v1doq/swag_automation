@@ -14,8 +14,8 @@ import projects.com.communication.tool.steps.campaign.RepresentativeStep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.campaign.RepresentativeStep.GATEWAY_OUTLOOK_EMAIL;
-import static projects.com.communication.tool.steps.campaign.RepresentativeStep.MIN_FROM_NAME_LENGTH;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
 
 @Feature("Campaign")
 @Story("Functional tests for representative tab in campaign")
@@ -23,12 +23,12 @@ public class RepresentativeTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
     private RepresentativeStep repsStep;
-    private String campaignName = randomAlphabetic(5);
+    private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {
         campaignStep = new CampaignStep(driver);
-        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
+        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
@@ -96,8 +96,8 @@ public class RepresentativeTest extends SuiteTestCT {
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "sanity positive reps", description = "Delete representative")
     public void deleteRepresentative() {
-        String campaignName = randomAlphabetic(5);
-        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
+        String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
+        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
         repsStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
@@ -110,7 +110,7 @@ public class RepresentativeTest extends SuiteTestCT {
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "sanity positive reps", description = "Check created placeholder in all campaign's representative")
     public void checkCreatedPlaceholderInSecondCampaignsReps() {
-        String campaignName = randomAlphabetic(5);
+        String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String fromName = randomAlphabetic(5);
         String key = randomAlphabetic(1).toUpperCase() + randomAlphabetic(5).toLowerCase();
         String value = randomAlphabetic(5);

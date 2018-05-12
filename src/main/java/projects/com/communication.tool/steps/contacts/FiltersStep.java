@@ -1,12 +1,12 @@
 package projects.com.communication.tool.steps.contacts;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import projects.com.communication.tool.components.contacts.FiltersComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.select;
 import static settings.SQLConnector.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
@@ -37,8 +37,12 @@ public class FiltersStep {
 
     @Step("Apply all filters")
     public void applyAllFilters(String column, String criterion, String value) {
-        select(component.getFieldSelect(), column);
-        select(component.getCriterionSelect(), criterion);
+        component.getFieldInput().sendKeys(column);
+        component.waitForText(component.getSearchResult(), column);
+        component.getFieldInput().sendKeys(Keys.ENTER);
+        component.getCriterionInput().sendKeys(criterion);
+        component.waitForText(component.getSearchResult(), criterion);
+        component.getCriterionInput().sendKeys(Keys.ENTER);
         component.jsClearAndSendKeys(component.getValueInput(), value);
     }
 
@@ -55,7 +59,7 @@ public class FiltersStep {
     @Step("Get contact's count in the database")
     public int getValueByCriterion(String column, String criterion, String value) {
         String query;
-        if (!criterion.equals(NOT_EQUAL)){
+        if (!criterion.equals(NOT_EQUAL)) {
             query = QUERY + column + criterion + "'" + value + "'";
         } else {
             query = QUERY + column + criterion + "'" + value + "'OR " + column + " is NULL";
@@ -65,7 +69,7 @@ public class FiltersStep {
     }
 
     @Step("Get value in contact table in the database")
-    public String getValueInContactTableDB(String column){
+    public String getValueInContactTableDB(String column) {
         LOG.info("Get value in contact table in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT " + column + " FROM CommunicationTool.dbo.Contact";

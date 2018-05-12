@@ -15,8 +15,8 @@ import projects.com.communication.tool.steps.contacts.FiltersStep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.POSITION_FILTER;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Campaign")
@@ -26,8 +26,8 @@ public class ContactsTest extends SuiteTestCT {
     private CampaignStep campaignStep;
     private ContactsStep contactsStep;
     private FiltersStep filtersStep;
-    private String campaignName = randomAlphabetic(5);
-    private String companyName = randomAlphabetic(5);
+    private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
+    private String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {

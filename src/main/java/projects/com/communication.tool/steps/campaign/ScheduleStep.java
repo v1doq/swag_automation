@@ -8,13 +8,11 @@ import settings.SQLConnector;
 
 import java.util.List;
 
-import static common.ConciseApi.select;
 import static settings.SeleniumListener.LOG;
 
 public class ScheduleStep {
 
     private ScheduleComponent component;
-    private static final String KIEV_TIME_ZONE = "(UTC+02:00) Helsinki, Kyiv, Riga, Sofia, Tallinn, Vilnius";
 
     public ScheduleStep(WebDriver driver) {
         this.component = new ScheduleComponent(driver);
@@ -29,7 +27,6 @@ public class ScheduleStep {
     @Step("Update all default schedule values")
     public void updateSchedule(String interval) {
         component.clearAndSendKeys(component.getIntervalInput(), interval);
-        select(component.getTimeZoneSelect(), KIEV_TIME_ZONE);
         selectAllDays();
         component.getStartTimeInput().sendKeys("01:00 AM");
         component.getEndTimeInput().sendKeys("11:00 PM");
