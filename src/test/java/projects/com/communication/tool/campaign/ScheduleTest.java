@@ -13,6 +13,7 @@ import projects.com.communication.tool.steps.campaign.ScheduleStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 
 @Feature("Campaign")
 @Story("Functional tests for schedule tab in campaign")
@@ -20,8 +21,8 @@ public class ScheduleTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
     private ScheduleStep scheduleStep;
-    private String campaignName = randomAlphabetic(5);
-    private String companyName = randomAlphabetic(5);
+    private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
+    private String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {

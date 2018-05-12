@@ -14,16 +14,20 @@ public class FiltersComponent extends BaseComponent {
         super(driver);
     }
 
-    public WebElement getFieldSelect(){
-        return $(cssSelector(".is-grouped > div:nth-child(1) > div > select"));
+    public WebElement getFieldInput(){
+        return $(cssSelector("[placeholder = \"Select Field\"]"));
     }
 
-    public WebElement getCriterionSelect(){
-        return $(cssSelector(".is-grouped > div:nth-child(2) > div > select"));
+    public WebElement getCriterionInput(){
+        return $(cssSelector("[placeholder = \"Select Criterion\"]"));
     }
 
     public WebElement getValueInput(){
-        return $(cssSelector("div:nth-child(3) > section > div > div > input"));
+        return $(cssSelector("[placeholder = \"Specify Value\"]"));
+    }
+
+    public By getSearchResult(){
+        return by(className("list__tile__mask"));
     }
 
     public WebElement getCounterValue(){

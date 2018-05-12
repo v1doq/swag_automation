@@ -19,11 +19,20 @@ public class CampaignComponent extends BaseComponent {
         return $(className("campaigns__add-new"));
     }
 
-    public WebElement getNameInput(){
+    public WebElement getStartCommunicationButton(){
+        return $(className("input-group--selection-controls__ripple"));
+    }
+
+    public By getSendingStatus(){
+        return by(className("campaign-preview__progress-status"));
+    }
+
+    //POP_UP
+    public WebElement getCampaignNameInput(){
         return $(name("name"));
     }
 
-    public WebElement getCompanyInput(){
+    public WebElement getCompanyNameInput(){
         return $(name("company"));
     }
 
@@ -31,29 +40,17 @@ public class CampaignComponent extends BaseComponent {
         return $(className("modal-title"));
     }
 
-    public WebElement getSearchInput(){
-        return $(name("search"));
-    }
 
     public WebElement getSubmitButton(){
         return $(cssSelector(".modal-dialog__actions > button"));
     }
 
-
-    public By getCampaignNameInPreview(){
-        return by(cssSelector("button.editable__text"));
+    public By getServerErrorInPopUp(){
+        return by(cssSelector(".modal-header > p"));
     }
 
-    public By getCampaignInList(){
-        return by(className("campaign-item"));
-    }
-
-    public By getCompanyInList(){
-        return by(className("card-header-title"));
-    }
-
-    public WebElement getStartCommunicationButton(){
-        return $(cssSelector("div.input-group--selection-controls__ripple"));
+    public By getServerErrorInPreview(){
+        return by(cssSelector("p.error-message"));
     }
 
     public By getCampaignNameError(){
@@ -64,7 +61,46 @@ public class CampaignComponent extends BaseComponent {
         return by(cssSelector("div:nth-child(2) > div > div.input-group__details > div"));
     }
 
-    public By getSendingStatus(){
-        return by(className("campaign-preview__progress-status"));
+    //CAMPAIGN_LIST
+    public WebElement getSearchInput(){
+        return $(name("search"));
+    }
+
+    public By getCampaignInList(){
+        return by(className("campaign-item"));
+    }
+
+    public By getCompanyInList(){
+        return by(className("card-header-title"));
+    }
+
+    //PREVIEW
+    public By getCampaignNameInPreview(){
+        return by(className("campaign-preview__title"));
+    }
+
+    public WebElement getEditCampaignNameButton(){
+        return $(className("editable__text"));
+    }
+
+    public WebElement getUpdateCampaignNameInput(){
+        return $(cssSelector(".editable__text-field > div > div > div.input-group__input > input[type=\"text\"]"));
+    }
+
+    public WebElement getUpdateCampaignNameButton(){
+        return $(className("btn-save"));
+    }
+
+    public WebElement getEditCampaignDescButton(){
+        return $(className("campaign-preview__description"));
+    }
+
+    public WebElement getUpdateCampaignDescInput(){
+        return $(cssSelector(".editable__text-field > div > div > div.input-group__input > textarea"));
+    }
+
+    public WebElement getUpdateCampaignDescButton(){
+        return $(cssSelector("p.campaign-preview__description > div > div.editable__block.editable__block--edit > " +
+                "div.editable__actions > button.btn-save"));
     }
 }
