@@ -10,6 +10,7 @@ import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.contacts.FiltersStep;
 
+import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
@@ -29,10 +30,13 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
-        String value = "Norman";
+        String firstName = randomAlphabetic(5);
+        String email = randomAlphabetic(5) + "@i.ua";
+        filtersStep.insertContactToDb(firstName, email);
+
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
-        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
+        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
+        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, firstName);
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
@@ -55,7 +59,11 @@ public class FiltersTest extends SuiteTestCT {
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "filters", description = "Check count of records with filter by ID")
     public void checkCountOfRecordsWithFilterById(){
+        String firstName = randomAlphabetic(5);
+        String email = randomAlphabetic(5) + "@i.ua";
+        filtersStep.insertContactToDb(firstName, email);
         String value = filtersStep.getValueInContactTableDB(ID_FILTER);
+
         filtersStep.openContactsPage();
         filtersStep.applyAllFilters(ID_FILTER, EQUAL_CRITERION, value);
         filtersStep.waitForRecordsResult(1);

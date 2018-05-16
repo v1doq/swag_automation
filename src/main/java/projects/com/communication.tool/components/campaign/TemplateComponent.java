@@ -30,7 +30,11 @@ public class TemplateComponent extends BaseComponent {
         return $(cssSelector(".is-active > div > button"));
     }
 
-    public By getPlaceholderButton(){
+    public By getRepsPlaceholderButton(){
         return by(cssSelector(".btn-tag--representative"));
+    }
+
+    public By getContactPlaceholderButton(){
+        return by(cssSelector(".btn-tag--contact"));
     }
 }
