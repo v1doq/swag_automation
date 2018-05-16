@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.campaign.*;
+import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -31,21 +32,25 @@ public class MailTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
+    private String firstName = randomAlphabetic(5);
+    private String email = randomAlphabetic(5) + "@i.ua";
 
     @BeforeClass(description = "Clean the mail folder", alwaysRun = true)
     public void cleanMailFolder() {
         cleanMailFolders();
+        FiltersStep filtersStep = new FiltersStep(driver);
+        filtersStep.insertContactToDb(firstName, email);
     }
 
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)
     public void setUp() {
+        String campaignName = randomAlphabetic(5);
         campaignStep = new CampaignStep(driver);
         contactsStep = new ContactsStep(driver);
         scheduleStep = new ScheduleStep(driver);
         repsStep = new RepresentativeStep(driver);
         templateStep = new TemplateStep(driver);
         loginWithToken();
-        String campaignName = randomAlphabetic(5);
         campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
@@ -57,16 +62,17 @@ public class MailTest extends SuiteTestCT {
         String fromName = "Communication " + randomAlphanumeric(5);
         String subj = "Hi, this is " + randomAlphabetic(5);
         String body = "Good morning. Have a good day, see you soon " + randomAlphabetic(5);
-        String key = randomAlphabetic(1).toUpperCase() + randomAlphabetic(5).toLowerCase();
-        String value = randomAlphabetic(5);
+        String repsKey = randomAlphabetic(1).toUpperCase() + randomAlphabetic(5).toLowerCase();
+        String repsValue = randomAlphabetic(5);
 
-        repsStep.createRepsWithPlaceholder(fromEmail, fromName, key, value);
+        repsStep.createRepsWithPlaceholder(fromEmail, fromName, repsKey, repsValue);
         templateStep.openTemplateTab();
-        templateStep.createTemplateWithPlaceholders(subj, body, "Name", "Email", key);
+        templateStep.addPlaceholderToTemplate("Name", "Email", repsKey, "First Name");
+        templateStep.updateTemplate(subj, body);
         scheduleStep.openScheduleTab();
         scheduleStep.updateSchedule("5");
         contactsStep.openContactsTab();
-        int messageCount = contactsStep.addContactToCampaign("Regulatory Affairs Associate");
+        int messageCount = contactsStep.addContactToCampaign(firstName);
         campaignStep.activateCommunication();
 
         openMailFolder(INBOX);
@@ -83,7 +89,7 @@ public class MailTest extends SuiteTestCT {
             LOG.info("Text: " + messageBody);
             assertEquals(message.getSubject(), subj);
             assertTrue(message.getFrom()[0].toString().contains(fromEmail));
-            assertTrue(messageBody.contains(body + fromName + fromEmail + value));
+            assertTrue(messageBody.contains(body + fromName + fromEmail + repsValue + firstName));
         }
     }
 

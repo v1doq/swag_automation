@@ -76,6 +76,21 @@ public class FiltersStep {
         return connector.getStringValueInDB(query, column);
     }
 
+    @Step("Insert contact to the database")
+    public void insertContactToDb(String firstName, String email) {
+        LOG.info("Insert contact to the database with first name: " + firstName);
+        SQLConnector connector = new SQLConnector();
+        String query = "DECLARE @Id uniqueidentifier SET @Id = NEWID() " +
+                "INSERT INTO CommunicationTool.dbo.Contact (Id, FirstName, IsVerifiedLocation) " +
+                "VALUES(@Id, '" + firstName + "', 1);" +
+                "DECLARE @InfoId uniqueidentifier SET @InfoId = NEWID() " +
+                "INSERT INTO CommunicationTool.dbo.ContactInfo (Id, ContactId, IsVerified, Value, [Type]) " +
+                "VALUES(@InfoId, @Id, 'false', '" + email + "', 4096);";
+        connector.executeQuery(query);
+        LOG.info("Successfully inserted");
+        connector.closeConnection();
+    }
+
     @DataProvider(name = "Filters")
     public static Object[][] credentials() {
         return new Object[][]{

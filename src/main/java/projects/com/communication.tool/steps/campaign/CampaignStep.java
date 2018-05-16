@@ -4,7 +4,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
@@ -41,8 +40,7 @@ public class CampaignStep {
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
         searchInCampaignList(campaignName);
-        WebElement campaignItem = component.getElementInListByText(campaignName, component.getCampaignInList());
-        campaignItem.click();
+        component.clickToElementInListByText(campaignName, component.getCampaignInList());
         component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 

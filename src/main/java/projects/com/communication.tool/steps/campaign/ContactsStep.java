@@ -10,7 +10,7 @@ import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.POSITION_FILTER;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.FIRST_NAME_FILTER;
 import static settings.SQLConnector.EQUAL;
 
 public class ContactsStep {
@@ -52,8 +52,8 @@ public class ContactsStep {
     @Step("Add contacts to campaign")
     public int addContactToCampaign(String value) {
         openContactsPopUp();
-        filtersStep.applyAllFilters(POSITION_FILTER, EQUAL_CRITERION, value);
-        int count = filtersStep.getValueByCriterion("[Position]", EQUAL, value);
+        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, value);
+        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, value);
         filtersStep.waitForRecordsResult(count);
         saveContactsInCampaign();
         return count;

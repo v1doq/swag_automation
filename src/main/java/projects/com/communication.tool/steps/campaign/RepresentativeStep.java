@@ -30,7 +30,7 @@ public class RepresentativeStep {
 
     @Step("Create representative")
     public void createRepresentative(String email, String fromName) {
-        clickAddButton();
+        openRepsFormIfNotDisplayed();
         component.getFromNameInput().sendKeys(fromName);
         if (email.equals(GATEWAY_OUTLOOK_EMAIL)) {
             component.getFromEmailInput().sendKeys(email);
@@ -93,7 +93,7 @@ public class RepresentativeStep {
 
     @Step("Fill representative's fields")
     public void fillRepsFields(String email, String fromName) {
-        clickAddButton();
+        openRepsFormIfNotDisplayed();
         component.getFromNameInput().sendKeys(fromName);
         component.getFromEmailInput().sendKeys(email);
     }
@@ -108,6 +108,7 @@ public class RepresentativeStep {
 
     @Step("Create placeholder")
     private void createPlaceholder(String key, String value) {
+        openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().sendKeys(key, Keys.ENTER);
         component.getPlaceholderValueInput().sendKeys(value);
@@ -115,7 +116,7 @@ public class RepresentativeStep {
 
     @Step("Is placeholder displayed in list")
     public boolean isPlaceholderDisplayedInList(String key) {
-        clickAddButton();
+        openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().click();
         WebElement element = component.getElementInListByText(key, className("list__tile__title"));
@@ -137,12 +138,10 @@ public class RepresentativeStep {
         return valueInDB.equals(fromName);
     }
 
-    private void clickAddButton() {
+    private void openRepsFormIfNotDisplayed() {
         if (component.isElementPresent(cssSelector(".gateways__add-new > button"))) {
             component.jsClick(component.getAddButton());
             component.assertThat(elementToBeClickable(component.getNewPlaceholderButton()));
-        } else {
-            LOG.info("Element not found");
         }
     }
 

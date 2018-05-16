@@ -61,6 +61,20 @@ public abstract class ConciseApi {
         }
     }
 
+    public WebElement getElementInListByText(String text, By locator) {
+        LOG.info("Try to get element in list by text: " + text);
+        assertThat(visibilityOfElementLocated(locator));
+        List<WebElement> list = getDriver().findElements(locator);
+        for (WebElement element : list) {
+            if (element.getText().equals(text)) {
+                return element;
+            } else {
+                LOG.info("Element with text: " + text + " not found");
+            }
+        }
+        return null;
+    }
+
     public void clearAndSendKeys(WebElement element, String text) {
         LOG.info("Try to clear field and sent keys: " + text);
         assertThat(elementToBeClickable(element));
@@ -104,20 +118,6 @@ public abstract class ConciseApi {
             }
         }
         return isDisplayed;
-    }
-
-    public WebElement getElementInListByText(String text, By locator) {
-        LOG.info("Try to get element in list by text: " + text);
-        assertThat(visibilityOfElementLocated(locator));
-        List<WebElement> list = getDriver().findElements(locator);
-        for (WebElement element : list) {
-            if (element.getText().equals(text)) {
-                return element;
-            } else {
-                LOG.info("Element with text: " + text + " not found");
-            }
-        }
-        return null;
     }
 
     public static void select(WebElement element, String text) {

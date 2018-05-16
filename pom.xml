@@ -10,7 +10,6 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <aspectj.version>1.8.10</aspectj.version>
     </properties>
 
     <dependencies>
@@ -118,7 +117,7 @@
                     <dependency>
                         <groupId>org.aspectj</groupId>
                         <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
+                        <version>1.8.10</version>
                     </dependency>
                 </dependencies>
             </plugin>
