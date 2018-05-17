@@ -40,6 +40,7 @@ public class FiltersTest extends SuiteTestCT {
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
+        filtersStep.deleteContactFromDb(firstName, email);
     }
 
     @Ignore
@@ -69,5 +70,6 @@ public class FiltersTest extends SuiteTestCT {
         filtersStep.waitForRecordsResult(1);
 
         assertEquals(filtersStep.getRecordsCounter(), "1");
+        filtersStep.deleteContactFromDb(firstName, email);
     }
 }

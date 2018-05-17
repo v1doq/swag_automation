@@ -5,8 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.*;
 
 public class TemplateComponent extends BaseComponent {
 
@@ -23,7 +22,7 @@ public class TemplateComponent extends BaseComponent {
     }
 
     public WebElement getBodyInput(){
-        return $(cssSelector(".ql-editor"));
+        return $(id("tinymce"));
     }
 
     public WebElement getSaveButton(){

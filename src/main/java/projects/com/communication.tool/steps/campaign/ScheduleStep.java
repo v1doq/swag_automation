@@ -8,6 +8,7 @@ import settings.SQLConnector;
 
 import java.util.List;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 
 public class ScheduleStep {
@@ -21,6 +22,7 @@ public class ScheduleStep {
     @Step("Open schedule tab")
     public void openScheduleTab() {
         component.scrollUp();
+        component.assertThat(elementToBeClickable(component.getScheduleTab()));
         component.getScheduleTab().click();
     }
 

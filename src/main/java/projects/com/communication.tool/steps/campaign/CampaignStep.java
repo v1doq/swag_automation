@@ -65,9 +65,7 @@ public class CampaignStep {
     @Step("Update campaign's name and description")
     public void updateCampaign(String campaignName, String campaignDesc) {
         updateCampaignName(campaignName);
-        component.getEditCampaignDescButton().click();
-        component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
-        component.getUpdateCampaignDescButton().click();
+        updateCampaignDesc(campaignDesc);
     }
 
     @Step("Update campaign's name")
@@ -75,13 +73,22 @@ public class CampaignStep {
         component.getEditCampaignNameButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignNameInput(), campaignName);
         component.getUpdateCampaignNameButton().click();
+        component.waitForText(component.getCampaignNameInPreview(), campaignName);
     }
 
-    public String getCampaignNameInPreview(){
+    @Step("Update campaign's desc")
+    private void updateCampaignDesc(String campaignDesc) {
+        component.getEditCampaignDescButton().click();
+        component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
+        component.getUpdateCampaignDescButton().click();
+        component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
+    }
+
+    public String getCampaignNameInPreview() {
         return component.getEditCampaignNameButton().getText();
     }
 
-    public String getCampaignDescInPreview(){
+    public String getCampaignDescInPreview() {
         return component.getEditCampaignDescButton().getText();
     }
 

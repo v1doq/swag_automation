@@ -8,6 +8,7 @@ import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.FIRST_NAME_FILTER;
@@ -26,6 +27,7 @@ public class ContactsStep {
     @Step("Open contacts tab")
     public void openContactsTab() {
         component.scrollUp();
+        component.assertThat(elementToBeClickable(component.getContactsTab()));
         component.getContactsTab().click();
     }
 
