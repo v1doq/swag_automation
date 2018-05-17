@@ -110,12 +110,16 @@ public abstract class ConciseApi {
     public boolean isTextDisplayed(String text, By locator) {
         LOG.info("Is text displayed: " + text);
         boolean isDisplayed = false;
-        List<WebElement> list = getDriver().findElements(locator);
-        for (WebElement element : list) {
-            if (element.getText().contains(text)) {
-                isDisplayed = true;
-                break;
+        try {
+            List<WebElement> list = getDriver().findElements(locator);
+            for (WebElement element : list) {
+                if (element.getText().contains(text)) {
+                    isDisplayed = true;
+                    break;
+                }
             }
+        } catch (StaleElementReferenceException e){
+            return false;
         }
         return isDisplayed;
     }
