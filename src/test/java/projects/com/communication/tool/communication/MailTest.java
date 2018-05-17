@@ -5,10 +5,7 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import projects.com.communication.tool.steps.campaign.*;
 import projects.com.communication.tool.steps.contacts.FiltersStep;
 
@@ -32,14 +29,21 @@ public class MailTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
+    private FiltersStep filtersStep;
     private String firstName = randomAlphabetic(5);
     private String email = randomAlphabetic(5) + "@i.ua";
 
     @BeforeClass(description = "Clean the mail folder", alwaysRun = true)
     public void cleanMailFolder() {
         cleanMailFolders();
-        FiltersStep filtersStep = new FiltersStep(driver);
+        filtersStep = new FiltersStep(driver);
         filtersStep.insertContactToDb(firstName, email);
+    }
+
+    @AfterClass(description = "Delete contact from the database", alwaysRun = true)
+    public void deleteContactFromDb() {
+        filtersStep = new FiltersStep(driver);
+        filtersStep.deleteContactFromDb(firstName, email);
     }
 
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)
@@ -89,7 +93,11 @@ public class MailTest extends SuiteTestCT {
             LOG.info("Text: " + messageBody);
             assertEquals(message.getSubject(), subj);
             assertTrue(message.getFrom()[0].toString().contains(fromEmail));
-            assertTrue(messageBody.contains(body + fromName + fromEmail + repsValue + firstName));
+            assertTrue(messageBody.contains(body));
+            assertTrue(messageBody.contains(fromName));
+            assertTrue(messageBody.contains(fromEmail));
+            assertTrue(messageBody.contains(repsValue));
+            assertTrue(messageBody.contains(firstName));
         }
     }
 

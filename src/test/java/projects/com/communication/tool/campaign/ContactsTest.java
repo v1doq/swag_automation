@@ -46,19 +46,21 @@ public class ContactsTest extends SuiteTestCT {
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "smoke test", description = "Add contacts to campaign")
     public void addContactsToCampaign() {
-        String value = "Regulatory Affairs Associate";
+        String firstName = randomAlphabetic(5);
+        String email = randomAlphabetic(5) + "@i.ua";
+        filtersStep.insertContactToDb(firstName, email);
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
         contactsStep.openContactsTab();
 
         contactsStep.openContactsPopUp();
-        filtersStep.applyAllFilters(POSITION_FILTER, EQUAL_CRITERION, value);
-        int count = filtersStep.getValueByCriterion("[Position]", EQUAL, value);
-
+        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
+        int count = filtersStep.getValueByCriterion("FirstName", EQUAL, firstName);
         filtersStep.waitForRecordsResult(count);
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
-
         contactsStep.saveContactsInCampaign();
-        assertTrue(contactsStep.isContactsAddedToCampaign("Jaclyn"));
+
+        assertTrue(contactsStep.isContactsAddedToCampaign(firstName));
+        filtersStep.deleteContactFromDb(firstName, email);
     }
 }

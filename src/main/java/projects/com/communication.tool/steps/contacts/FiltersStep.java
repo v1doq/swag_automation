@@ -91,6 +91,17 @@ public class FiltersStep {
         connector.closeConnection();
     }
 
+    @Step("Delete contact from the database")
+    public void deleteContactFromDb(String firstName, String email) {
+        LOG.info("Delete contact from the database with first name and email : " + firstName + ", " + email);
+        SQLConnector connector = new SQLConnector();
+        String query = "DELETE FROM CommunicationTool.dbo.ContactInfo WHERE Value='" + email + "';" +
+                        "DELETE FROM CommunicationTool.dbo.Contact WHERE FirstName='" + firstName + "';";
+        connector.executeQuery(query);
+        LOG.info("Successfully deleted");
+        connector.closeConnection();
+    }
+
     @DataProvider(name = "Filters")
     public static Object[][] credentials() {
         return new Object[][]{

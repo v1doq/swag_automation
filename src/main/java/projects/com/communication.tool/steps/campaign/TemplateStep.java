@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.TemplateComponent;
 import settings.SQLConnector;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 
 public class TemplateStep {
@@ -18,11 +19,13 @@ public class TemplateStep {
     @Step("Open template tab")
     public void openTemplateTab() {
         component.scrollUp();
+        component.assertThat(elementToBeClickable(component.getTemplateTab()));
         component.getTemplateTab().click();
     }
 
     @Step("Add placeholder to template")
     public void addPlaceholderToTemplate(String repsName, String repsEmail, String repsKey, String contactData) {
+        component.assertThat(elementToBeClickable(component.getRepsPlaceholderButton()));
         component.clickToElementInListByText(repsName, component.getRepsPlaceholderButton());
         component.clickToElementInListByText(repsEmail, component.getRepsPlaceholderButton());
         component.clickToElementInListByText(repsKey, component.getRepsPlaceholderButton());
@@ -32,7 +35,9 @@ public class TemplateStep {
     @Step("Add subject, body and update template")
     public void updateTemplate(String subj, String body) {
         component.getSubjectInput().sendKeys(subj);
+        component.getDriver().switchTo().frame(0);
         component.getBodyInput().sendKeys(body);
+        component.getDriver().switchTo().defaultContent();
         component.getSaveButton().click();
     }
 
