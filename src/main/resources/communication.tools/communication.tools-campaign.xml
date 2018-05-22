@@ -9,6 +9,7 @@
         </groups>
         <classes>
             <class name="projects.com.communication.tool.campaign.CampaignTest"/>
+            <class name="projects.com.communication.tool.campaign.ContactsTest"/>
         </classes>
     </test>
     <test name="Representative positive tests">

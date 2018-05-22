@@ -6,6 +6,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
@@ -73,6 +74,19 @@ public abstract class ConciseApi {
             }
         }
         return null;
+    }
+
+    public int getListSizeByText(By locator, String text) {
+        LOG.info("Get list size" + locator);
+        List<WebElement> listByText = new ArrayList<>();
+        assertThat(visibilityOfElementLocated(locator));
+        List<WebElement> list = getDriver().findElements(locator);
+        for (WebElement element : list) {
+            if (element.getText().equals(text)) {
+                listByText.add(element);
+            }
+        }
+        return listByText.size();
     }
 
     public void clearAndSendKeys(WebElement element, String text) {

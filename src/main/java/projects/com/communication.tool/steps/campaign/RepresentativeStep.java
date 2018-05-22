@@ -8,7 +8,6 @@ import org.testng.annotations.DataProvider;
 import projects.com.communication.tool.components.campaign.RepresentativeComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.TIME_OUT;
 import static common.ConciseApi.sleep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.*;
@@ -85,9 +84,13 @@ public class RepresentativeStep {
 
     @Step("Is representative was created")
     public boolean isFromNameDisplayedInRepsCards(String fromName) {
-        component.implicitlyWait(3);
-        boolean isDisplayed = component.isTextDisplayed(fromName, className("card__textfield"));
-        component.implicitlyWait(TIME_OUT);
+        boolean isDisplayed;
+        if (component.isTextDisplayed("settings error", className("error-message"))) {
+            return false;
+        } else {
+            sleep(2000);
+            isDisplayed = component.isTextDisplayed(fromName, className("card__textfield"));
+        }
         return isDisplayed;
     }
 
