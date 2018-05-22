@@ -13,10 +13,11 @@ import projects.com.communication.tool.steps.campaign.ContactsStep;
 import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
+import static org.testng.Assert.*;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_CAMPAIGN_NAME_LENGTH;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_COMPANY_NAME_LENGTH;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.FIRST_NAME_FILTER;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Campaign")
@@ -27,12 +28,12 @@ public class ContactsTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private FiltersStep filtersStep;
     private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
-    private String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
     public void createCampaign() {
         campaignStep = new CampaignStep(driver);
-        campaignStep.createCampaignInDB(campaignName, companyName);
+        filtersStep = new FiltersStep(driver);
+        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
     }
 
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
@@ -62,5 +63,37 @@ public class ContactsTest extends SuiteTestCT {
 
         assertTrue(contactsStep.isContactsAddedToCampaign(firstName));
         filtersStep.deleteContactFromDb(firstName, email);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Try to add the same contact twice")
+    public void tryToAddContactTwice() {
+        String firstName = randomAlphabetic(5);
+        String email = randomAlphabetic(5) + "@i.ua";
+        filtersStep.insertContactToDb(firstName, email);
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
+        contactsStep.openContactsTab();
+
+        int count = contactsStep.addContactToCampaign(firstName);
+        contactsStep.addContactToCampaign(firstName);
+
+        assertEquals(count, contactsStep.getContactsListSizeByText(firstName));
+        filtersStep.deleteContactFromDb(firstName, email);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Try to add contact without email")
+    public void tryToAddContactWithoutEmail() {
+        String firstName = randomAlphabetic(5);
+        filtersStep.insertContactToDb(firstName);
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
+        contactsStep.openContactsTab();
+
+        contactsStep.addContactToCampaign(firstName);
+        assertFalse(contactsStep.isContactsAddedToCampaign(firstName));
+
+        filtersStep.deleteContactFromDb(firstName);
     }
 }

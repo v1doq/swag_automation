@@ -94,7 +94,7 @@ public class RepresentativeTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "sanity positive reps", description = "Delete representative")
+    @Test(groups = "sanity positive reps", timeOut = 120000, description = "Delete representative")
     public void deleteRepresentative() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
@@ -108,7 +108,8 @@ public class RepresentativeTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "sanity positive reps", description = "Check created placeholder in all campaign's representative")
+    @Test(groups = "sanity positive reps", timeOut = 120000,
+            description = "Check created placeholder in all campaign's representative")
     public void checkCreatedPlaceholderInSecondCampaignsReps() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String fromName = randomAlphabetic(5);
