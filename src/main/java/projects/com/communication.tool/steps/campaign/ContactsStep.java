@@ -7,7 +7,8 @@ import projects.com.communication.tool.components.campaign.ContactsComponent;
 import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static common.ConciseApi.sleep;
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
@@ -48,12 +49,11 @@ public class ContactsStep {
     public void saveContactsInCampaign() {
         component.getAddContactButton().click();
         component.assertThat(attributeContains(component.getAddContactButton(), "disabled", "true"));
-        component.assertThat(elementToBeClickable(component.getOpenPopUpButton()));
+        sleep(3000);
     }
 
     @Step("Verify that contacts are displayed in the contact's table")
     public boolean isContactsAddedToCampaign(String value) {
-        sleep(3000);
         return component.isTextDisplayed(value, component.getContactsTable());
     }
 
