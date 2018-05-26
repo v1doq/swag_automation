@@ -79,6 +79,10 @@ public class CampaignComponent extends BaseComponent {
         return by(className("campaign-preview__title"));
     }
 
+    public WebElement getCampaignNameInPreviewElement(){
+        return $(className("campaign-preview__title"));
+    }
+
     public By getCampaignDescInPreview(){
         return by(className("campaign-preview__description"));
     }

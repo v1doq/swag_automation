@@ -3,6 +3,7 @@ package projects.com.communication.tool.steps.campaign;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
@@ -41,7 +42,17 @@ public class CampaignStep {
     public void selectCampaignInList(String campaignName) {
         searchInCampaignList(campaignName);
         component.clickToElementInListByText(campaignName, component.getCampaignInList());
-        component.waitForText(component.getCampaignNameInPreview(), campaignName);
+        try {
+            component.waitForText(component.getCampaignNameInPreview(), campaignName);
+        } catch (TimeoutException e){
+            while (!component.getCampaignNameInPreviewElement().getText().equals(campaignName)){
+                component.getDriver().navigate().refresh();
+                selectCampaignInList(campaignName);
+                if (component.getCampaignNameInPreviewElement().getText().equals(campaignName)){
+                    break;
+                }
+            }
+        }
     }
 
     @Step("Open campaign pop up")
