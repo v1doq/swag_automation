@@ -29,7 +29,7 @@ public class ScheduleStep {
     @Step("Update all default schedule values")
     public void updateSchedule(String interval) {
         component.clearAndSendKeys(component.getIntervalInput(), interval);
-        selectAllDays();
+//        selectAllDays(); need to add unique locator
         component.getStartTimeInput().sendKeys("01:00 AM");
         component.getEndTimeInput().sendKeys("11:00 PM");
         component.getSaveButton().click();

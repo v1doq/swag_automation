@@ -36,7 +36,7 @@ public class CampaignTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Create new company and add campaign to it")
+    @Test(groups = {"smoke test", "sanity campaign"}, description = "Create new company and add campaign to it")
     public void createNewCompanyAndAddCampaignToIt() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
@@ -48,7 +48,7 @@ public class CampaignTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Add campaign to existing company")
+    @Test(groups = {"smoke test", "sanity campaign"}, description = "Add campaign to existing company")
     public void addCampaignToExistingCompany() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         campaignStep.openCampaignPage();

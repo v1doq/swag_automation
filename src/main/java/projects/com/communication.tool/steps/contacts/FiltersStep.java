@@ -14,6 +14,9 @@ import static settings.TestConfig.getProperty;
 public class FiltersStep {
 
     private FiltersComponent component;
+    public static final String ENTITY_USER = "User";
+    public static final String ENTITY_PROSPECT = "Prospect";
+
     private static final String CONTAINS_CRITERION = "Contains";
     private static final String START_WITH_CRITERION = "Starts With";
     private static final String ENDS_WITH_CRITERION = "Ends With";
@@ -22,7 +25,6 @@ public class FiltersStep {
     private static final String VALUE = "t";
 
     public static final String FIRST_NAME_FILTER = "First Name";
-    public static final String ID_FILTER = "Id";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
     public FiltersStep(WebDriver driver) {
@@ -35,7 +37,10 @@ public class FiltersStep {
     }
 
     @Step("Apply all filters")
-    public void applyAllFilters(String column, String criterion, String value) {
+    public void applyAllFilters(String entity, String column, String criterion, String value) {
+        component.getEntityInput().sendKeys(entity);
+        component.waitForText(component.getSearchResult(), entity);
+        component.getEntityInput().sendKeys(Keys.ENTER);
         component.getFieldInput().sendKeys(column);
         component.waitForText(component.getSearchResult(), column);
         component.getFieldInput().sendKeys(Keys.ENTER);
@@ -65,14 +70,6 @@ public class FiltersStep {
         }
         SQLConnector connector = new SQLConnector();
         return connector.getIntValueInDB(query, "total");
-    }
-
-    @Step("Get value in contact table in the database")
-    public String getValueInContactTableDB(String column) {
-        LOG.info("Get value in contact table in the database");
-        SQLConnector connector = new SQLConnector();
-        String query = "SELECT " + column + " FROM CommunicationTool.dbo.Contact";
-        return connector.getStringValueInDB(query, column);
     }
 
     @Step("Insert contact to the database")

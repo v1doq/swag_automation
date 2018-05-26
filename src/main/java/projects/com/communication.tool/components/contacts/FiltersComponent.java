@@ -14,6 +14,10 @@ public class FiltersComponent extends BaseComponent {
         super(driver);
     }
 
+    public WebElement getEntityInput(){
+        return $(cssSelector("[placeholder = \"Select Entity\"]"));
+    }
+
     public WebElement getFieldInput(){
         return $(cssSelector("[placeholder = \"Select Field\"]"));
     }
