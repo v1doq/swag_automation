@@ -38,7 +38,7 @@ public class ScheduleTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Update schedule parameters")
+    @Test(groups = {"smoke test", "sanity campaign"}, description = "Update schedule parameters")
     public void updateScheduleParametersAndCheckItInDb() {
         String interval = "1";
         campaignStep.openCampaignPage();

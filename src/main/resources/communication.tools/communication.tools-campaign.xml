@@ -10,6 +10,8 @@
         <classes>
             <class name="projects.com.communication.tool.campaign.CampaignTest"/>
             <class name="projects.com.communication.tool.campaign.ContactsTest"/>
+            <class name="projects.com.communication.tool.campaign.ScheduleTest"/>
+            <class name="projects.com.communication.tool.campaign.TemplateTest"/>
         </classes>
     </test>
     <test name="Representative positive tests">

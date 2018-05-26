@@ -8,8 +8,7 @@ import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.FIRST_NAME_FILTER;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
 public class ContactsStep {
@@ -38,7 +37,7 @@ public class ContactsStep {
     @Step("Add contacts to campaign")
     public int addContactToCampaign(String firstName) {
         openContactsPopUp();
-        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
+        filtersStep.applyAllFilters(ENTITY_USER, FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, firstName);
         filtersStep.waitForRecordsResult(count);
         saveContactsInCampaign();

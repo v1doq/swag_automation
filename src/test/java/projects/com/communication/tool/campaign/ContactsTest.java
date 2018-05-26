@@ -14,10 +14,8 @@ import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
-import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_CAMPAIGN_NAME_LENGTH;
-import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_COMPANY_NAME_LENGTH;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.EQUAL_CRITERION;
-import static projects.com.communication.tool.steps.contacts.FiltersStep.FIRST_NAME_FILTER;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Campaign")
@@ -45,7 +43,7 @@ public class ContactsTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Add contacts to campaign")
+    @Test(groups = {"smoke test", "sanity campaign"}, description = "Add contacts to campaign")
     public void addContactsToCampaign() {
         String firstName = randomAlphabetic(5);
         String email = randomAlphabetic(5) + "@i.ua";
@@ -55,7 +53,7 @@ public class ContactsTest extends SuiteTestCT {
         contactsStep.openContactsTab();
 
         contactsStep.openContactsPopUp();
-        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
+        filtersStep.applyAllFilters(ENTITY_USER, FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, firstName);
         filtersStep.waitForRecordsResult(count);
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));

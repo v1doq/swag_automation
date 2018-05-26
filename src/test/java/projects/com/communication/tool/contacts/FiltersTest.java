@@ -28,14 +28,14 @@ public class FiltersTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Apply all filters and check count of records in counter")
+    @Test(groups = {"smoke test", "filters"}, description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
         String firstName = randomAlphabetic(5);
         String email = randomAlphabetic(5) + "@i.ua";
         filtersStep.insertContactToDb(firstName, email);
 
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
+        filtersStep.applyAllFilters(ENTITY_USER, FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
         int count = filtersStep.getValueByCriterion("FirstName", EQUAL, firstName);
         filtersStep.waitForRecordsResult(count);
 
@@ -50,26 +50,10 @@ public class FiltersTest extends SuiteTestCT {
     public void filteringByName(String column, String criterion, String value, String columnDb, String criterionDB,
                                      String valueDB) {
         filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(column, criterion, value);
+        filtersStep.applyAllFilters(ENTITY_USER, column, criterion, value);
         int count = filtersStep.getValueByCriterion(columnDb, criterionDB, valueDB);
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
-    }
-
-    @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "filters", description = "Check count of records with filter by ID")
-    public void checkCountOfRecordsWithFilterById(){
-        String firstName = randomAlphabetic(5);
-        String email = randomAlphabetic(5) + "@i.ua";
-        filtersStep.insertContactToDb(firstName, email);
-        String value = filtersStep.getValueInContactTableDB(ID_FILTER);
-
-        filtersStep.openContactsPage();
-        filtersStep.applyAllFilters(ID_FILTER, EQUAL_CRITERION, value);
-        filtersStep.waitForRecordsResult(1);
-
-        assertEquals(filtersStep.getRecordsCounter(), "1");
-        filtersStep.deleteContactFromDb(firstName, email);
     }
 }

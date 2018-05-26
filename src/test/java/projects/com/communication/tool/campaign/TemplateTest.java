@@ -38,7 +38,7 @@ public class TemplateTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Update template values")
+    @Test(groups = {"smoke test", "sanity campaign"}, description = "Update template values")
     public void updateTemplateAndCheckItInDb() {
         String subj = randomAlphabetic(10);
         String body = randomAlphabetic(10);
