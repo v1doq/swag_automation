@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Communication tools - sanity tests for campaign" parallel="tests" thread-count="3">
-    <test name="Campaign creation tests">
+    <test name="Campaign creation/tabs tests">
         <groups>
             <run>
                 <include name="sanity campaign"/>
