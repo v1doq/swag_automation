@@ -7,7 +7,6 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.*;
 import projects.com.communication.tool.steps.campaign.*;
-import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -16,8 +15,9 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.communication.MailStep.*;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
+import static projects.com.communication.tool.steps.communication.MailStep.*;
 import static settings.SeleniumListener.LOG;
 
 @Feature("Communication")
@@ -29,21 +29,20 @@ public class MailTest extends SuiteTestCT {
     private ContactsStep contactsStep;
     private ScheduleStep scheduleStep;
     private TemplateStep templateStep;
-    private FiltersStep filtersStep;
     private String firstName = randomAlphabetic(5);
     private String email = randomAlphabetic(5) + "@i.ua";
 
     @BeforeClass(description = "Clean the mail folder", alwaysRun = true)
     public void cleanMailFolder() {
         cleanMailFolders();
-        filtersStep = new FiltersStep(driver);
-        filtersStep.insertContactToDb(firstName, email);
+        contactsStep = new ContactsStep(driver);
+        contactsStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
     }
 
     @AfterClass(description = "Delete contact from the database", alwaysRun = true)
     public void deleteContactFromDb() {
-        filtersStep = new FiltersStep(driver);
-        filtersStep.deleteContactFromDb(firstName, email);
+        contactsStep = new ContactsStep(driver);
+        contactsStep.deleteContactFromDb(firstName, email);
     }
 
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)

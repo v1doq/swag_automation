@@ -15,6 +15,9 @@ import projects.com.communication.tool.steps.contacts.FiltersStep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.ALTERNATE_EMAIL_TYPE;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.PERSONAL_EMAIL_TYPE;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
@@ -47,10 +50,8 @@ public class ContactsTest extends SuiteTestCT {
     public void addContactsToCampaign() {
         String firstName = randomAlphabetic(5);
         String email = randomAlphabetic(5) + "@i.ua";
-        filtersStep.insertContactToDb(firstName, email);
-        campaignStep.openCampaignPage();
-        campaignStep.selectCampaignInList(campaignName);
-        contactsStep.openContactsTab();
+        contactsStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
+        goToContactsTab();
 
         contactsStep.openContactsPopUp();
         filtersStep.applyAllFilters(ENTITY_USER, FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
@@ -60,7 +61,27 @@ public class ContactsTest extends SuiteTestCT {
         contactsStep.saveContactsInCampaign();
 
         assertTrue(contactsStep.isContactsAddedToCampaign(firstName));
-        filtersStep.deleteContactFromDb(firstName, email);
+        contactsStep.deleteContactFromDb(firstName, email);
+    }
+
+    @Severity(SeverityLevel.CRITICAL)
+    @Test(groups = "sanity campaign", description = "Add contacts with personal and alternate emails")
+    public void addContactsWithPersonalAndAlternateEmail() {
+        String firstName = randomAlphabetic(5);
+        String secondName = randomAlphabetic(5);
+        String personalEmail = randomAlphabetic(5) + "@i.ua";
+        String alternateEmail = randomAlphabetic(5) + "@i.ua";
+        contactsStep.insertContactToDb(firstName, personalEmail, PERSONAL_EMAIL_TYPE);
+        contactsStep.insertContactToDb(secondName, alternateEmail, ALTERNATE_EMAIL_TYPE);
+
+        goToContactsTab();
+        contactsStep.addContactToCampaign(firstName);
+        contactsStep.addContactToCampaign(secondName);
+
+        assertTrue(contactsStep.isContactsAddedToCampaign(firstName));
+        assertTrue(contactsStep.isContactsAddedToCampaign(secondName));
+        contactsStep.deleteContactFromDb(firstName, personalEmail);
+        contactsStep.deleteContactFromDb(secondName, alternateEmail);
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -68,30 +89,32 @@ public class ContactsTest extends SuiteTestCT {
     public void tryToAddContactTwice() {
         String firstName = randomAlphabetic(5);
         String email = randomAlphabetic(5) + "@i.ua";
-        filtersStep.insertContactToDb(firstName, email);
-        campaignStep.openCampaignPage();
-        campaignStep.selectCampaignInList(campaignName);
-        contactsStep.openContactsTab();
+        contactsStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
+        goToContactsTab();
 
-        int count = contactsStep.addContactToCampaign(firstName);
+        int countOfContacts = contactsStep.addContactToCampaign(firstName);
         contactsStep.addContactToCampaign(firstName);
 
-        assertEquals(count, contactsStep.getContactsListSizeByText(firstName));
-        filtersStep.deleteContactFromDb(firstName, email);
+        assertEquals(countOfContacts, contactsStep.getContactsListSizeByText(firstName));
+        contactsStep.deleteContactFromDb(firstName, email);
     }
 
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "sanity campaign", description = "Try to add contact without email")
     public void tryToAddContactWithoutEmail() {
         String firstName = randomAlphabetic(5);
-        filtersStep.insertContactToDb(firstName);
+        contactsStep.insertContactToDb(firstName);
+        goToContactsTab();
+
+        contactsStep.addContactToCampaign(firstName);
+
+        assertFalse(contactsStep.isContactsAddedToCampaign(firstName));
+        contactsStep.deleteContactFromDb(firstName);
+    }
+
+    private void goToContactsTab(){
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
         contactsStep.openContactsTab();
-
-        contactsStep.addContactToCampaign(firstName);
-        assertFalse(contactsStep.isContactsAddedToCampaign(firstName));
-
-        filtersStep.deleteContactFromDb(firstName);
     }
 }
