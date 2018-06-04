@@ -159,7 +159,6 @@ public class CampaignStep {
         String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'" +
                 "AND Name ='" + campaignName + "'";
         String campaignNameInDb = connector.getStringValueInDB(queryCampaign, "Name");
-        connector.closeConnection();
         return campaignNameInDb.equals(campaignName);
     }
 
@@ -180,6 +179,5 @@ public class CampaignStep {
                 ",'FLE Standard Time', 124, '', '', 1);";
         connector.executeQuery(query);
         LOG.info("Successfully created");
-        connector.closeConnection();
     }
 }

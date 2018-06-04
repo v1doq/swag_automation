@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Communication tools - sanity tests for import">
+    <test name="Import tests">
+        <groups>
+            <run>
+                <include name="sanity import"/>
+            </run>
+        </groups>
+        <classes>
+            <class name="projects.com.communication.tool.contacts.ImportTest"/>
+        </classes>
+    </test>
+</suite>
