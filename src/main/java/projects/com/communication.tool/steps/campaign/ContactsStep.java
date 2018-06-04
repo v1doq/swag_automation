@@ -81,7 +81,6 @@ public class ContactsStep {
                 "VALUES(@InfoId, @Id, 'false', '" + email + "', '" + type + "');";
         connector.executeQuery(query);
         LOG.info("Successfully inserted");
-        connector.closeConnection();
     }
 
     @Step("Delete contact from the database")
@@ -92,7 +91,6 @@ public class ContactsStep {
                 "DELETE FROM CommunicationTool.dbo.Contact WHERE FirstName='" + firstName + "';";
         connector.executeQuery(query);
         LOG.info("Successfully deleted");
-        connector.closeConnection();
     }
 
     @Step("Insert contact to the database")
@@ -104,7 +102,6 @@ public class ContactsStep {
                 "VALUES(@Id, '" + firstName + "', 1);";
         connector.executeQuery(query);
         LOG.info("Successfully inserted");
-        connector.closeConnection();
     }
 
     @Step("Delete contact from the database")
@@ -114,6 +111,5 @@ public class ContactsStep {
         String query = "DELETE FROM CommunicationTool.dbo.Contact WHERE FirstName='" + firstName + "';";
         connector.executeQuery(query);
         LOG.info("Successfully deleted");
-        connector.closeConnection();
     }
 }

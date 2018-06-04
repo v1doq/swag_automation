@@ -48,9 +48,7 @@ public class TemplateStep {
         String campaignId = connector.getStringValueInDB("SELECT Id FROM CommunicationTool.dbo." +
                 "Campaign WHERE Name = '" + campaignName + "'", "Id");
         LOG.info("Get subject in the database");
-        String subj = connector.getStringValueInDB("SELECT Template_Subject FROM CommunicationTool.dbo." +
+        return connector.getStringValueInDB("SELECT Template_Subject FROM CommunicationTool.dbo." +
                 "EmailCommunication WHERE CampaignId = '" + campaignId + "'", "Template_Subject");
-        connector.closeConnection();
-        return subj;
     }
 }

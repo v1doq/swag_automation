@@ -6,15 +6,15 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.contacts.ImportStep;
 import projects.com.communication.tool.steps.user.LoginStepCT;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertTrue;
 
 @Feature("Import")
-@Story("Functional tests for file import")
+@Story("Functional tests for import")
 public class ImportTest extends BaseTest {
 
     private ImportStep importStep;
@@ -26,15 +26,25 @@ public class ImportTest extends BaseTest {
         loginStep.authorization();
     }
 
-    @Ignore
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "smoke test", description = "Upload valid file")
-    public void uploadFile() {
+    @Test(groups = "sanity import", timeOut = 900000, description = "Upload file for import")
+    public void uploadFileForImport() throws Exception {
+        String fullName = randomAlphabetic(10);
+        String workEmail = randomAlphabetic(10).toLowerCase() + "@gmail.com";
+        String companyName = randomAlphabetic(10);
+        String email = randomAlphabetic(10).toLowerCase() + "@outlook.com";
+
+        importStep.updateImportFile(fullName, workEmail, companyName, email);
         importStep.openImportPage();
         importStep.uploadFile();
-        assertTrue(importStep.isMappingSuccess());
+        assertTrue(importStep.isMappingSuccess(fullName, workEmail, companyName, email));
 
         importStep.sendFile();
         assertTrue(importStep.isFileNameInHistoryTable());
+
+        assertTrue(importStep.isFullNameSavedToDb(fullName));
+        assertTrue(importStep.isWorkEmailSavedToDb(workEmail));
+        assertTrue(importStep.isCompanyNameSavedToDb(companyName));
+        assertTrue(importStep.isEmailSavedToDb(email));
     }
 }

@@ -6,18 +6,23 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
+import static java.awt.Toolkit.getDefaultToolkit;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 
 public abstract class ConciseApi {
 
     public abstract WebDriver getDriver();
-    public static final long TIME_OUT = 15;
+
+    private static final long TIME_OUT = 15;
 
     protected WebElement $(By locator) {
         WebElement element = null;
@@ -132,7 +137,7 @@ public abstract class ConciseApi {
                     break;
                 }
             }
-        } catch (StaleElementReferenceException e){
+        } catch (StaleElementReferenceException e) {
             return false;
         }
         return isDisplayed;
@@ -142,12 +147,6 @@ public abstract class ConciseApi {
         LOG.info("Try to select element in dropdown by text: " + text);
         Select dropdown = new Select(element);
         dropdown.selectByVisibleText(text);
-    }
-
-    public static String getFirstSelectedOption(WebElement element) {
-        LOG.info("Try to get text of first element in dropdown");
-        Select dropdown = new Select(element);
-        return dropdown.getFirstSelectedOption().getText();
     }
 
     public void waitForText(By by, String value) {
@@ -186,7 +185,25 @@ public abstract class ConciseApi {
         sleep(500);
     }
 
-    public void implicitlyWait(long time){
+    public void implicitlyWait(long time) {
         getDriver().manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
+    }
+
+    public static void uploadFileFromModalWindow(String filePath) {
+        StringSelection ss = new StringSelection(filePath);
+        getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+        sleep(1000);
+        try {
+            Robot robot = new Robot();
+            robot.keyPress(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_V);
+            robot.keyRelease(KeyEvent.VK_CONTROL);
+            robot.keyPress(KeyEvent.VK_ENTER);
+            robot.keyRelease(KeyEvent.VK_ENTER);
+            sleep(1000);
+        } catch (AWTException e) {
+            e.printStackTrace();
+        }
     }
 }

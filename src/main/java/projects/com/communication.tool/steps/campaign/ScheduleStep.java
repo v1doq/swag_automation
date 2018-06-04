@@ -51,9 +51,7 @@ public class ScheduleStep {
         String campaignId = connector.getStringValueInDB("SELECT Id FROM CommunicationTool.dbo." +
                 "Campaign WHERE Name = '" + campaignName + "'", "Id");
         LOG.info("Get schedule interval in the database");
-        String interval = connector.getStringValueInDB("SELECT Schedule_Interval FROM CommunicationTool.dbo." +
+        return connector.getStringValueInDB("SELECT Schedule_Interval FROM CommunicationTool.dbo." +
                 "EmailCommunication WHERE CampaignId = '" + campaignId + "'", "Schedule_Interval");
-        connector.closeConnection();
-        return interval;
     }
 }
