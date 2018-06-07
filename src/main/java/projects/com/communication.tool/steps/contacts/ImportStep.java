@@ -5,6 +5,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.contacts.ImportComponent;
 import settings.SQLConnector;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static common.ConciseApi.sleep;
@@ -43,7 +44,8 @@ public class ImportStep {
     @Step("Upload file")
     public void uploadFile() {
         component.getUploadButton().click();
-        uploadFileFromModalWindow(FILE_PATH);
+        File file = new File(FILE_PATH);
+        uploadFileFromModalWindow(file.getAbsolutePath());
     }
 
     @Step("Verify column mapping")
