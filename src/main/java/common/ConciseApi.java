@@ -190,18 +190,25 @@ public abstract class ConciseApi {
     }
 
     public static void uploadFileFromModalWindow(String filePath) {
+        sleep(3000);
         StringSelection ss = new StringSelection(filePath);
         getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-        sleep(1000);
+        sleep(3000);
         try {
             Robot robot = new Robot();
+            LOG.info("Press VK_CONTROL");
             robot.keyPress(KeyEvent.VK_CONTROL);
+            LOG.info("Press VK_V");
             robot.keyPress(KeyEvent.VK_V);
+            LOG.info("Release VK_V");
             robot.keyRelease(KeyEvent.VK_V);
+            sleep(3000);
+            LOG.info("Release VK_CONTROL");
             robot.keyRelease(KeyEvent.VK_CONTROL);
+            LOG.info("Press VK_ENTER");
             robot.keyPress(KeyEvent.VK_ENTER);
+            LOG.info("Release VK_ENTER");
             robot.keyRelease(KeyEvent.VK_ENTER);
-            sleep(1000);
         } catch (AWTException e) {
             e.printStackTrace();
         }
