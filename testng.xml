@@ -8,10 +8,9 @@
         <suite-file path="src/main/resources/screening/screening-smoke.xml"/>
         <suite-file path="src/main/resources/screening/screening-authorization.xml"/>
         <suite-file path="src/main/resources/password.tools/password.tools-smoke.xml"/>
+        <suite-file path="src/main/resources/communication.tools/communication.tools-smoke.xml"/>
         <suite-file path="src/main/resources/communication.tools/communication.tools-campaign.xml"/>
         <suite-file path="src/main/resources/communication.tools/communication.tools-communication.xml"/>
-        <suite-file path="src/main/resources/communication.tools/communication.tools-filters.xml"/>
         <suite-file path="src/main/resources/communication.tools/communication.tools-import.xml"/>
-        <suite-file path="src/main/resources/communication.tools/communication.tools-smoke.xml"/>
     </suite-files>
 </suite>

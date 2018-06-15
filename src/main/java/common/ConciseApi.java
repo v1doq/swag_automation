@@ -58,6 +58,7 @@ public abstract class ConciseApi {
     public void clickToElementInListByText(String text, By locator) {
         LOG.info("Click to element in list by text: " + text);
         assertThat(visibilityOfElementLocated(locator));
+        assertThat(elementToBeClickable(locator));
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
             if (element.getText().equals(text)) {

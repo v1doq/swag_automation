@@ -8,9 +8,9 @@ import org.openqa.selenium.WebElement;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
 
-public class FiltersComponent extends BaseComponent {
+public class FilterComponent extends BaseComponent {
 
-    public FiltersComponent(WebDriver driver) {
+    public FilterComponent(WebDriver driver) {
         super(driver);
     }
 

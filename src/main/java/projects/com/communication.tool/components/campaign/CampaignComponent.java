@@ -76,7 +76,7 @@ public class CampaignComponent extends BaseComponent {
 
     //PREVIEW
     public By getCampaignNameInPreview(){
-        return by(className("campaign-preview__title"));
+        return by(cssSelector(".campaign-preview__title .editable__text"));
     }
 
     public WebElement getCampaignNameInPreviewElement(){
@@ -84,31 +84,34 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public By getCampaignDescInPreview(){
-        return by(className("campaign-preview__description"));
+        return by(cssSelector(".campaign-preview__description .editable__text"));
     }
 
-    public WebElement getEditCampaignNameButton(){
-        return $(className("editable__text"));
-    }
-
-    public WebElement getUpdateCampaignNameInput(){
-        return $(cssSelector(".editable__text-field > div > div > div.input-group__input > input[type=\"text\"]"));
-    }
-
-    public WebElement getUpdateCampaignNameButton(){
-        return $(className("btn-save"));
-    }
-
-    public WebElement getEditCampaignDescButton(){
+    public WebElement getCampaignDescInPreviewElement(){
         return $(className("campaign-preview__description"));
     }
 
+    public WebElement getEditCampaignNameButton(){
+        return $(cssSelector(".campaign-preview__title .edit-icon__content"));
+    }
+
+    public WebElement getEditCampaignDescButton(){
+        return $(cssSelector(".campaign-preview__description .edit-icon__content"));
+    }
+
+    public WebElement getUpdateCampaignNameInput(){
+        return $(cssSelector(".campaign-preview__title [name=input]"));
+    }
+
     public WebElement getUpdateCampaignDescInput(){
-        return $(cssSelector(".editable__text-field > div > div > div.input-group__input > textarea"));
+        return $(cssSelector(".campaign-preview__description [name=textarea]"));
+    }
+
+    public WebElement getUpdateCampaignNameButton(){
+        return $(cssSelector(".campaign-preview__title .btn-save"));
     }
 
     public WebElement getUpdateCampaignDescButton(){
-        return $(cssSelector("p.campaign-preview__description > div > div.editable__block.editable__block--edit > " +
-                "div.editable__actions > button.btn-save"));
+        return $(cssSelector(".campaign-preview__description .btn-save"));
     }
 }

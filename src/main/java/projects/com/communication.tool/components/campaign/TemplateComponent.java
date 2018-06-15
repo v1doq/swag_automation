@@ -13,10 +13,6 @@ public class TemplateComponent extends BaseComponent {
         super(driver);
     }
 
-    public WebElement getTemplateTab(){
-        return $(cssSelector("div.tabs> ul>li:nth-child(2)"));
-    }
-
     public WebElement getSubjectInput(){
         return $(name("subject"));
     }
@@ -25,15 +21,7 @@ public class TemplateComponent extends BaseComponent {
         return $(id("tinymce"));
     }
 
-    public WebElement getSaveButton(){
-        return $(cssSelector(".is-active > div > button"));
-    }
-
-    public By getRepsPlaceholderButton(){
-        return by(cssSelector(".btn-tag--representative"));
-    }
-
-    public By getContactPlaceholderButton(){
-        return by(cssSelector(".btn-tag--contact"));
+    public By getPlaceholderButton(){
+        return by(cssSelector(".control button.btn-tag"));
     }
 }

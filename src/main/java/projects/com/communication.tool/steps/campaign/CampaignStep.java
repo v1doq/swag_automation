@@ -8,8 +8,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -96,11 +95,11 @@ public class CampaignStep {
     }
 
     public String getCampaignNameInPreview() {
-        return component.getEditCampaignNameButton().getText();
+        return component.getCampaignNameInPreviewElement().getText();
     }
 
     public String getCampaignDescInPreview() {
-        return component.getEditCampaignDescButton().getText();
+        return component.getCampaignDescInPreviewElement().getText();
     }
 
     @Step("Verify that company and campaign are displayed in list")
@@ -170,13 +169,10 @@ public class CampaignStep {
                 "DECLARE @campaignId uniqueidentifier SET @campaignId = NEWID() " +
                 "DECLARE @communicationId uniqueidentifier SET @communicationId = NEWID() " +
                 "INSERT INTO CommunicationTool.dbo.Company (Id, Name) VALUES(@companyId, '" + companyName + "'); " +
-                "INSERT INTO CommunicationTool.dbo.Campaign (Id, CompanyId, Name) " +
-                "VALUES(@campaignId, @companyId, '" + campaignName + "'); " +
-                "INSERT INTO CommunicationTool.dbo.EmailCommunication " +
-                "(Id, CampaignId, CreatedAt, Schedule_EndTime, Schedule_Interval, Schedule_StartTime, " +
-                "Schedule_TimeZone, Schedule_WeekDays, Template_Body, Template_Subject, Status) " +
-                "VALUES(@communicationId, @campaignId, {ts '2018-04-02 10:14:33.019'},'17:00:00.000', 2,'08:00:00.000'" +
-                ",'FLE Standard Time', 124, '', '', 1);";
+                "INSERT INTO CommunicationTool.dbo.Campaign (Id, CompanyId, Name, Schedule_EndTime, Schedule_Interval, " +
+                "Schedule_StartTime, Schedule_TimeZone, Schedule_WeekDays, CreatedAt, RootFlowId, Status)\n" +
+                "VALUES(@campaignId, @companyId, '" + campaignName + "', '23:00:00.000', 30, '06:00:00.000', " +
+                "'FLE Standard Time', 254, {ts '2018-06-13 09:04:06.854'}, NULL, 1);";
         connector.executeQuery(query);
         LOG.info("Successfully created");
     }

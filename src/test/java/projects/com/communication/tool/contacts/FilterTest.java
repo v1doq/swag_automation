@@ -6,9 +6,8 @@ import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
-import projects.com.communication.tool.steps.campaign.ContactsStep;
+import projects.com.communication.tool.steps.campaign.CampaignFiltersStep;
 import projects.com.communication.tool.steps.contacts.FiltersStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
@@ -17,24 +16,24 @@ import static projects.com.communication.tool.steps.contacts.FiltersStep.*;
 import static settings.SQLConnector.EQUAL;
 
 @Feature("Filters")
-@Story("Functional tests for filters")
-public class FiltersTest extends SuiteTestCT {
+@Story("Functional tests for filters selection")
+public class FilterTest extends SuiteTestCT {
 
     private FiltersStep filtersStep;
-    private ContactsStep contactsStep;
+    private CampaignFiltersStep campaignFiltersStep;
 
     @BeforeMethod(description = "Precondition", alwaysRun = true)
     public void setUp() {
         filtersStep = new FiltersStep(driver);
-        contactsStep = new ContactsStep(driver);
+        campaignFiltersStep = new CampaignFiltersStep(driver);
         loginWithToken();
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = {"smoke test", "filters"}, description = "Apply all filters and check count of records in counter")
+    @Test(groups = {"smoke test"}, description = "Apply all filters and check count of records in counter")
     public void selectFilterAndVerifyContactsInCounter() {
         String firstName = randomAlphabetic(5);
-        contactsStep.insertContactToDb(firstName);
+        campaignFiltersStep.insertContactToDb(firstName);
 
         filtersStep.openFiltersPage();
         filtersStep.applyAllFilters(ENTITY_USER, FIRST_NAME_FILTER, EQUAL_CRITERION, firstName);
@@ -42,20 +41,6 @@ public class FiltersTest extends SuiteTestCT {
         filtersStep.waitForRecordsResult(count);
 
         assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
-        contactsStep.deleteContactFromDb(firstName);
-    }
-
-    @Ignore
-    @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "filters", dataProvider = "Filters", dataProviderClass = FiltersStep.class
-            , description = "Check count of records with filter by names")
-    public void filteringByName(String column, String criterion, String value, String columnDb, String criterionDB,
-                                     String valueDB) {
-        filtersStep.openFiltersPage();
-        filtersStep.applyAllFilters(ENTITY_USER, column, criterion, value);
-        int count = filtersStep.getValueByCriterion(columnDb, criterionDB, valueDB);
-        filtersStep.waitForRecordsResult(count);
-
-        assertEquals(filtersStep.getRecordsCounter(), String.valueOf(count));
+        campaignFiltersStep.deleteContactFromDb(firstName);
     }
 }

@@ -15,9 +15,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 
-@Feature("Campaign")
+@Feature("Campaign's CRUD")
 @Story("Functional tests for campaign creation")
-public class CampaignTest extends SuiteTestCT {
+public class CampaignCreationTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
     private String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);

@@ -2,46 +2,43 @@ package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
+import projects.com.communication.tool.components.campaign.FlowComponent;
 import projects.com.communication.tool.components.campaign.TemplateComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import java.util.List;
+
+import static common.ConciseApi.sleep;
 import static settings.SeleniumListener.LOG;
 
 public class TemplateStep {
 
     private TemplateComponent component;
+    private FlowComponent flowComponent;
 
     public TemplateStep(WebDriver driver) {
         this.component = new TemplateComponent(driver);
+        this.flowComponent = new FlowComponent(driver);
     }
 
-    @Step("Open template tab")
-    public void openTemplateTab() {
-        component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getTemplateTab()));
-        component.getTemplateTab().click();
+    @Step("Add placeholders to template")
+    public void addPlaceholderToTemplate(List<String> list) {
+        for (String placeholder: list) {
+            component.clickToElementInListByText(placeholder, component.getPlaceholderButton());
+        }
     }
 
-    @Step("Add placeholder to template")
-    public void addPlaceholderToTemplate(String repsName, String repsEmail, String repsKey, String contactData) {
-        component.assertThat(elementToBeClickable(component.getRepsPlaceholderButton()));
-        component.clickToElementInListByText(repsName, component.getRepsPlaceholderButton());
-        component.clickToElementInListByText(repsEmail, component.getRepsPlaceholderButton());
-        component.clickToElementInListByText(repsKey, component.getRepsPlaceholderButton());
-        component.clickToElementInListByText(contactData, component.getContactPlaceholderButton());
-    }
-
-    @Step("Add subject, body and update template")
-    public void updateTemplate(String subj, String body) {
+    @Step("Create template")
+    public void createTemplate(String subj, String body) {
+        flowComponent.getAddTemplateButton().click();
+        sleep(2000);
         component.getSubjectInput().sendKeys(subj);
         component.getDriver().switchTo().frame(0);
         component.getBodyInput().sendKeys(body);
         component.getDriver().switchTo().defaultContent();
-        component.getSaveButton().click();
     }
 
-    @Step("Verify that template is successfully updated")
+    @Step("Verify that flow is successfully created")
     public String getTemplateSubjInDB(String campaignName) {
         LOG.info("Get campaign id in the database");
         SQLConnector connector = new SQLConnector();
@@ -49,6 +46,6 @@ public class TemplateStep {
                 "Campaign WHERE Name = '" + campaignName + "'", "Id");
         LOG.info("Get subject in the database");
         return connector.getStringValueInDB("SELECT Template_Subject FROM CommunicationTool.dbo." +
-                "EmailCommunication WHERE CampaignId = '" + campaignId + "'", "Template_Subject");
+                "Flow WHERE CampaignId = '" + campaignId + "'", "Template_Subject");
     }
 }
