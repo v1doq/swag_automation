@@ -37,9 +37,9 @@ public class SuiteTestCT extends BaseTest {
     private void cleanDatabase(){
         LOG.info("Clean the database");
         SQLConnector connector = new SQLConnector();
-        connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM Conversation; " +
-                "DELETE FROM EmailCommunication; DELETE FROM EmailGateway; DELETE FROM RepresentativeCampaign; " +
-                "DELETE FROM RepresentativePlaceholder; DELETE FROM Representative; DELETE FROM Campaign; " +
-                "DELETE FROM CompanyPlaceholder; DELETE FROM Company;");
+        connector.executeQuery("USE CommunicationTool DELETE FROM Message; DELETE FROM FlowContactInfo; " +
+                "DELETE FROM Flow; DELETE FROM CampaignFilter; DELETE FROM CampaignContact; DELETE FROM EmailGateway; " +
+                "DELETE FROM RepresentativeCampaign; DELETE FROM RepresentativePlaceholder; DELETE FROM Representative;" +
+                "DELETE FROM Campaign; DELETE FROM CompanyPlaceholder; DELETE FROM Company;");
     }
 }

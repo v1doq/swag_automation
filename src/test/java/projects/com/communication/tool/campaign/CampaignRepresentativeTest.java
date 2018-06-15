@@ -17,9 +17,9 @@ import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
 
-@Feature("Campaign")
+@Feature("Campaign's representative")
 @Story("Functional tests for representative tab in campaign")
-public class RepresentativeTest extends SuiteTestCT {
+public class CampaignRepresentativeTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
     private RepresentativeStep repsStep;

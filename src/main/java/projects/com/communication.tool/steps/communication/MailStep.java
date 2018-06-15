@@ -44,7 +44,7 @@ public class MailStep {
             messages = folder.search(searchCondition);
             while (messages.length != count) {
                 LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
-                sleep(2000);
+                sleep(5000);
                 messages = folder.search(searchCondition);
             }
             LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);

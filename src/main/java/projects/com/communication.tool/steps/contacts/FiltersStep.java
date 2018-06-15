@@ -3,34 +3,25 @@ package projects.com.communication.tool.steps.contacts;
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.testng.annotations.DataProvider;
-import projects.com.communication.tool.components.contacts.FiltersComponent;
+import projects.com.communication.tool.components.contacts.FilterComponent;
 import settings.SQLConnector;
 
-import static settings.SQLConnector.*;
+import static settings.SQLConnector.NOT_EQUAL;
 import static settings.TestConfig.getProperty;
 
 public class FiltersStep {
 
-    private FiltersComponent component;
+    private FilterComponent component;
     public static final String ENTITY_USER = "User";
-    public static final String ENTITY_PROSPECT = "Prospect";
-
-    private static final String CONTAINS_CRITERION = "Contains";
-    private static final String START_WITH_CRITERION = "Starts With";
-    private static final String ENDS_WITH_CRITERION = "Ends With";
     public static final String EQUAL_CRITERION = "Equal";
-    private static final String NOT_EQUAL_CRITERION = "Not Equal";
-    private static final String VALUE = "t";
-
     public static final String FIRST_NAME_FILTER = "First Name";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
     public FiltersStep(WebDriver driver) {
-        this.component = new FiltersComponent(driver);
+        this.component = new FilterComponent(driver);
     }
 
-    @Step("Open contacts page")
+    @Step("Open filters page")
     public void openFiltersPage() {
         component.open(getProperty("communication.tool.url") + "contacts/filters/");
     }
@@ -69,33 +60,5 @@ public class FiltersStep {
         }
         SQLConnector connector = new SQLConnector();
         return connector.getIntValueInDB(query, "total");
-    }
-
-    @DataProvider(name = "Filters")
-    public static Object[][] credentials() {
-        return new Object[][]{
-                {"First Name", CONTAINS_CRITERION, VALUE, "FirstName", LIKE, "%" + VALUE + "%"},
-                {"First Name", START_WITH_CRITERION, VALUE, "FirstName", LIKE, VALUE + "%"},
-                {"First Name", ENDS_WITH_CRITERION, VALUE, "FirstName", LIKE, "%" + VALUE},
-                {"First Name", NOT_EQUAL_CRITERION, VALUE, "FirstName", NOT_EQUAL, VALUE},
-
-                {"Middle Name", CONTAINS_CRITERION, VALUE, "MiddleName", LIKE, "%" + VALUE + "%"},
-                {"Middle Name", START_WITH_CRITERION, VALUE, "MiddleName", LIKE, VALUE + "%"},
-                {"Middle Name", ENDS_WITH_CRITERION, VALUE, "MiddleName", LIKE, "%" + VALUE},
-                {"Middle Name", EQUAL_CRITERION, VALUE, "MiddleName", EQUAL, VALUE},
-                {"Middle Name", NOT_EQUAL_CRITERION, VALUE, "MiddleName", NOT_EQUAL, VALUE},
-
-                {"Last Name", CONTAINS_CRITERION, VALUE, "LastName", LIKE, "%" + VALUE + "%"},
-                {"Last Name", START_WITH_CRITERION, "test", "LastName", LIKE, "test%"},
-                {"Last Name", ENDS_WITH_CRITERION, VALUE, "LastName", LIKE, "%" + VALUE},
-                {"Last Name", EQUAL_CRITERION, VALUE, "LastName", EQUAL, VALUE},
-                {"Last Name", NOT_EQUAL_CRITERION, VALUE, "LastName", NOT_EQUAL, VALUE},
-
-                {"Full Name", CONTAINS_CRITERION, VALUE, "FullName", LIKE, "%" + VALUE + "%"},
-                {"Full Name", START_WITH_CRITERION, "test", "FullName", LIKE, "test%"},
-                {"Full Name", ENDS_WITH_CRITERION, VALUE, "FullName", LIKE, "%" + VALUE},
-                {"Full Name", EQUAL_CRITERION, "david", "FullName", EQUAL, "david"},
-                {"Full Name", NOT_EQUAL_CRITERION, VALUE, "FullName", NOT_EQUAL, VALUE},
-        };
     }
 }

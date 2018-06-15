@@ -14,7 +14,7 @@ public class ScheduleComponent extends BaseComponent {
     }
 
     public WebElement getScheduleTab() {
-        return $(cssSelector("div.tabs>ul>li:nth-child(3)"));
+        return $(cssSelector(".tabs>ul>li:nth-child(2)"));
     }
 
     public WebElement getIntervalInput() {
@@ -34,6 +34,6 @@ public class ScheduleComponent extends BaseComponent {
     }
 
     public By getDaysCheckbox() {
-        return by(cssSelector(".input-group.checkbox"));
+        return by(cssSelector("[name=weekDays] [role=checkbox]"));
     }
 }

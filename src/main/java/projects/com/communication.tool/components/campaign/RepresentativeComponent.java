@@ -18,11 +18,11 @@ public class RepresentativeComponent extends BaseComponent {
     }
 
     public WebElement getFromNameInput(){
-        return $(cssSelector(".control__placeholder > div > div.input-group__input > input[type=\"text\"]"));
+        return $(cssSelector(".card--active__content .control:nth-of-type(1) .control__placeholder input"));
     }
 
     public WebElement getFromEmailInput(){
-        return $(cssSelector("div:nth-child(2)>div.control__placeholder>div>div.input-group__input>input[type=\"text\"]"));
+        return $(cssSelector(".card--active__content .control:nth-of-type(2) .control__placeholder input"));
     }
 
     public WebElement getSmtpHostInput(){
@@ -58,7 +58,7 @@ public class RepresentativeComponent extends BaseComponent {
     }
 
     public WebElement getPlaceholderValueInput(){
-        return $(cssSelector("div:nth-child(3)>div.control__placeholder>div>div.input-group__input>input[type=\"text\"]"));
+        return $(cssSelector(".card--active__content .control:nth-of-type(3) .control__placeholder input"));
     }
 
     public WebElement getFromNameValue(){

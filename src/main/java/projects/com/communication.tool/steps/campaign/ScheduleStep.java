@@ -29,7 +29,7 @@ public class ScheduleStep {
     @Step("Update all default schedule values")
     public void updateSchedule(String interval) {
         component.clearAndSendKeys(component.getIntervalInput(), interval);
-//        selectAllDays(); need to add unique locator
+        selectAllDays();
         component.getStartTimeInput().sendKeys("01:00 AM");
         component.getEndTimeInput().sendKeys("11:00 PM");
         component.getSaveButton().click();
@@ -52,6 +52,6 @@ public class ScheduleStep {
                 "Campaign WHERE Name = '" + campaignName + "'", "Id");
         LOG.info("Get schedule interval in the database");
         return connector.getStringValueInDB("SELECT Schedule_Interval FROM CommunicationTool.dbo." +
-                "EmailCommunication WHERE CampaignId = '" + campaignId + "'", "Schedule_Interval");
+                "Campaign WHERE Id = '" + campaignId + "'", "Schedule_Interval");
     }
 }
