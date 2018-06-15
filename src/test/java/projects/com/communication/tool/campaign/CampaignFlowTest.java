@@ -14,6 +14,7 @@ import projects.com.communication.tool.steps.campaign.TemplateStep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_CAMPAIGN_NAME_LENGTH;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_COMPANY_NAME_LENGTH;
 import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL;
@@ -44,6 +45,7 @@ public class CampaignFlowTest extends SuiteTestCT {
         goToFlowTab(campaignName);
 
         flowStep.createFlow(WORK_EMAIL);
+        assertTrue(flowStep.isTypeAppliedToFlow(WORK_EMAIL));
         templateStep.createTemplate(subj, body);
         flowStep.saveFlow();
 

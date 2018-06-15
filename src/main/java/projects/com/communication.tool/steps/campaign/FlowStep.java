@@ -19,7 +19,7 @@ public class FlowStep {
     }
 
     @Step("Open flow tab")
-    public void openFlowTab(){
+    public void openFlowTab() {
         component.scrollUp();
         component.assertThat(elementToBeClickable(component.getFlowTab()));
         component.getFlowTab().click();
@@ -41,11 +41,15 @@ public class FlowStep {
             default:
                 LOG.info("There is no flow with type: " + type);
         }
-        component.isTextDisplayed(type, component.getFlowTypeSelect());
+    }
+
+    @Step("Verify that type is assigned to flow")
+    public boolean isTypeAppliedToFlow(String type) {
+        return component.isTextDisplayed(type, component.getFlowTypeSelect());
     }
 
     @Step("Save flow")
-    public void saveFlow(){
+    public void saveFlow() {
         component.scrollUp();
         component.getSaveButton().click();
     }

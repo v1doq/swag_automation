@@ -8,21 +8,23 @@ import io.qameta.allure.Story;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import projects.com.communication.tool.steps.campaign.CampaignStep;
 import projects.com.communication.tool.steps.campaign.CampaignFiltersStep;
+import projects.com.communication.tool.steps.campaign.CampaignStep;
+import projects.com.communication.tool.steps.contacts.FilterStep;
 
+import static common.ConciseApi.sleep;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
-import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_CAMPAIGN_NAME_LENGTH;
-import static projects.com.communication.tool.steps.campaign.CampaignStep.MIN_COMPANY_NAME_LENGTH;
+import static org.testng.Assert.*;
 import static projects.com.communication.tool.steps.campaign.CampaignFiltersStep.WORK_EMAIL_TYPE;
+import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 
 @Feature("Campaign's filters")
 @Story("Functional tests for filters tab in campaign")
 public class CampaignFiltersTest extends SuiteTestCT {
 
+    private FilterStep filterStep;
     private CampaignStep campaignStep;
-    private CampaignFiltersStep campaignFiltersStep;
+    private CampaignFiltersStep filtersTabStep;
     private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
@@ -34,7 +36,9 @@ public class CampaignFiltersTest extends SuiteTestCT {
     @BeforeMethod(description = "Authorization with token and cookies", alwaysRun = true)
     public void setUp() {
         campaignStep = new CampaignStep(driver);
-        campaignFiltersStep = new CampaignFiltersStep(driver);
+        filterStep = new FilterStep(driver);
+        filtersTabStep = new CampaignFiltersStep(driver);
+        filtersTabStep.deleteAllFiltersInCampaignDb();
         loginWithToken();
     }
 
@@ -43,29 +47,66 @@ public class CampaignFiltersTest extends SuiteTestCT {
     public void addFilterToCampaign() {
         String firstName = randomAlphabetic(5);
         String email = randomAlphabetic(5) + "@i.ua";
-        campaignFiltersStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
+        filtersTabStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
         goToFilterTab();
 
-        int count = campaignFiltersStep.addFilterToCampaign(firstName);
-        assertTrue(campaignFiltersStep.isFilterDisplayedInTable(firstName, count));
-        campaignFiltersStep.deleteContactFromDb(firstName, email);
+        filtersTabStep.openAddFiltersPopUp();
+        int count = filterStep.setFiltersByFirstName(firstName);
+        filtersTabStep.addFilterToCampaign();
+
+        assertTrue(filtersTabStep.isFilterDisplayedInTable(firstName, count));
+        filtersTabStep.deleteContactFromDb(firstName, email);
     }
 
     @Severity(SeverityLevel.NORMAL)
-    @Test(groups = "sanity campaign", description = "Add filter without email")
-    public void AddFilterWithoutEmail() {
+    @Test(groups = "sanity campaign", description = "Add filter to campaign without email")
+    public void addFilterToCampaignWithoutEmail() {
         String firstName = randomAlphabetic(5);
-        campaignFiltersStep.insertContactToDb(firstName);
+        filtersTabStep.insertContactToDb(firstName);
         goToFilterTab();
 
-        int count = campaignFiltersStep.addFilterToCampaign(firstName);
-        assertTrue(campaignFiltersStep.isFilterDisplayedInTable(firstName, count));
-        campaignFiltersStep.deleteContactFromDb(firstName);
+        filtersTabStep.openAddFiltersPopUp();
+        int count = filterStep.setFiltersByFirstName(firstName);
+        filtersTabStep.addFilterToCampaign();
+
+        assertTrue(filtersTabStep.isFilterDisplayedInTable(firstName, count));
+        filtersTabStep.deleteContactFromDb(firstName);
     }
 
-    private void goToFilterTab(){
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Edit campaign's filter")
+    public void editCampaignsFilter() {
+        String firstName = randomAlphabetic(5);
+        filtersTabStep.insertContactToDb(firstName);
+        filtersTabStep.insertFilterToCampaignDb(campaignName, randomAlphabetic(5));
+        goToFilterTab();
+
+        filtersTabStep.openEditFiltersPopUp();
+        int count = filterStep.changeValueInFilter(firstName);
+        filtersTabStep.addFilterToCampaign();
+        sleep(2000);
+
+        assertTrue(filtersTabStep.isFilterDisplayedInTable(firstName, count));
+        filtersTabStep.deleteContactFromDb(firstName);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Delete campaign's filter")
+    public void deleteCampaignsFilter() {
+        String firstName = randomAlphabetic(5);
+        filtersTabStep.insertContactToDb(firstName);
+        filtersTabStep.insertFilterToCampaignDb(campaignName, randomAlphabetic(5));
+        goToFilterTab();
+
+        filtersTabStep.deleteFilter();
+
+        assertFalse(filtersTabStep.isFilterDisplayedInTable(firstName, 1));
+        filtersTabStep.deleteContactFromDb(firstName);
+    }
+
+    private void goToFilterTab() {
         campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
-        campaignFiltersStep.openFiltersTab();
+        filtersTabStep.openFiltersTab();
     }
 }

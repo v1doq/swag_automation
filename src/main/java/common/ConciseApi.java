@@ -120,15 +120,15 @@ public abstract class ConciseApi {
         try {
             implicitlyWait(0);
             list = getDriver().findElements(locator);
-            implicitlyWait(TIME_OUT);
         } catch (StaleElementReferenceException e) {
+            implicitlyWait(TIME_OUT);
             return false;
         }
         return list.size() != 0 && list.get(0).isDisplayed();
     }
 
     public boolean isTextDisplayed(String text, By locator) {
-        LOG.info("Is text displayed: " + text);
+        LOG.info("Is text '" + text + "' displayed by " + locator);
         boolean isDisplayed = false;
         try {
             List<WebElement> list = getDriver().findElements(locator);

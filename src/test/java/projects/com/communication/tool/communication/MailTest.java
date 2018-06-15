@@ -7,6 +7,7 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.*;
 import projects.com.communication.tool.steps.campaign.*;
+import projects.com.communication.tool.steps.contacts.FilterStep;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -29,38 +30,37 @@ import static settings.SeleniumListener.LOG;
 public class MailTest extends SuiteTestCT {
 
     private FlowStep flowStep;
+    private FilterStep filterStep;
     private CampaignStep campaignStep;
     private TemplateStep templateStep;
     private RepresentativeStep repsStep;
-    private CampaignFiltersStep campaignFiltersStep;
+    private CampaignFiltersStep filtersTabStep;
     private String firstName = randomAlphabetic(5);
     private String email = randomAlphabetic(5) + "@i.ua";
 
     @BeforeClass(description = "Clean the mail folder and insert contact to DB", alwaysRun = true)
     public void cleanMailFolder() {
         cleanMailFolders();
-        campaignFiltersStep = new CampaignFiltersStep(driver);
-        campaignFiltersStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
+        filtersTabStep = new CampaignFiltersStep(driver);
+        filtersTabStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
     }
 
     @AfterClass(description = "Delete contact from the database", alwaysRun = true)
     public void deleteContactFromDb() {
-        campaignFiltersStep = new CampaignFiltersStep(driver);
-        campaignFiltersStep.deleteContactFromDb(firstName, email);
+        filtersTabStep = new CampaignFiltersStep(driver);
+        filtersTabStep.deleteContactFromDb(firstName, email);
     }
 
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)
     public void setUp() {
-        campaignStep = new CampaignStep(driver);
-        campaignFiltersStep = new CampaignFiltersStep(driver);
-        repsStep = new RepresentativeStep(driver);
-        templateStep = new TemplateStep(driver);
         flowStep = new FlowStep(driver);
+        filterStep = new FilterStep(driver);
+        campaignStep = new CampaignStep(driver);
+        templateStep = new TemplateStep(driver);
+        repsStep = new RepresentativeStep(driver);
+        filtersTabStep = new CampaignFiltersStep(driver);
         loginWithToken();
-        String campaignName = randomAlphabetic(5);
-        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
-        campaignStep.openCampaignPage();
-        campaignStep.selectCampaignInList(campaignName);
+        createAndSelectCampaign();
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -74,18 +74,13 @@ public class MailTest extends SuiteTestCT {
         List<String> placeholders = asList("First Name", "Name", "Email", repsKey);
 
         repsStep.createRepsWithPlaceholder(fromEmail, fromName, repsKey, repsValue);
-        campaignFiltersStep.openFiltersTab();
-        int messageCount = campaignFiltersStep.addFilterToCampaign(firstName);
-        flowStep.openFlowTab();
-        flowStep.createFlow(WORK_EMAIL);
-        templateStep.createTemplate(subj, body);
-        templateStep.addPlaceholderToTemplate(placeholders);
-        flowStep.saveFlow();
+        int count = addFilters();
+        createFlow(subj, body, placeholders);
         campaignStep.activateCommunication();
 
         openMailFolder(INBOX);
-        Message[] messages = receiveMail(fromEmail, messageCount);
-        assertEquals(messages.length, messageCount);
+        Message[] messages = receiveMail(fromEmail, count);
+        assertEquals(messages.length, count);
         for (int i = 0; i < messages.length; i++) {
             Message message = messages[i];
             String messageBody = getMessageBody(message);
@@ -110,5 +105,28 @@ public class MailTest extends SuiteTestCT {
                 {GATEWAY_GMAIL_EMAIL},
                 {GATEWAY_OUTLOOK_EMAIL}
         };
+    }
+
+    private int addFilters(){
+        filtersTabStep.openFiltersTab();
+        filtersTabStep.openAddFiltersPopUp();
+        int messageCount = filterStep.setFiltersByFirstName(firstName);
+        filtersTabStep.addFilterToCampaign();
+        return messageCount;
+    }
+
+    private void createFlow(String subj, String body, List<String> placeholders){
+        flowStep.openFlowTab();
+        flowStep.createFlow(WORK_EMAIL);
+        templateStep.createTemplate(subj, body);
+        templateStep.addPlaceholderToTemplate(placeholders);
+        flowStep.saveFlow();
+    }
+
+    private void createAndSelectCampaign(){
+        String campaignName = randomAlphabetic(5);
+        campaignStep.createCampaignInDB(campaignName, randomAlphabetic(5));
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
     }
 }
