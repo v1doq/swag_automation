@@ -106,14 +106,8 @@ public class CampaignStep {
     public boolean isCompanyAndCampaignInList(String companyName, String campaignName) {
         searchInCampaignList(companyName);
         component.waitForText(component.getCompanyInList(), companyName);
-        boolean isDisplayed = false;
-        if (component.isTextDisplayed(companyName, component.getCompanyInList())) {
-            isDisplayed = true;
-        }
-        if (component.isTextDisplayed(campaignName, component.getCampaignInList())) {
-            isDisplayed = true;
-        }
-        return isDisplayed;
+        return component.isTextDisplayed(companyName, component.getCompanyInList()) &
+                component.isTextDisplayed(campaignName, component.getCampaignInList());
     }
 
     private void searchInCampaignList(String value) {

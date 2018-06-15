@@ -6,18 +6,16 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.contacts.FilterComponent;
 import settings.SQLConnector;
 
+import static settings.SQLConnector.EQUAL;
 import static settings.SQLConnector.NOT_EQUAL;
 import static settings.TestConfig.getProperty;
 
-public class FiltersStep {
+public class FilterStep {
 
     private FilterComponent component;
-    public static final String ENTITY_USER = "User";
-    public static final String EQUAL_CRITERION = "Equal";
-    public static final String FIRST_NAME_FILTER = "First Name";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
-    public FiltersStep(WebDriver driver) {
+    public FilterStep(WebDriver driver) {
         this.component = new FilterComponent(driver);
     }
 
@@ -40,8 +38,19 @@ public class FiltersStep {
         component.jsClearAndSendKeys(component.getValueInput(), value);
     }
 
-    public void waitForRecordsResult(int records) {
-        component.waitForPartOfText(component.getCounter(), String.valueOf(records));
+    @Step("Change value only in filter")
+    public int changeValueInFilter(String value) {
+        component.jsClearAndSendKeys(component.getValueInput(), value);
+        int count = getValueByCriterion("FirstName", EQUAL, value);
+        waitForRecordsResult(count);
+        return count;
+    }
+
+    public int setFiltersByFirstName(String firstName){
+        applyAllFilters("User", "First Name", "Equal", firstName);
+        int count = getValueByCriterion("FirstName", EQUAL, firstName);
+        waitForRecordsResult(count);
+        return count;
     }
 
     @Step("Verify count of records in counter")
@@ -60,5 +69,9 @@ public class FiltersStep {
         }
         SQLConnector connector = new SQLConnector();
         return connector.getIntValueInDB(query, "total");
+    }
+
+    private void waitForRecordsResult(int records) {
+        component.waitForPartOfText(component.getCounter(), String.valueOf(records));
     }
 }

@@ -15,7 +15,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 
-@Feature("Campaign' schedule")
+@Feature("Campaign's schedule")
 @Story("Functional tests for schedule tab in campaign")
 public class CampaignScheduleTest extends SuiteTestCT {
 

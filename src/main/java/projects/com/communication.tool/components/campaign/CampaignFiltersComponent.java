@@ -25,7 +25,15 @@ public class CampaignFiltersComponent extends BaseComponent {
         return $(cssSelector(".is-horizontal>button"));
     }
 
+    public WebElement getEditFilterButton(){
+        return $(cssSelector(".contacts-table__actions .btn-edit"));
+    }
+
+    public WebElement getDeleteFilterButton(){
+        return $(cssSelector(".contacts-table__actions .btn-delete-icon"));
+    }
+
     public By getAppliedFilterInTable(){
-        return by(cssSelector("td"));
+        return by(cssSelector(".contacts-table td"));
     }
 }
