@@ -8,7 +8,10 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.By.className;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -61,7 +64,7 @@ public class CampaignStep {
 
     @Step("Save campaign")
     public void submitCampaign() {
-        component.getSubmitButton().click();
+        component.actionClick(component.getSubmitButton());
     }
 
     @Step("Activate communication")
@@ -104,6 +107,7 @@ public class CampaignStep {
 
     @Step("Verify that company and campaign are displayed in list")
     public boolean isCompanyAndCampaignInList(String companyName, String campaignName) {
+        component.assertThat(attributeToBe(className("modal-mask"), "style", "display: none;"));
         searchInCampaignList(companyName);
         component.waitForText(component.getCompanyInList(), companyName);
         return component.isTextDisplayed(companyName, component.getCompanyInList()) &

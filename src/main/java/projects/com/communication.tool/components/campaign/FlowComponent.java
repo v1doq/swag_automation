@@ -42,8 +42,8 @@ public class FlowComponent extends BaseComponent {
         return $(name("input"));
     }
 
-    public WebElement getAddTemplateButton(){
-        return $(cssSelector(".flow-stage--template .btn__content"));
+    public WebElement getFlowCard(){
+        return $(cssSelector(".flow-card"));
     }
 
     public By getFlowTypeSelect(){

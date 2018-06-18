@@ -45,6 +45,8 @@ public class FlowStep {
 
     @Step("Verify that type is assigned to flow")
     public boolean isTypeAppliedToFlow(String type) {
+        component.getFlowCard().click();
+        component.waitForText(component.getFlowTypeSelect(), type);
         return component.isTextDisplayed(type, component.getFlowTypeSelect());
     }
 
