@@ -30,7 +30,7 @@ public class ScheduleComponent extends BaseComponent {
     }
 
     public WebElement getSaveButton() {
-        return $(cssSelector(".is-expanded>button"));
+        return $(cssSelector(".schedule .btn-save"));
     }
 
     public By getDaysCheckbox() {

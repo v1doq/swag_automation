@@ -30,7 +30,7 @@ public class TemplateStep {
 
     @Step("Create template")
     public void createTemplate(String subj, String body) {
-        flowComponent.getAddTemplateButton().click();
+        flowComponent.getFlowCard().click();
         sleep(2000);
         component.getSubjectInput().sendKeys(subj);
         component.getDriver().switchTo().frame(0);
