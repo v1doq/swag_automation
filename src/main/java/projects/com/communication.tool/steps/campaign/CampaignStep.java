@@ -70,9 +70,17 @@ public class CampaignStep {
     @Step("Activate communication")
     public void activateCommunication() {
         component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getStartCommunicationButton()));
-        component.getStartCommunicationButton().click();
+        component.assertThat(elementToBeClickable(component.getCommunicationButton()));
+        component.getCommunicationButton().click();
         component.waitForPartOfText(component.getSendingStatus(), "In progress");
+    }
+
+    @Step("Stop communication")
+    public void stopCommunication() {
+        component.scrollUp();
+        component.assertThat(elementToBeClickable(component.getCommunicationButton()));
+        component.getCommunicationButton().click();
+        component.waitForPartOfText(component.getSendingStatus(), "Paused");
     }
 
     @Step("Update campaign's name and description")
@@ -115,7 +123,7 @@ public class CampaignStep {
     }
 
     private void searchInCampaignList(String value) {
-        component.getSearchInput().sendKeys(value);
+        component.clearAndSendKeys(component.getSearchInput(), value);
     }
 
     @Step("Is error message displayed for duplicate campaign name")
