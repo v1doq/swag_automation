@@ -9,10 +9,10 @@
         </groups>
         <classes>
             <class name="common.SuiteTestPT"/>
-            <class name="projects.com.swag.screening.authorization.RegistrationTest"/>
-            <class name="projects.com.swag.screening.candidate.CandidateTest"/>
-            <class name="projects.com.swag.screening.problem.ProblemTest"/>
-            <class name="projects.com.swag.screening.candidate.CandidateFlowTest"/>
+            <class name="projects.com.screening.authorization.RegistrationTest"/>
+            <class name="projects.com.screening.candidate.CandidateTest"/>
+            <class name="projects.com.screening.problem.ProblemTest"/>
+            <class name="projects.com.screening.candidate.CandidateFlowTest"/>
         </classes>
     </test>
 </suite>
