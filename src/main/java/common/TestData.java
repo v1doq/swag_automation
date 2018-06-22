@@ -4,7 +4,7 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.apache.commons.lang.RandomStringUtils.*;
-import static projects.com.swag.screening.steps.authorization.RegisterStep.*;
+import static projects.com.screening.steps.authorization.RegisterStep.*;
 
 public final class TestData {
     public static final List<String> VALID_EMAIL_LIST = asList(
