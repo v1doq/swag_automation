@@ -63,6 +63,12 @@ public class MailTest extends SuiteTestCT {
         createAndSelectCampaign();
     }
 
+    @AfterMethod(description = "Postcondition", alwaysRun = true)
+    public void tearDown() {
+        campaignStep = new CampaignStep(driver);
+        campaignStep.stopCommunication();
+    }
+
     @Severity(SeverityLevel.CRITICAL)
     @Test(groups = "mail", timeOut = 300000, dataProvider = "Mail", description = "Create communication and check mail")
     public void createCommunicationAndCheckMail(String fromEmail) throws MessagingException {

@@ -19,7 +19,7 @@ public class CampaignComponent extends BaseComponent {
         return $(className("campaigns__add-new"));
     }
 
-    public WebElement getStartCommunicationButton(){
+    public WebElement getCommunicationButton(){
         return $(className("input-group--selection-controls__ripple"));
     }
 
