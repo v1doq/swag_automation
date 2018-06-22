@@ -56,6 +56,17 @@ public abstract class ConciseApi {
         actions.moveToElement(element).click().build().perform();
     }
 
+    public void actionSendKeys(WebElement element,String keys){
+        LOG.info("Send keys to element: " + element);
+        Actions actions = new Actions(getDriver());
+        actions.sendKeys(element, keys).build().perform();
+    }
+    public void actionEnterPress(WebElement element){
+        LOG.info("Enter pressed to element:" + element);
+        Actions actions = new Actions(getDriver());
+        actions.sendKeys(Keys.ENTER).build().perform();
+    }
+
     public void jsClick(WebElement element) {
         LOG.info("Try to click on element with type: " + element.getTagName());
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click()", element);
