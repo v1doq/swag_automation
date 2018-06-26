@@ -18,6 +18,7 @@ public class MailStep {
     public static final String INBOX = "inbox";
     private static final String JUNK = "junk";
     private static final String SENT = "sent";
+    public static final String TEST_EMAIL = "communication.tool@outlook.com";
 
     @Step("Open mail folder")
     public static void openMailFolder(String folderName){
@@ -27,7 +28,7 @@ public class MailStep {
             props.put("mail.store.protocol", "imaps");
             Session session = Session.getInstance(props);
             store = session.getStore();
-            store.connect("imap.outlook.com", "communication.tool@outlook.com", "Passcommunication1");
+            store.connect("imap.outlook.com", TEST_EMAIL, "Passcommunication1");
             folder = store.getFolder(folderName);
             folder.open(Folder.READ_WRITE);
             messages = folder.getMessages();
