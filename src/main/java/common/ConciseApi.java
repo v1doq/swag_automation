@@ -179,11 +179,15 @@ public abstract class ConciseApi {
         sleep(500);
     }
 
-    public void scrollUp() {
+    public void scrollUp(WebElement element) {
         LOG.info("Try to scroll up");
-        JavascriptExecutor js = (JavascriptExecutor) getDriver();
-        js.executeScript("scroll(0, -250);");
-        sleep(500);
+        ((JavascriptExecutor) getDriver()).executeScript("scroll(0, -250);");
+        assertThat(elementToBeClickable(element));
+    }
+
+    public void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
+        assertThat(elementToBeClickable(element));
     }
 
     public void implicitlyWait(long time) {

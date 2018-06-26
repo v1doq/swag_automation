@@ -44,7 +44,8 @@ public class CampaignFlowTest extends SuiteTestCT {
         campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
         goToFlowTab(campaignName);
 
-        flowStep.createFlow(WORK_EMAIL);
+        flowStep.selectFlow(WORK_EMAIL);
+        flowStep.openFlowDialog();
         assertTrue(flowStep.isTypeAppliedToFlow(WORK_EMAIL));
         templateStep.createTemplate(subj, body);
         flowStep.saveFlow();
@@ -60,7 +61,8 @@ public class CampaignFlowTest extends SuiteTestCT {
         campaignStep.createCampaignInDB(campaignName, randomAlphabetic(MIN_COMPANY_NAME_LENGTH));
         goToFlowTab(campaignName);
 
-        flowStep.createFlow(WORK_EMAIL);
+        flowStep.selectFlow(WORK_EMAIL);
+        flowStep.openFlowDialog();
         flowStep.saveFlow();
 
         assertNull(templateStep.getTemplateSubjInDB(campaignName));

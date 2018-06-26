@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.contacts.FilterComponent;
 import settings.SQLConnector;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SQLConnector.EQUAL;
 import static settings.SQLConnector.NOT_EQUAL;
 import static settings.TestConfig.getProperty;
@@ -24,8 +25,16 @@ public class FilterStep {
         component.open(getProperty("communication.tool.url") + "contacts/filters/");
     }
 
+    public int setFiltersByFirstName(String firstName){
+        applyAllFilters("User", "First Name", "Equal", firstName);
+        int count = getValueByCriterion("FirstName", EQUAL, firstName);
+        waitForRecordsResult(count);
+        return count;
+    }
+
     @Step("Apply all filters")
     public void applyAllFilters(String entity, String column, String criterion, String value) {
+        component.assertThat(elementToBeClickable(component.getEntityInput()));
         component.getEntityInput().sendKeys(entity);
         component.waitForText(component.getSearchResult(), entity);
         component.getEntityInput().sendKeys(Keys.ENTER);
@@ -42,13 +51,6 @@ public class FilterStep {
     public int changeValueInFilter(String value) {
         component.jsClearAndSendKeys(component.getValueInput(), value);
         int count = getValueByCriterion("FirstName", EQUAL, value);
-        waitForRecordsResult(count);
-        return count;
-    }
-
-    public int setFiltersByFirstName(String firstName){
-        applyAllFilters("User", "First Name", "Equal", firstName);
-        int count = getValueByCriterion("FirstName", EQUAL, firstName);
         waitForRecordsResult(count);
         return count;
     }
