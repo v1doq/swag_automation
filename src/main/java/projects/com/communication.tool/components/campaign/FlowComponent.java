@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.id;
 
 public class FlowComponent extends BaseComponent {
 
@@ -38,8 +38,8 @@ public class FlowComponent extends BaseComponent {
         return $(cssSelector(".flow-stage--template button.btn-edit"));
     }
 
-    public WebElement getFlowNameInput(){
-        return $(name("input"));
+    public WebElement getFlowTitleInput(){
+        return $(id("flow-title"));
     }
 
     public WebElement getFlowCard(){

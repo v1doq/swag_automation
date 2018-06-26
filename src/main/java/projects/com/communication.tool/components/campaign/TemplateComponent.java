@@ -24,4 +24,20 @@ public class TemplateComponent extends BaseComponent {
     public By getPlaceholderButton(){
         return by(cssSelector(".control button.btn-tag"));
     }
+
+    public WebElement getContactInfoInput(){
+        return $(id("contactInfo"));
+    }
+
+    public WebElement getTestingEmailInput(){
+        return $(id("email"));
+    }
+
+    public WebElement getSendButton(){
+        return $(cssSelector(".test-template .btn-save"));
+    }
+
+    public By getTestStatus(){
+        return by(className("test-status"));
+    }
 }

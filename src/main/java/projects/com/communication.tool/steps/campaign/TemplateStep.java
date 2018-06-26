@@ -2,23 +2,29 @@ package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
-import projects.com.communication.tool.components.campaign.FlowComponent;
 import projects.com.communication.tool.components.campaign.TemplateComponent;
 import settings.SQLConnector;
 
 import java.util.List;
 
-import static common.ConciseApi.sleep;
 import static settings.SeleniumListener.LOG;
 
 public class TemplateStep {
 
     private TemplateComponent component;
-    private FlowComponent flowComponent;
+    public static final int MIN_SUBJECT_LENGTH = 1;
+    public static final int MIN_BODY_LENGTH = 1;
 
     public TemplateStep(WebDriver driver) {
         this.component = new TemplateComponent(driver);
-        this.flowComponent = new FlowComponent(driver);
+    }
+
+    @Step("Prepare template")
+    public void prepareTemplate(String subj, String body) {
+        component.getSubjectInput().sendKeys(subj);
+        component.getDriver().switchTo().frame(0);
+        component.getBodyInput().sendKeys(body);
+        component.getDriver().switchTo().defaultContent();
     }
 
     @Step("Add placeholders to template")
@@ -28,14 +34,18 @@ public class TemplateStep {
         }
     }
 
-    @Step("Create template")
-    public void createTemplate(String subj, String body) {
-        flowComponent.getFlowCard().click();
-        sleep(2000);
-        component.getSubjectInput().sendKeys(subj);
-        component.getDriver().switchTo().frame(0);
-        component.getBodyInput().sendKeys(body);
-        component.getDriver().switchTo().defaultContent();
+    @Step("Send test template to email")
+    public void sendTestTemplateToEmail(String contactInfo, String email) {
+        component.getContactInfoInput().sendKeys(contactInfo);
+        component.getTestingEmailInput().sendKeys(email);
+        component.getSendButton().click();
+    }
+
+    @Step("Send test template to email")
+    public boolean isSuccessMessageDisplayed() {
+        String text = "Test email sent successfully";
+        component.waitForText(component.getTestStatus(), text);
+        return component.isTextDisplayed(text, component.getTestStatus());
     }
 
     @Step("Verify that flow is successfully created")
