@@ -51,6 +51,6 @@ public class FlowComponent extends BaseComponent {
     }
 
     public WebElement getSaveButton(){
-        return $(cssSelector(".flow-stages .btn-save"));
+        return $(cssSelector(".is-right .btn-save"));
     }
 }

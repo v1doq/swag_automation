@@ -23,8 +23,7 @@ public class CampaignFiltersStep {
 
     @Step("Open filters tab")
     public void openFiltersTab() {
-        component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getFiltersTab()));
+        component.scrollUp(component.getFiltersTab());
         component.getFiltersTab().click();
     }
 

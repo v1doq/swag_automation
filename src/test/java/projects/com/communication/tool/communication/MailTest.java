@@ -20,8 +20,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static projects.com.communication.tool.steps.campaign.CampaignFiltersStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL;
-import static projects.com.communication.tool.steps.campaign.RepresentativeStep.GATEWAY_GMAIL_EMAIL;
-import static projects.com.communication.tool.steps.campaign.RepresentativeStep.GATEWAY_OUTLOOK_EMAIL;
+import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
 import static projects.com.communication.tool.steps.communication.MailStep.*;
 import static settings.SeleniumListener.LOG;
 
@@ -123,7 +122,8 @@ public class MailTest extends SuiteTestCT {
 
     private void createFlow(String subj, String body, List<String> placeholders){
         flowStep.openFlowTab();
-        flowStep.createFlow(WORK_EMAIL);
+        flowStep.selectFlow(WORK_EMAIL);
+        flowStep.openFlowDialog();
         templateStep.createTemplate(subj, body);
         templateStep.addPlaceholderToTemplate(placeholders);
         flowStep.saveFlow();

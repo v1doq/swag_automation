@@ -8,9 +8,9 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
+import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
@@ -69,16 +69,14 @@ public class CampaignStep {
 
     @Step("Activate communication")
     public void activateCommunication() {
-        component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getCommunicationButton()));
+        component.scrollUp(component.getCommunicationButton());
         component.getCommunicationButton().click();
         component.waitForPartOfText(component.getSendingStatus(), "In progress");
     }
 
     @Step("Stop communication")
     public void stopCommunication() {
-        component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getCommunicationButton()));
+        component.scrollUp(component.getCommunicationButton());
         component.getCommunicationButton().click();
         component.waitForPartOfText(component.getSendingStatus(), "Paused");
     }
@@ -103,6 +101,7 @@ public class CampaignStep {
         component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
         component.getUpdateCampaignDescButton().click();
         component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
+        sleep(2000);
     }
 
     public String getCampaignNameInPreview() {

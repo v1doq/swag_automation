@@ -4,7 +4,6 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.FlowComponent;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 
 public class FlowStep {
@@ -20,13 +19,12 @@ public class FlowStep {
 
     @Step("Open flow tab")
     public void openFlowTab() {
-        component.scrollUp();
-        component.assertThat(elementToBeClickable(component.getFlowTab()));
+        component.scrollUp(component.getFlowTab());
         component.getFlowTab().click();
     }
 
-    @Step("Create flow")
-    public void createFlow(String type) {
+    @Step("Select flow")
+    public void selectFlow(String type) {
         component.getCreateFlowButton().click();
         switch (type) {
             case WORK_EMAIL:
@@ -43,16 +41,20 @@ public class FlowStep {
         }
     }
 
+    @Step("Open flow dialogue")
+    public void openFlowDialog() {
+        component.getFlowCard().click();
+    }
+
     @Step("Verify that type is assigned to flow")
     public boolean isTypeAppliedToFlow(String type) {
-        component.getFlowCard().click();
         component.waitForText(component.getFlowTypeSelect(), type);
         return component.isTextDisplayed(type, component.getFlowTypeSelect());
     }
 
     @Step("Save flow")
     public void saveFlow() {
-        component.scrollUp();
+        component.scrollToElement(component.getSaveButton());
         component.getSaveButton().click();
     }
 }
