@@ -10,8 +10,7 @@ import settings.SQLConnector;
 
 import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
-import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOfElementLocated;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -37,7 +36,7 @@ public class CampaignStep {
         component.getCompanyNameInput().sendKeys(companyName, Keys.ENTER);
         component.getCampaignNameInput().sendKeys(campaignName);
         component.getModalTitle().click();
-        submitCampaign();
+        saveCampaign();
     }
 
     @Step("Select campaign in list")
@@ -63,7 +62,7 @@ public class CampaignStep {
     }
 
     @Step("Save campaign")
-    public void submitCampaign() {
+    public void saveCampaign() {
         component.actionClick(component.getSubmitButton());
     }
 
@@ -102,6 +101,13 @@ public class CampaignStep {
         component.getUpdateCampaignDescButton().click();
         component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
         sleep(2000);
+    }
+
+    @Step("Delete campaign")
+    public void deleteCampaign() {
+        component.getDeleteCampaignButton().click();
+        component.getConfirmDeletionButton().click();
+        component.assertThat(invisibilityOf(component.getDeleteCampaignButton()));
     }
 
     public String getCampaignNameInPreview() {
@@ -154,7 +160,7 @@ public class CampaignStep {
     }
 
     @Step("Verify that campaign is assign to company")
-    public boolean isCampaignAssignToCompany(String companyName, String campaignName) {
+    public String getCampaignNameByCompanyName(String companyName, String campaignName) {
         LOG.info("Get company id in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT Id FROM CommunicationTool.dbo.Company WHERE Name = '" + companyName + "'";
@@ -162,8 +168,7 @@ public class CampaignStep {
         LOG.info("Get campaign name in the database");
         String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'" +
                 "AND Name ='" + campaignName + "'";
-        String campaignNameInDb = connector.getStringValueInDB(queryCampaign, "Name");
-        return campaignNameInDb.equals(campaignName);
+        return connector.getStringValueInDB(queryCampaign, "Name");
     }
 
     @Step("Create campaign in the database")

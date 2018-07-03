@@ -11,13 +11,12 @@ import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.campaign.CampaignStep;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 
 @Feature("Campaign's CRUD")
-@Story("Functional tests for campaign creation")
-public class CampaignCreationTest extends SuiteTestCT {
+@Story("Functional tests for campaign CRUD")
+public class CampaignCrudTest extends SuiteTestCT {
 
     private CampaignStep campaignStep;
     private String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
@@ -43,8 +42,9 @@ public class CampaignCreationTest extends SuiteTestCT {
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
+        assertEquals(campaignNameInDB, campaignName);
         assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
-        assertTrue(campaignStep.isCampaignAssignToCompany(companyName, campaignName));
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -54,8 +54,9 @@ public class CampaignCreationTest extends SuiteTestCT {
         campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
+        assertEquals(campaignNameInDB, campaignName);
         assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
-        assertTrue(campaignStep.isCampaignAssignToCompany(companyName, campaignName));
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -74,12 +75,27 @@ public class CampaignCreationTest extends SuiteTestCT {
         assertEquals(campaignStep.getCampaignDescInPreview(), campaignDesc);
     }
 
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Delete campaign without messages")
+    public void deleteCampaign() {
+        String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
+        campaignStep.createCampaignInDB(campaignName, companyName);
+        campaignStep.openCampaignPage();
+        campaignStep.selectCampaignInList(campaignName);
+
+        campaignStep.deleteCampaign();
+
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
+        assertNull(campaignNameInDB);
+        assertFalse(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
+    }
+
     @Severity(SeverityLevel.MINOR)
     @Test(groups = "sanity campaign", description = "Check validation messages for empty mandatory fields")
     public void checkValidationMessagesForAddNewCampaignFields() {
         campaignStep.openCampaignPage();
         campaignStep.openCampaignPopUp();
-        campaignStep.submitCampaign();
+        campaignStep.saveCampaign();
 
         assertTrue(campaignStep.isCampaignErrorDisplayed());
         assertTrue(campaignStep.isCompanyErrorDisplayed());
