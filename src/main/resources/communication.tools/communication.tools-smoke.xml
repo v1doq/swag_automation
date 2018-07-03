@@ -8,7 +8,7 @@
             </run>
         </groups>
         <classes>
-            <class name="projects.com.communication.tool.campaign.CampaignCreationTest"/>
+            <class name="projects.com.communication.tool.campaign.CampaignCrudTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignRepresentativeTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignScheduleTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignFiltersTest"/>

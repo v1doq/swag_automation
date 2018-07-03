@@ -5,9 +5,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.By.cssSelector;
-import static org.openqa.selenium.By.name;
+import static org.openqa.selenium.By.*;
 
 public class CampaignComponent extends BaseComponent {
 
@@ -113,5 +111,13 @@ public class CampaignComponent extends BaseComponent {
 
     public WebElement getUpdateCampaignDescButton(){
         return $(cssSelector(".campaign-preview__description .btn-save"));
+    }
+
+    public WebElement getDeleteCampaignButton(){
+        return $(id("deleteCampaignButton"));
+    }
+
+    public WebElement getConfirmDeletionButton(){
+        return $(className("btn-delete"));
     }
 }
