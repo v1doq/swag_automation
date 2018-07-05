@@ -11,7 +11,7 @@
             <class name="projects.com.communication.tool.campaign.CampaignCrudTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignRepresentativeTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignScheduleTest"/>
-            <class name="projects.com.communication.tool.campaign.CampaignFiltersTest"/>
+            <class name="projects.com.communication.tool.campaign.CampaignContactsTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignFlowTest"/>
             <class name="projects.com.communication.tool.contacts.FilterTest"/>
             <class name="projects.com.communication.tool.user.UserTest"/>

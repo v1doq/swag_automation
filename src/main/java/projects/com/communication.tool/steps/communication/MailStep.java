@@ -44,11 +44,11 @@ public class MailStep {
             SearchTerm searchCondition = getSearchTerm(fromEmail);
             messages = folder.search(searchCondition);
             while (messages.length != count) {
-                LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
+                LOG.info("actual count: " + messages.length + ", expected count: " + count);
                 sleep(5000);
                 messages = folder.search(searchCondition);
             }
-            LOG.info("actual messages.length: " + messages.length + ", expected messages.length: " + count);
+            LOG.info("actual count: " + messages.length + ", expected count: " + count);
             getCountOfMessageInFolders();
             return messages;
         } catch (MessagingException e) {

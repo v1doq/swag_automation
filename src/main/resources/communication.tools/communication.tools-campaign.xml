@@ -9,7 +9,7 @@
         </groups>
         <classes>
             <class name="projects.com.communication.tool.campaign.CampaignCrudTest"/>
-            <class name="projects.com.communication.tool.campaign.CampaignFiltersTest"/>
+            <class name="projects.com.communication.tool.campaign.CampaignContactsTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignScheduleTest"/>
             <class name="projects.com.communication.tool.campaign.CampaignFlowTest"/>
         </classes>

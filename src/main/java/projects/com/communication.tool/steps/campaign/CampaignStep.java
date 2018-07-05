@@ -8,7 +8,6 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
-import static common.ConciseApi.sleep;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
@@ -99,15 +98,17 @@ public class CampaignStep {
         component.getEditCampaignDescButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
         component.getUpdateCampaignDescButton().click();
-        component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
-        sleep(2000);
+        while (component.getCampaignNameInPreviewElement().getText().contains("description")){
+            component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
+        }
     }
 
     @Step("Delete campaign")
     public void deleteCampaign() {
+        component.getDeleteCampaignPreview().click();
         component.getDeleteCampaignButton().click();
         component.getConfirmDeletionButton().click();
-        component.assertThat(invisibilityOf(component.getDeleteCampaignButton()));
+        component.assertThat(invisibilityOf(component.getConfirmDeletionButton()));
     }
 
     public String getCampaignNameInPreview() {

@@ -88,7 +88,7 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
         repsStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
 
         String fromName = randomAlphabetic(5);
-        repsStep.updateReps(fromName);
+        repsStep.updateRepresentative(fromName);
 
         assertTrue(repsStep.isFromNameEqualsDbValue(fromName));
     }
@@ -102,7 +102,7 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
         campaignStep.selectCampaignInList(campaignName);
         repsStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
 
-        repsStep.deleteReps();
+        repsStep.deleteRepresentative();
 
         assertTrue(repsStep.isEmptyRepsFormDisplayed());
     }

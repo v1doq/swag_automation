@@ -7,6 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import static org.openqa.selenium.By.cssSelector;
 import static org.openqa.selenium.By.id;
+import static org.openqa.selenium.By.linkText;
 
 public class FlowComponent extends BaseComponent {
 
@@ -15,7 +16,7 @@ public class FlowComponent extends BaseComponent {
     }
 
     public WebElement getFlowTab() {
-        return $(cssSelector(".tabs>ul>li:nth-child(4)"));
+        return $(linkText("Flow"));
     }
 
     public WebElement getCreateFlowButton(){
@@ -51,6 +52,6 @@ public class FlowComponent extends BaseComponent {
     }
 
     public WebElement getSaveButton(){
-        return $(cssSelector(".is-right .btn-save"));
+        return $(cssSelector(".flow-template-dialogue__header .btn-save"));
     }
 }

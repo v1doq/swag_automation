@@ -66,7 +66,7 @@ public class RepresentativeComponent extends BaseComponent {
     }
 
     public WebElement getEditRepsButton(){
-        return $(cssSelector(".btn--icon.btn--small"));
+        return $(cssSelector(".gateways__card .btn__content"));
     }
 
     public WebElement getDeleteRepsButton(){
