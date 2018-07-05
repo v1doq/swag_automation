@@ -44,12 +44,6 @@ public class MailTest extends SuiteTestCT {
         contactsStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
     }
 
-    @AfterClass(description = "Delete contact from the database", alwaysRun = true)
-    public void deleteContactFromDb() {
-        contactsStep = new ContactsStep(driver);
-        contactsStep.deleteContactFromDb(firstName, email);
-    }
-
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)
     public void setUp() {
         flowStep = new FlowStep(driver);
