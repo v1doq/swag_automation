@@ -18,7 +18,7 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphanumeric;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
-import static projects.com.communication.tool.steps.campaign.CampaignFiltersStep.WORK_EMAIL_TYPE;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL_CHANNEL;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
 import static projects.com.communication.tool.steps.communication.MailStep.*;
@@ -33,21 +33,21 @@ public class MailTest extends SuiteTestCT {
     private CampaignStep campaignStep;
     private TemplateStep templateStep;
     private RepresentativeStep repsStep;
-    private CampaignFiltersStep filtersTabStep;
+    private ContactsStep contactsStep;
     private String firstName = randomAlphabetic(5);
     private String email = randomAlphabetic(5) + "@i.ua";
 
     @BeforeClass(description = "Clean the mail folder and insert contact to DB", alwaysRun = true)
     public void cleanMailFolder() {
         cleanMailFolders();
-        filtersTabStep = new CampaignFiltersStep(driver);
-        filtersTabStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
+        contactsStep = new ContactsStep(driver);
+        contactsStep.insertContactToDb(firstName, email, WORK_EMAIL_TYPE);
     }
 
     @AfterClass(description = "Delete contact from the database", alwaysRun = true)
     public void deleteContactFromDb() {
-        filtersTabStep = new CampaignFiltersStep(driver);
-        filtersTabStep.deleteContactFromDb(firstName, email);
+        contactsStep = new ContactsStep(driver);
+        contactsStep.deleteContactFromDb(firstName, email);
     }
 
     @BeforeMethod(description = "Precondition for email sending", alwaysRun = true)
@@ -57,7 +57,7 @@ public class MailTest extends SuiteTestCT {
         campaignStep = new CampaignStep(driver);
         templateStep = new TemplateStep(driver);
         repsStep = new RepresentativeStep(driver);
-        filtersTabStep = new CampaignFiltersStep(driver);
+        contactsStep = new ContactsStep(driver);
         loginWithToken();
         createAndSelectCampaign();
     }
@@ -69,7 +69,7 @@ public class MailTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "mail", timeOut = 300000, dataProvider = "Mail", description = "Create communication and check mail")
+    @Test(groups = "mail", timeOut = 480000, dataProvider = "Mail", description = "Create communication and check mail")
     public void createCommunicationAndCheckMail(String fromEmail) throws MessagingException {
         String fromName = "Communication " + randomAlphanumeric(5);
         String subj = "Hi, this is " + randomAlphabetic(5);
@@ -113,10 +113,10 @@ public class MailTest extends SuiteTestCT {
     }
 
     private int addFilters(){
-        filtersTabStep.openFiltersTab();
-        filtersTabStep.openAddFiltersPopUp();
+        contactsStep.openContactsTab();
+        contactsStep.openAddFiltersPopUp();
         int messageCount = filterStep.setFiltersByFirstName(firstName);
-        filtersTabStep.addFilterToCampaign();
+        contactsStep.addFilterToCampaign();
         return messageCount;
     }
 

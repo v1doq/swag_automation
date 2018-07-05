@@ -52,7 +52,7 @@ public class RepresentativeStep {
     }
 
     @Step("Update representative")
-    public void updateReps(String fromName) {
+    public void updateRepresentative(String fromName) {
         component.getEditRepsButton().click();
         component.clickToElementInListByText("Edit", component.getRepsActions());
         component.clearAndSendKeys(component.getFromNameInput(), fromName);
@@ -60,7 +60,7 @@ public class RepresentativeStep {
     }
 
     @Step("Delete representative")
-    public void deleteReps() {
+    public void deleteRepresentative() {
         component.getEditRepsButton().click();
         component.clickToElementInListByText("Delete", component.getRepsActions());
         component.getDeleteRepsButton().click();

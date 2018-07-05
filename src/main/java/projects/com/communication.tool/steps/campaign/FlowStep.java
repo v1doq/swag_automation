@@ -56,7 +56,7 @@ public class FlowStep {
 
     @Step("Save flow")
     public void saveFlow() {
-        component.scrollToElement(component.getSaveButton());
+        component.scrollUp(component.getSaveButton());
         component.getSaveButton().click();
     }
 }

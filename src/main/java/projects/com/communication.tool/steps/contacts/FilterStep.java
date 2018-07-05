@@ -57,7 +57,7 @@ public class FilterStep {
 
     @Step("Verify count of records in counter")
     public String getRecordsCounter() {
-        String text = " record(s) satisfy criteria";
+        String text = " record(s) match";
         return component.getCounterValue().getText().replace(text, "");
     }
 

@@ -14,7 +14,7 @@ import javax.mail.MessagingException;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
-import static projects.com.communication.tool.steps.campaign.CampaignFiltersStep.*;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.*;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
 import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL_CHANNEL;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
@@ -30,7 +30,7 @@ public class CampaignFlowTest extends SuiteTestCT {
     private CampaignStep campaignStep;
     private TemplateStep templateStep;
     private RepresentativeStep repsStep;
-    private CampaignFiltersStep campaignFiltersStep;
+    private ContactsStep contactsStep;
     private String subj = randomAlphabetic(MIN_SUBJECT_LENGTH);
     private String body = randomAlphabetic(MIN_BODY_LENGTH);
 
@@ -40,7 +40,7 @@ public class CampaignFlowTest extends SuiteTestCT {
         campaignStep = new CampaignStep(driver);
         templateStep = new TemplateStep(driver);
         repsStep = new RepresentativeStep(driver);
-        campaignFiltersStep = new CampaignFiltersStep(driver);
+        contactsStep = new ContactsStep(driver);
         loginWithToken();
     }
 
@@ -79,7 +79,7 @@ public class CampaignFlowTest extends SuiteTestCT {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String email = GATEWAY_GMAIL_EMAIL;
         cleanMailFolders();
-        campaignFiltersStep.insertContactToDb(firstName, contactInfo, WORK_EMAIL_TYPE);
+        contactsStep.insertContactToDb(firstName, contactInfo, WORK_EMAIL_TYPE);
         prepareCampaign(campaignName);
         repsStep.createRepresentative(email, fromName);
         prepareFlow();
@@ -100,7 +100,7 @@ public class CampaignFlowTest extends SuiteTestCT {
             assertTrue(message.getFrom()[0].toString().contains(email));
             assertTrue(messageBody.contains(body));
         }
-        campaignFiltersStep.deleteContactFromDb(firstName, contactInfo);
+        contactsStep.deleteContactFromDb(firstName, contactInfo);
     }
 
     private void prepareCampaign(String campaignName) {

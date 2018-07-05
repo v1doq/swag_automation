@@ -34,6 +34,16 @@ public abstract class ConciseApi {
         return element;
     }
 
+    protected List<WebElement> $$(By locator) {
+        assertThat(visibilityOfElementLocated(locator));
+        return getDriver().findElements(locator);
+    }
+
+    public void clickToElement(WebElement element){
+        assertThat(elementToBeClickable(element));
+        element.click();
+    }
+
     protected By by(By locator) {
         assertThat(visibilityOfElementLocated(locator));
         return locator;

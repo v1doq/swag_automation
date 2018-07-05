@@ -14,7 +14,7 @@ public class ScheduleComponent extends BaseComponent {
     }
 
     public WebElement getScheduleTab() {
-        return $(cssSelector(".tabs>ul>li:nth-child(2)"));
+        return $(linkText("Schedule"));
     }
 
     public WebElement getIntervalInput() {

@@ -27,7 +27,7 @@ public class ImportTest extends BaseTest {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "sanity import", timeOut = 900000, description = "Upload file for import")
+    @Test(groups = "sanity import", timeOut = 1200000, description = "Upload file for import")
     public void uploadFileForImport() throws Exception {
         String fullName = randomAlphabetic(10);
         String workEmail = randomAlphabetic(10).toLowerCase() + "@gmail.com";

@@ -5,20 +5,26 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.cssSelector;
+import static org.openqa.selenium.By.linkText;
 
-public class CampaignFiltersComponent extends BaseComponent {
+public class ContactsComponent extends BaseComponent {
 
-    public CampaignFiltersComponent(WebDriver driver) {
+    public ContactsComponent(WebDriver driver) {
         super(driver);
     }
 
-    public WebElement getFiltersTab(){
-        return $(cssSelector("div.tabs>ul>li:nth-child(3)"));
+    public WebElement getContactsTab(){
+        return $(linkText("Contacts"));
+    }
+
+    public WebElement getExpansionPanel(){
+        return $(className("expansion-panel"));
     }
 
     public WebElement getOpenPopUpButton(){
-        return $(cssSelector(".campaign-preview__contacts-header button"));
+        return $(cssSelector(".expansion-panel .btn-add"));
     }
 
     public WebElement getAddToCampaignButton(){

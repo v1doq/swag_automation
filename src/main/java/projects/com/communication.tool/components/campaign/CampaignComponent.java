@@ -113,8 +113,12 @@ public class CampaignComponent extends BaseComponent {
         return $(cssSelector(".campaign-preview__description .btn-save"));
     }
 
-    public WebElement getDeleteCampaignButton(){
+    public WebElement getDeleteCampaignPreview(){
         return $(id("deleteCampaignButton"));
+    }
+
+    public WebElement getDeleteCampaignButton(){
+        return $(className("menu-popup-link"));
     }
 
     public WebElement getConfirmDeletionButton(){

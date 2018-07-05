@@ -1,53 +1,50 @@
 package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import projects.com.communication.tool.components.campaign.CampaignFiltersComponent;
+import projects.com.communication.tool.components.campaign.ContactsComponent;
 import settings.SQLConnector;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static settings.SeleniumListener.LOG;
 
-public class CampaignFiltersStep {
+public class ContactsStep {
 
-    private CampaignFiltersComponent component;
+    private ContactsComponent component;
     public static final int WORK_EMAIL_TYPE = 4098;
     public static final int PERSONAL_EMAIL_TYPE = 4112;
     public static final int ALTERNATE_EMAIL_TYPE = 4128;
 
-    public CampaignFiltersStep(WebDriver driver) {
-        this.component = new CampaignFiltersComponent(driver);
+    public ContactsStep(WebDriver driver) {
+        this.component = new ContactsComponent(driver);
     }
 
-    @Step("Open filters tab")
-    public void openFiltersTab() {
-        component.scrollUp(component.getFiltersTab());
-        component.getFiltersTab().click();
+    @Step("Open contacts tab")
+    public void openContactsTab() {
+        component.scrollUp(component.getContactsTab());
+        component.getContactsTab().click();
+        component.getExpansionPanel().click();
     }
 
     @Step("Open 'Add filters' pop up")
     public void openAddFiltersPopUp() {
-        component.assertThat(elementToBeClickable(component.getOpenPopUpButton()));
-        component.getOpenPopUpButton().click();
+        component.clickToElement(component.getOpenPopUpButton());
     }
 
     @Step("Open 'Edit filters' pop up")
     public void openEditFiltersPopUp() {
-        component.assertThat(elementToBeClickable(component.getEditFilterButton()));
-        component.getEditFilterButton().click();
+        component.clickToElement(component.getEditFilterButton());
     }
 
     @Step("Delete filter")
     public void deleteFilter() {
-        component.assertThat(elementToBeClickable(component.getDeleteFilterButton()));
-        component.getDeleteFilterButton().click();
+        component.clickToElement(component.getDeleteFilterButton());
     }
 
     @Step("Add filter to campaign")
     public void addFilterToCampaign() {
-        component.getAddToCampaignButton().click();
+        component.clickToElement(component.getAddToCampaignButton());
         component.assertThat(attributeContains(component.getAddToCampaignButton(), "disabled", "true"));
         component.assertThat(elementToBeClickable(component.getEditFilterButton()));
     }
@@ -56,13 +53,6 @@ public class CampaignFiltersStep {
     public boolean isFilterDisplayedInTable(String value, int count) {
         return component.isTextDisplayed(value, component.getAppliedFilterInTable()) &
                 component.isTextDisplayed(String.valueOf(count), component.getAppliedFilterInTable());
-    }
-
-    @Step("Get list of contacts by text")
-    public int getContactsListSizeByText(String text) {
-        By locator = component.getAppliedFilterInTable();
-        component.waitForText(locator, text);
-        return component.getListSizeByText(locator, text);
     }
 
     @Step("Insert contact to the database")
