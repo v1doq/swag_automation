@@ -32,6 +32,7 @@ public class CampaignCrudTest extends SuiteTestCT {
     public void setUp() {
         campaignStep = new CampaignStep(driver);
         loginWithToken();
+        campaignStep.openCampaignPage();
     }
 
     @Severity(SeverityLevel.CRITICAL)
@@ -39,7 +40,7 @@ public class CampaignCrudTest extends SuiteTestCT {
     public void createNewCompanyAndAddCampaignToIt() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String companyName = randomAlphabetic(MIN_COMPANY_NAME_LENGTH);
-        campaignStep.openCampaignPage();
+
         campaignStep.createCampaign(campaignName, companyName);
 
         String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
@@ -51,7 +52,6 @@ public class CampaignCrudTest extends SuiteTestCT {
     @Test(groups = {"smoke test", "sanity campaign"}, description = "Add campaign to existing company")
     public void addCampaignToExistingCompany() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
-        campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
         String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
@@ -69,7 +69,8 @@ public class CampaignCrudTest extends SuiteTestCT {
 
         String newCampaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         String campaignDesc = randomAlphabetic(MIN_CAMPAIGN_DESC_LENGTH);
-        campaignStep.updateCampaign(newCampaignName, campaignDesc);
+        campaignStep.updateCampaignName(newCampaignName);
+        campaignStep.updateCampaignDesc(campaignDesc);
 
         assertEquals(campaignStep.getCampaignNameInPreview(), newCampaignName);
         assertEquals(campaignStep.getCampaignDescInPreview(), campaignDesc);
@@ -92,34 +93,29 @@ public class CampaignCrudTest extends SuiteTestCT {
 
     @Severity(SeverityLevel.MINOR)
     @Test(groups = "sanity campaign", description = "Check validation messages for empty mandatory fields")
-    public void checkValidationMessagesForAddNewCampaignFields() {
-        campaignStep.openCampaignPage();
-        campaignStep.openCampaignPopUp();
-        campaignStep.saveCampaign();
+    public void checkValidationMessagesInCampaignPopUp() {
+        campaignStep.createCampaign("", "");
 
-        assertTrue(campaignStep.isCampaignErrorDisplayed());
-        assertTrue(campaignStep.isCompanyErrorDisplayed());
+        assertTrue(campaignStep.isValidationMessagesDisplayed());
     }
 
     @Severity(SeverityLevel.MINOR)
     @Test(groups = "sanity campaign", description = "Try to create campaign with existing name")
     public void tryToCreateCampaignWithExistingName() {
-        campaignStep.openCampaignPage();
         campaignStep.createCampaign(campaignName, companyName);
 
-        assertTrue(campaignStep.isCampaignServerErrorDisplayedInPopUp());
+        assertTrue(campaignStep.isServerErrorDisplayed(DUPLICATE_CAMPAIGN_ERROR));
     }
 
     @Severity(SeverityLevel.MINOR)
     @Test(groups = "sanity campaign", description = "Try to update campaign name with existing name")
     public void tryToUpdateCampaignNameWithExistingName() {
         String newCampaign = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
-        campaignStep.openCampaignPage();
         campaignStep.createCampaign(newCampaign, companyName);
         campaignStep.selectCampaignInList(newCampaign);
 
         campaignStep.updateCampaignName(campaignName);
 
-        assertTrue(campaignStep.isCampaignServerErrorDisplayedInPreview());
+        assertTrue(campaignStep.isServerErrorDisplayed(DUPLICATE_CAMPAIGN_ERROR));
     }
 }

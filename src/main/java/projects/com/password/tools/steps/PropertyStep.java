@@ -47,7 +47,7 @@ public class PropertyStep {
     @Step("Delete property")
     public void deleteProperty() {
         component.getDeleteButton().click();
-        component.waitForPartOfText(cssSelector(".card__text"), "Are you sure, you want to delete");
+        component.waitForText(cssSelector(".card__text"), "Are you sure, you want to delete");
         component.jsClick(tableComponent.getYesButton());
         sleep(1000);
     }
@@ -83,7 +83,7 @@ public class PropertyStep {
     @Step("Verify that property used in resource")
     public boolean isServerErrorDisplayed(){
         String text = "The action can't be completed";
-        component.waitForPartOfText(By.cssSelector(".delete-error-message"), text);
+        component.waitForText(By.cssSelector(".delete-error-message"), text);
         return component.getServerError().getText().contains(text);
     }
 }

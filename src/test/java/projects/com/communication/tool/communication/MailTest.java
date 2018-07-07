@@ -63,8 +63,9 @@ public class MailTest extends SuiteTestCT {
     }
 
     @Severity(SeverityLevel.CRITICAL)
-    @Test(groups = "mail", timeOut = 480000, dataProvider = "Mail", description = "Create communication and check mail")
-    public void createCommunicationAndCheckMail(String fromEmail) throws MessagingException {
+    @Test(groups = "mail", timeOut = 480000, description = "Create communication and check mail")
+    public void createCommunicationAndCheckMail() throws MessagingException {
+        String fromEmail = GATEWAY_OUTLOOK_EMAIL;
         String fromName = "Communication " + randomAlphanumeric(5);
         String subj = "Hi, this is " + randomAlphabetic(5);
         String body = "Have a good day, see you soon " + randomAlphabetic(5);
@@ -73,9 +74,10 @@ public class MailTest extends SuiteTestCT {
         List<String> placeholders = asList("First Name", "Name", "Email", repsKey);
 
         repsStep.createRepsWithPlaceholder(fromEmail, fromName, repsKey, repsValue);
-        int count = addFilters();
+        int count = addContacts();
         createFlow(subj, body, placeholders);
         campaignStep.activateCommunication();
+        assertTrue(campaignStep.isCommunicationStarted());
 
         openMailFolder(INBOX);
         Message[] messages = receiveMail(fromEmail, count);
@@ -98,15 +100,7 @@ public class MailTest extends SuiteTestCT {
         }
     }
 
-    @DataProvider(name = "Mail")
-    public Object[][] credentials() {
-        return new Object[][]{
-                {GATEWAY_GMAIL_EMAIL},
-                {GATEWAY_OUTLOOK_EMAIL}
-        };
-    }
-
-    private int addFilters(){
+    private int addContacts(){
         contactsStep.openContactsTab();
         contactsStep.openAddFiltersPopUp();
         int messageCount = filterStep.setFiltersByFirstName(firstName);

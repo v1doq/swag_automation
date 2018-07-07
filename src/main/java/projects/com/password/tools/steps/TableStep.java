@@ -21,7 +21,7 @@ public class TableStep {
     @Step("Search value in table")
     public void searchInTable(String query){
         component.clearAndSendKeys(component.getSearchInput(), query);
-        component.waitForPartOfText(cssSelector("tbody > tr:nth-child(1)"), query);
+        component.waitForText(cssSelector("tbody > tr:nth-child(1)"), query);
     }
 
     @Step("Delete value in table")

@@ -43,20 +43,8 @@ public class CampaignComponent extends BaseComponent {
         return $(cssSelector(".modal-dialog__actions > button"));
     }
 
-    public By getServerErrorInPopUp(){
-        return by(cssSelector(".modal-header > p"));
-    }
-
-    public By getServerErrorInPreview(){
-        return by(cssSelector("p.error-message"));
-    }
-
-    public By getCampaignNameError(){
-        return by(cssSelector(".input-group__details > div"));
-    }
-
-    public By getCompanyNameError(){
-        return by(cssSelector("div:nth-child(2) > div > div.input-group__details > div"));
+    public By getServerError(){
+        return by(className("error-message"));
     }
 
     //CAMPAIGN_LIST

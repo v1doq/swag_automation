@@ -44,12 +44,12 @@ public class FilterStep {
         component.getCriterionInput().sendKeys(criterion);
         component.waitForText(component.getSearchResult(), criterion);
         component.getCriterionInput().sendKeys(Keys.ENTER);
-        component.jsClearAndSendKeys(component.getValueInput(), value);
+        component.clearAndSendKeys(component.getValueInput(), value);
     }
 
     @Step("Change value only in filter")
     public int changeValueInFilter(String value) {
-        component.jsClearAndSendKeys(component.getValueInput(), value);
+        component.clearAndSendKeys(component.getValueInput(), value);
         int count = getValueByCriterion("FirstName", EQUAL, value);
         waitForRecordsResult(count);
         return count;
@@ -74,6 +74,6 @@ public class FilterStep {
     }
 
     private void waitForRecordsResult(int records) {
-        component.waitForPartOfText(component.getCounter(), String.valueOf(records));
+        component.waitForText(component.getCounter(), String.valueOf(records));
     }
 }

@@ -79,7 +79,7 @@ public class CategoryStep {
     @Step("Verify that category used in resource")
     public boolean isServerErrorDisplayed(){
         String text = "The action can't be completed";
-        component.waitForPartOfText(By.cssSelector(".delete-error-message"), text);
+        component.waitForText(By.cssSelector(".delete-error-message"), text);
         return component.getServerError().getText().contains(text);
     }
 }

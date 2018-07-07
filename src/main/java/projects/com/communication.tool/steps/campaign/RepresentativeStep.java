@@ -2,14 +2,18 @@ package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.DataProvider;
 import projects.com.communication.tool.components.campaign.RepresentativeComponent;
 import settings.SQLConnector;
 
+import java.util.List;
+
 import static common.ConciseApi.sleep;
-import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
+import static java.util.Arrays.asList;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
 import static settings.SeleniumListener.LOG;
@@ -39,8 +43,8 @@ public class RepresentativeStep {
             component.getFromEmailInput().sendKeys(email);
             component.getLoginInput().sendKeys(email);
             component.getPasswordInput().sendKeys(GATEWAY_GMAIL_PASS);
-            component.jsClearAndSendKeys(component.getSmtpHostInput(), "smtp.gmail.com:587");
-            component.jsClearAndSendKeys(component.getImapHostInput(), "imap.gmail.com:993");
+            component.clearAndSendKeys(component.getSmtpHostInput(), "smtp.gmail.com:587");
+            component.clearAndSendKeys(component.getImapHostInput(), "imap.gmail.com:993");
         }
         saveRepresentative();
     }
@@ -54,7 +58,7 @@ public class RepresentativeStep {
     @Step("Update representative")
     public void updateRepresentative(String fromName) {
         component.getEditRepsButton().click();
-        component.clickToElementInListByText("Edit", component.getRepsActions());
+        component.getElementInListByText("Edit", component.getRepsActions()).click();
         component.clearAndSendKeys(component.getFromNameInput(), fromName);
         saveRepresentative();
     }
@@ -62,15 +66,14 @@ public class RepresentativeStep {
     @Step("Delete representative")
     public void deleteRepresentative() {
         component.getEditRepsButton().click();
-        component.clickToElementInListByText("Delete", component.getRepsActions());
+        component.getElementInListByText("Delete", component.getRepsActions()).click();
         component.getDeleteRepsButton().click();
         component.assertThat(invisibilityOf(component.getDeleteRepsButton()));
     }
 
     @Step("Save representative")
     public void saveRepresentative() {
-        component.getRepsTitle().click();
-        component.getSubmitButton().click();
+        clickSaveButton();
         while (component.isElementPresent(name("login"))) {
             sleep(2000);
             if (component.isTextDisplayed("settings error", className("error-message"))) {
@@ -82,16 +85,15 @@ public class RepresentativeStep {
         }
     }
 
+    @Step("Click save button")
+    public void clickSaveButton() {
+        component.getRepsTitle().click();
+        component.getSubmitButton().click();
+    }
+
     @Step("Is representative was created")
     public boolean isFromNameDisplayedInRepsCards(String fromName) {
-        boolean isDisplayed;
-        if (component.isTextDisplayed("settings error", className("error-message"))) {
-            return false;
-        } else {
-            sleep(2000);
-            isDisplayed = component.isTextDisplayed(fromName, className("card__textfield"));
-        }
-        return isDisplayed;
+        return component.isTextDisplayed(fromName, className("card__textfield"));
     }
 
     @Step("Fill representative's fields")
@@ -103,10 +105,11 @@ public class RepresentativeStep {
 
     @Step("Fill gateway's fields")
     public void fillGatewayFields(String email, String pass, String smtp, String imap) {
+        openRepsFormIfNotDisplayed();
         component.getLoginInput().sendKeys(email);
         component.getPasswordInput().sendKeys(pass);
-        component.jsClearAndSendKeys(component.getSmtpHostInput(), smtp);
-        component.jsClearAndSendKeys(component.getImapHostInput(), imap);
+        component.clearAndSendKeys(component.getSmtpHostInput(), smtp);
+        component.clearAndSendKeys(component.getImapHostInput(), imap);
     }
 
     @Step("Create placeholder")
@@ -122,14 +125,30 @@ public class RepresentativeStep {
         openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().click();
-        WebElement element = component.getElementInListByText(key, className("list__tile__title"));
+        WebElement element = component.getElementInListByText(key, component.getRepsPlaceholderList());
         return element.getText().equals(key);
     }
 
     @Step("Is adding representative form displayed")
     public boolean isEmptyRepsFormDisplayed() {
-        component.assertThat(visibilityOf(component.getFromNameInput()));
-        return component.isElementPresent(cssSelector(".btn-save.btn-medium"));
+        try {
+            component.assertThat(visibilityOf(component.getFromNameInput()));
+        } catch (TimeoutException e){
+            return false;
+        }
+        return true;
+    }
+
+    @Step("Is error validation messages are displayed")
+    public boolean isValidationMessagesDisplayed(List<String> errors){
+        boolean isDisplayed = false;
+        for (String error : errors) {
+            isDisplayed = component.isTextDisplayed(error, tagName("div"));
+            if (!isDisplayed){
+                break;
+            }
+        }
+        return isDisplayed;
     }
 
     @Step("Is from name in the database equals to from name on front")
@@ -141,21 +160,11 @@ public class RepresentativeStep {
         return valueInDB.equals(fromName);
     }
 
-    private void openRepsFormIfNotDisplayed() {
-        if (component.isElementPresent(cssSelector(".gateways__add-new > button"))) {
-            component.jsClick(component.getAddButton());
-            component.assertThat(elementToBeClickable(component.getNewPlaceholderButton()));
-        }
-    }
-
     @DataProvider(name = "Valid")
     public static Object[][] validCredential() {
         return new Object[][]{
-                {"smtp.outlook.com:25", "imap-mail.outlook.com:993", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
                 {"smtp.outlook.com:587", "imap-mail.outlook.com:993", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
-                {"smtp-mail.outlook.com:587", "outlook.office365.com", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
                 {"smtp.office365.com:587", "imap.outlook.com:993", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
-                {"smtp.gmail.com:25", "imap.gmail.com:993", GATEWAY_GMAIL_EMAIL, GATEWAY_GMAIL_PASS},
                 {"smtp.gmail.com:465", "imap.gmail.com:993", GATEWAY_GMAIL_EMAIL, GATEWAY_GMAIL_PASS},
                 {"smtp.gmail.com:587", "imap.gmail.com:993", GATEWAY_GMAIL_EMAIL, GATEWAY_GMAIL_PASS}
         };
@@ -164,11 +173,24 @@ public class RepresentativeStep {
     @DataProvider(name = "Invalid")
     public static Object[][] invalidCredential() {
         return new Object[][]{
+                {"smtp.outlook.com:587", "imap.outlook.com:993", randomAlphabetic(1), randomAlphabetic(1)},
                 {"smtp.outlook.com:587", "imap.outlook.com:143", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
                 {"smtp.gmail.com:587", "imap.gmail.com:143", GATEWAY_GMAIL_EMAIL, GATEWAY_GMAIL_PASS},
-                {"smtp.outlook.com:587", "imap.outlook.com:993", GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(1)},
-                {"smtp.outlook.com:587", "imap.outlook.com:993", randomAlphabetic(1), GATEWAY_OUTLOOK_PASS},
-                {"pop3.outlook.com:587", "imap.outlook.com:993", GATEWAY_OUTLOOK_EMAIL, GATEWAY_OUTLOOK_PASS},
         };
+    }
+
+    public static final List<String> REQUIRED_FIELDS_ERRORS = asList(
+            "The value field is required.",
+            "The login field is required.",
+            "The password field is required.",
+            "The SMTP host field is required.",
+            "The IMAP host field is required."
+    );
+
+    private void openRepsFormIfNotDisplayed() {
+        if (component.isElementPresent(component.getAddButtonLocator())) {
+            component.jsClick(component.getAddButton());
+            component.assertThat(elementToBeClickable(component.getNewPlaceholderButton()));
+        }
     }
 }
