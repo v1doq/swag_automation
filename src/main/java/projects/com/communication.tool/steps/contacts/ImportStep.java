@@ -13,6 +13,8 @@ import static common.ConciseApi.uploadFileFromModalWindow;
 import static common.FileEditor.readFromFile;
 import static common.FileEditor.updateFile;
 import static org.openqa.selenium.By.cssSelector;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
@@ -78,12 +80,11 @@ public class ImportStep {
 
     @Step("Is Full Name saved to 'Contact' table in the database")
     public boolean isFullNameSavedToDb(String fullName) {
-        LOG.info("Is Full Name saved to 'Contact' table in the database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT * FROM CommunicationTool.dbo.Contact WHERE FullName = '" + fullName + "'";
+        String query = SELECT_FROM + CONTACT_DB + WHERE + "FullName = '" + fullName + "'";
         String value = null;
         while (value == null) {
-            value = connector.getStringValueInDB(query, "FullName");
+            value = connector.getValueInDb(query, "FullName");
             LOG.info("Full name does not exist");
             sleep(5000);
         }
@@ -92,28 +93,25 @@ public class ImportStep {
 
     @Step("Is Work Email saved to 'ContactInfo' table in the database")
     public boolean isWorkEmailSavedToDb(String workEmail) {
-        LOG.info("Is Work Email saved to 'ContactInfo' table in the database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT * FROM CommunicationTool.dbo.ContactInfo WHERE Value = '" + workEmail + "'";
-        String value = connector.getStringValueInDB(query, "Value");
+        String query = SELECT_FROM + CONTACT_INFO_DB + WHERE + "Value = '" + workEmail + "'";
+        String value = connector.getValueInDb(query, "Value");
         return value.equals(workEmail);
     }
 
     @Step("Is Company Name saved to 'Prospect' table in the database")
     public boolean isCompanyNameSavedToDb(String companyName) {
-        LOG.info("Is Company Name saved to 'Prospect' table in the database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT * FROM CommunicationTool.dbo.Prospect WHERE CompanyName = '" + companyName + "'";
-        String value = connector.getStringValueInDB(query, "CompanyName");
+        String query = SELECT_FROM + PROSPECT_DB + WHERE + "CompanyName = '" + companyName + "'";
+        String value = connector.getValueInDb(query, "CompanyName");
         return value.equals(companyName);
     }
 
     @Step("Is Email saved to 'ProspectContactInfo' table in the database")
     public boolean isEmailSavedToDb(String email) {
-        LOG.info("Is Email saved to 'ProspectContactInfo' table in the database");
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT * FROM CommunicationTool.dbo.ProspectContactInfo WHERE Value = '" + email + "'";
-        String value = connector.getStringValueInDB(query, "Value");
+        String query = SELECT_FROM + PROSPECT_CONTACT_INFO_DB + WHERE + "Value = '" + email + "'";
+        String value = connector.getValueInDb(query, "Value");
         return value.equals(email);
     }
 }

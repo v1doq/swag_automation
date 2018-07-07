@@ -1,10 +1,7 @@
 package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.TimeoutException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.testng.annotations.DataProvider;
 import projects.com.communication.tool.components.campaign.RepresentativeComponent;
 import settings.SQLConnector;
@@ -16,7 +13,8 @@ import static java.util.Arrays.asList;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.*;
 import static org.openqa.selenium.support.ui.ExpectedConditions.*;
-import static settings.SeleniumListener.LOG;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 
 public class RepresentativeStep {
 
@@ -125,7 +123,7 @@ public class RepresentativeStep {
         openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().click();
-        WebElement element = component.getElementInListByText(key, component.getRepsPlaceholderList());
+        WebElement element = component.getElementInListByText(key, className("list__tile__title"));
         return element.getText().equals(key);
     }
 
@@ -133,18 +131,18 @@ public class RepresentativeStep {
     public boolean isEmptyRepsFormDisplayed() {
         try {
             component.assertThat(visibilityOf(component.getFromNameInput()));
-        } catch (TimeoutException e){
+        } catch (TimeoutException e) {
             return false;
         }
         return true;
     }
 
     @Step("Is error validation messages are displayed")
-    public boolean isValidationMessagesDisplayed(List<String> errors){
+    public boolean isValidationMessagesDisplayed(List<String> errors) {
         boolean isDisplayed = false;
         for (String error : errors) {
             isDisplayed = component.isTextDisplayed(error, tagName("div"));
-            if (!isDisplayed){
+            if (!isDisplayed) {
                 break;
             }
         }
@@ -153,10 +151,9 @@ public class RepresentativeStep {
 
     @Step("Is from name in the database equals to from name on front")
     public boolean isFromNameEqualsDbValue(String fromName) {
-        LOG.info("Get reps value in the database with fromName: " + fromName);
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT * FROM CommunicationTool.dbo.RepresentativePlaceholder WHERE Value = '" + fromName + "'";
-        String valueInDB = connector.getStringValueInDB(query, "Value");
+        String query = SELECT_FROM + REP_PLACEHOLDER_DB + WHERE + "Value = '" + fromName + "'";
+        String valueInDB = connector.getValueInDb(query, "Value");
         return valueInDB.equals(fromName);
     }
 
@@ -188,7 +185,7 @@ public class RepresentativeStep {
     );
 
     private void openRepsFormIfNotDisplayed() {
-        if (component.isElementPresent(component.getAddButtonLocator())) {
+        if (component.isElementPresent(cssSelector(".gateways__add-new > button"))) {
             component.jsClick(component.getAddButton());
             component.assertThat(elementToBeClickable(component.getNewPlaceholderButton()));
         }

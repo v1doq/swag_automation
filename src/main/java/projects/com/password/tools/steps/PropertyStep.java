@@ -77,7 +77,7 @@ public class PropertyStep {
         LOG.info("Get property value in the database");
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM PasswordsTool.dbo.ResourceProperties WHERE Name='" + name + "'";
-        return connector.getStringValueInDB(query, columnName);
+        return connector.getValueInDb(query, columnName);
     }
 
     @Step("Verify that property used in resource")

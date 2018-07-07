@@ -7,7 +7,8 @@ import settings.SQLConnector;
 
 import java.util.List;
 
-import static settings.SeleniumListener.LOG;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 
 public class TemplateStep {
 
@@ -29,7 +30,7 @@ public class TemplateStep {
 
     @Step("Add placeholders to template")
     public void addPlaceholderToTemplate(List<String> list) {
-        for (String placeholder: list) {
+        for (String placeholder : list) {
             component.getElementInListByText(placeholder, component.getPlaceholderButton()).click();
         }
     }
@@ -50,12 +51,8 @@ public class TemplateStep {
 
     @Step("Verify that flow is successfully created")
     public String getTemplateSubjInDB(String campaignName) {
-        LOG.info("Get campaign id in the database");
-        SQLConnector connector = new SQLConnector();
-        String campaignId = connector.getStringValueInDB("SELECT Id FROM CommunicationTool.dbo." +
-                "Campaign WHERE Name = '" + campaignName + "'", "Id");
-        LOG.info("Get subject in the database");
-        return connector.getStringValueInDB("SELECT Template_Subject FROM CommunicationTool.dbo." +
-                "Flow WHERE CampaignId = '" + campaignId + "'", "Template_Subject");
+        SQLConnector con = new SQLConnector();
+        String campaignId = con.getValueInDb(SELECT_FROM + CAMPAIGN_DB + WHERE + "Name = '" + campaignName + "'", "Id");
+        return con.getValueInDb(SELECT_FROM + FLOW_DB + WHERE + "CampaignId = '" + campaignId + "'", "Template_Subject");
     }
 }

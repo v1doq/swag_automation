@@ -90,7 +90,7 @@ public class RegisterStep {
         LOG.info("Get username in database with email: " + email);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Users WHERE UserName = '" + email + "'";
-        return connector.getStringValueInDB(query, "UserName");
+        return connector.getValueInDb(query, "UserName");
     }
 
     public void deleteUserInDB(String email) {

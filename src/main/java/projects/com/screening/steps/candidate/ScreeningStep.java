@@ -58,14 +58,14 @@ public class ScreeningStep {
         LOG.info("Select screening in database with candidate ID: " + candidateId);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'";
-        return connector.getStringValueInDB(query, "CandidateId");
+        return connector.getValueInDb(query, "CandidateId");
     }
 
     public String getCandidateAccessCodeInScreeningTableInDB(String candidateId){
         LOG.info("Get candidate's access code in screening table in database: " + candidateId);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Screenings WHERE CandidateId = '" + candidateId + "'";
-        return connector.getStringValueInDB(query, "CandidateAccessCode");
+        return connector.getValueInDb(query, "CandidateAccessCode");
     }
 
     @Step("Delete the screening in the database")

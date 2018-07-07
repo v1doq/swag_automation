@@ -21,7 +21,6 @@ import settings.TestConfig;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.System.getProperty;
-import static settings.SeleniumListener.LOG;
 
 public class BaseTest {
 
@@ -79,10 +78,8 @@ public class BaseTest {
     }
 
     void addCookies(){
-        LOG.info("Try to add cookies with name: 'rememberMe' and value: 'false'");
         Cookie cookie = new Cookie("rememberMe", "false");
         driver.manage().addCookie(cookie);
-        LOG.info("Successfully added");
     }
 
     @Attachment(value = "Screenshot", type = "image/png")

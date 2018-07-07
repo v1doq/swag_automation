@@ -8,7 +8,8 @@ import settings.SQLConnector;
 
 import java.util.List;
 
-import static settings.SeleniumListener.LOG;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 
 public class ScheduleStep {
 
@@ -44,12 +45,8 @@ public class ScheduleStep {
 
     @Step("Verify that schedule is successfully updated")
     public String getScheduleIntervalInDB(String campaignName) {
-        LOG.info("Get campaign id in the database");
-        SQLConnector connector = new SQLConnector();
-        String campaignId = connector.getStringValueInDB("SELECT Id FROM CommunicationTool.dbo." +
-                "Campaign WHERE Name = '" + campaignName + "'", "Id");
-        LOG.info("Get schedule interval in the database");
-        return connector.getStringValueInDB("SELECT Schedule_Interval FROM CommunicationTool.dbo." +
-                "Campaign WHERE Id = '" + campaignId + "'", "Schedule_Interval");
+        SQLConnector con = new SQLConnector();
+        String campaignId = con.getValueInDb(SELECT_FROM + CAMPAIGN_DB + WHERE + "Name = '" + campaignName + "'", "Id");
+        return con.getValueInDb(SELECT_FROM + CAMPAIGN_DB + WHERE + "Id = '" + campaignId + "'", "Schedule_Interval");
     }
 }

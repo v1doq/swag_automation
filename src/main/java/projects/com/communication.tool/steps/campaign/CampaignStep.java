@@ -8,13 +8,15 @@ import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
 import java.util.List;
+import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static java.util.UUID.randomUUID;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.By.tagName;
-import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
-import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
-import static settings.SeleniumListener.LOG;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 import static settings.TestConfig.getProperty;
 
 public class CampaignStep {
@@ -50,11 +52,11 @@ public class CampaignStep {
         component.getElementInListByText(campaignName, component.getCampaignInList()).click();
         try {
             component.waitForText(component.getCampaignNameInPreview(), campaignName);
-        } catch (TimeoutException e){
-            while (!component.getCampaignNameInPreviewElement().getText().equals(campaignName)){
+        } catch (TimeoutException e) {
+            while (!component.getCampaignNameInPreviewElement().getText().equals(campaignName)) {
                 component.getDriver().navigate().refresh();
                 selectCampaignInList(campaignName);
-                if (component.getCampaignNameInPreviewElement().getText().equals(campaignName)){
+                if (component.getCampaignNameInPreviewElement().getText().equals(campaignName)) {
                     break;
                 }
             }
@@ -74,7 +76,7 @@ public class CampaignStep {
         component.getEditCampaignDescButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
         component.getUpdateCampaignDescButton().click();
-        while (component.getCampaignNameInPreviewElement().getText().contains("description")){
+        while (component.getCampaignNameInPreviewElement().getText().contains("description")) {
             component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
         }
     }
@@ -105,7 +107,7 @@ public class CampaignStep {
     public boolean isCommunicationStarted() {
         try {
             component.waitForText(component.getSendingStatus(), "In progress");
-        } catch (TimeoutException e){
+        } catch (TimeoutException e) {
             return false;
         }
         return true;
@@ -124,7 +126,7 @@ public class CampaignStep {
         searchInCampaignList(companyName);
         try {
             component.waitForText(component.getCompanyInList(), companyName);
-        } catch (TimeoutException e){
+        } catch (TimeoutException e) {
             return false;
         }
         return component.isTextDisplayed(campaignName, component.getCampaignInList());
@@ -134,18 +136,18 @@ public class CampaignStep {
     public boolean isServerErrorDisplayed(String error) {
         try {
             component.waitForText(component.getServerError(), error);
-        } catch (TimeoutException e){
+        } catch (TimeoutException e) {
             return false;
         }
         return true;
     }
 
     @Step("Is error validation messages are displayed")
-    public boolean isValidationMessagesDisplayed(){
+    public boolean isValidationMessagesDisplayed() {
         boolean isDisplayed = false;
         for (String error : REQUIRED_FIELDS_ERRORS) {
             isDisplayed = component.isTextDisplayed(error, tagName("div"));
-            if (!isDisplayed){
+            if (!isDisplayed) {
                 break;
             }
         }
@@ -162,30 +164,22 @@ public class CampaignStep {
     }
 
     @Step("Verify that campaign is assign to company")
-    public String getCampaignNameByCompanyName(String companyName, String campaignName) {
-        LOG.info("Get company id in the database");
+    public String getCampaignNameByCompanyInDb(String campaignName, String companyName) {
         SQLConnector connector = new SQLConnector();
-        String query = "SELECT Id FROM CommunicationTool.dbo.Company WHERE Name = '" + companyName + "'";
-        String companyId = connector.getStringValueInDB(query, "Id");
-        LOG.info("Get campaign name in the database");
-        String queryCampaign = "SELECT Name FROM CommunicationTool.dbo.Campaign WHERE CompanyId = '" + companyId + "'" +
-                "AND Name ='" + campaignName + "'";
-        return connector.getStringValueInDB(queryCampaign, "Name");
+        String companyId = connector.getValueInDb(SELECT_FROM + COMPANY_DB + WHERE + "Name = '" + companyName + "'", "Id");
+        String name = SELECT_FROM + CAMPAIGN_DB + WHERE + "CompanyId='" + companyId + "' AND Name='" + campaignName + "'";
+        return connector.getValueInDb(name, "Name");
     }
 
     @Step("Create campaign in the database")
     public void createCampaignInDB(String campaignName, String companyName) {
-        LOG.info("Create campaign in the database with name: " + campaignName);
         SQLConnector connector = new SQLConnector();
-        String query = "DECLARE @companyId uniqueidentifier SET @companyId = NEWID() " +
-                "DECLARE @campaignId uniqueidentifier SET @campaignId = NEWID() " +
-                "DECLARE @communicationId uniqueidentifier SET @communicationId = NEWID() " +
-                "INSERT INTO CommunicationTool.dbo.Company (Id, Name) VALUES(@companyId, '" + companyName + "'); " +
-                "INSERT INTO CommunicationTool.dbo.Campaign (Id, CompanyId, Name, Schedule_EndTime, Schedule_Interval, " +
-                "Schedule_StartTime, Schedule_TimeZone, Schedule_WeekDays, CreatedAt, RootFlowId, Status)\n" +
-                "VALUES(@campaignId, @companyId, '" + campaignName + "', '23:00:00.000', 30, '06:00:00.000', " +
-                "'FLE Standard Time', 254, {ts '2018-06-13 09:04:06.854'}, NULL, 1);";
+        UUID companyId = randomUUID();
+        UUID campaignId = randomUUID();
+        String query = INSERT_INTO + COMPANY_DB + "(Id, Name)" + VALUES + "('" + companyId + "', '" + companyName + "');" +
+                INSERT_INTO + CAMPAIGN_DB + VALUES + "('" + campaignId + "', '" + companyId + "', 'desc', " +
+                "'" + campaignName + "', '23:00:00.000', 30, '06:00:00.000', " + "'FLE Standard Time', 254, " +
+                "{ts '2018-06-13 09:04:06.854'}, NULL, 1, 0);";
         connector.executeQuery(query);
-        LOG.info("Successfully created");
     }
 }

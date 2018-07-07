@@ -55,14 +55,14 @@ public class CandidateStep {
         LOG.info("Get candidate in the database with email: " + email);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'";
-        return connector.getStringValueInDB(query, "Email");
+        return connector.getValueInDb(query, "Email");
     }
 
     public String getCandidateIdInDB(String email){
         LOG.info("Get candidate's ID in the database with email: " + email);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Candidates WHERE Email = '" + email + "'";
-        return connector.getStringValueInDB(query, "Id");
+        return connector.getValueInDb(query, "Id");
     }
 
     @Step("Delete all candidates in the database")

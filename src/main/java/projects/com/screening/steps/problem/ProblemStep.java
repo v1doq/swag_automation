@@ -62,14 +62,14 @@ public class ProblemStep {
         LOG.info("Get the problem in the database with name: " + problemName);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'";
-        return connector.getStringValueInDB(query, "Name");
+        return connector.getValueInDb(query, "Name");
     }
 
     public String getProblemIdInDB(String problemName){
         LOG.info("Get the problem's ID in the database with name: " + problemName);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.Problems WHERE Name = '" + problemName + "'";
-        return connector.getStringValueInDB(query, "Id");
+        return connector.getValueInDb(query, "Id");
     }
 
     @Step("Create a problem with test case in the database")
