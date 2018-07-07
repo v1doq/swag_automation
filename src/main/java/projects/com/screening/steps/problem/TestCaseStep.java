@@ -29,6 +29,6 @@ public class TestCaseStep {
         LOG.info("Get problem ID in test case table in database with id: " + problemId);
         SQLConnector connector = new SQLConnector();
         String query = "SELECT * FROM SwagScreening.dbo.TestCases WHERE ProblemId = '" + problemId + "'";
-        return connector.getStringValueInDB(query, "ProblemId");
+        return connector.getValueInDb(query, "ProblemId");
     }
 }

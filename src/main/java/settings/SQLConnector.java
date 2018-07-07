@@ -10,12 +10,15 @@ import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
 public class SQLConnector {
+
     private Connection connection;
     private String username = getProperty("db.user.name");
     private String password = getProperty("db.user.password");
-    public static final String LIKE = " LIKE ";
-    public static final String EQUAL = " = ";
-    public static final String NOT_EQUAL = " != ";
+    public static final String SELECT_FROM = "SELECT * FROM ";
+    public static final String DELETE_FROM = "DELETE FROM ";
+    public static final String WHERE = " WHERE ";
+    public static final String INSERT_INTO = "INSERT INTO ";
+    public static final String VALUES = " VALUES ";
 
     public void executeQuery(String query) {
         try {
@@ -29,7 +32,7 @@ public class SQLConnector {
         closeConnection();
     }
 
-    public String getStringValueInDB(String query, String columnName) {
+    public String getValueInDb(String query, String columnName) {
         String data = null;
         try {
             openConnection(query);
@@ -52,7 +55,7 @@ public class SQLConnector {
         try {
             openConnection(query);
             Statement statement = connection.createStatement();
-            LOG.info("Execute query:" + query);
+            LOG.info("Execute query: " + query);
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 data = resultSet.getInt(columnName);
@@ -67,11 +70,9 @@ public class SQLConnector {
 
     private void openConnection(String query) throws SQLException {
         if (query.contains("CommunicationTool")) {
-            String dbUrlCT = "jdbc:sqlserver://54.219.253.104:1433;databaseName=CommunicationTool";
-            connection = getConnection(dbUrlCT, username, password);
+            connection = getConnection("jdbc:sqlserver://54.219.253.104:1433", username, password);
         } else {
-            String dbUrl = "jdbc:sqlserver://web.lumiglass.io:1433;databaseName=SwagScreening";
-            connection = getConnection(dbUrl, username, password);
+            connection = getConnection("jdbc:sqlserver://34.214.177.103:1433", username, password);
         }
     }
 

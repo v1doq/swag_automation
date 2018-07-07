@@ -5,16 +5,17 @@ import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.ContactsComponent;
 import settings.SQLConnector;
 
-import static org.openqa.selenium.support.ui.ExpectedConditions.attributeContains;
-import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static settings.SeleniumListener.LOG;
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
+import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static projects.com.communication.tool.common.CommStackDB.*;
+import static settings.SQLConnector.*;
 
 public class ContactsStep {
 
     private ContactsComponent component;
     public static final int WORK_EMAIL_TYPE = 4098;
-    public static final int PERSONAL_EMAIL_TYPE = 4112;
-    public static final int ALTERNATE_EMAIL_TYPE = 4128;
 
     public ContactsStep(WebDriver driver) {
         this.component = new ContactsComponent(driver);
@@ -57,66 +58,49 @@ public class ContactsStep {
 
     @Step("Insert contact to the database")
     public void insertContactToDb(String firstName, String email, int type) {
-        LOG.info("Insert contact to the database with first name and email: " + firstName + ", " + email);
         SQLConnector connector = new SQLConnector();
-        String query = "DECLARE @Id uniqueidentifier SET @Id = NEWID() " +
-                "INSERT INTO CommunicationTool.dbo.Contact (Id, FirstName, IsVerifiedLocation) " +
-                "VALUES(@Id, '" + firstName + "', 1);" +
-                "DECLARE @InfoId uniqueidentifier SET @InfoId = NEWID() " +
-                "INSERT INTO CommunicationTool.dbo.ContactInfo (Id, ContactId, IsVerified, Value, [Type]) " +
-                "VALUES(@InfoId, @Id, 'false', '" + email + "', '" + type + "');";
+        UUID contactId = randomUUID();
+        String query = INSERT_INTO + CONTACT_DB + "(Id, FirstName, IsVerifiedLocation)" +
+                VALUES + "('" + contactId + "', '" + firstName + "', 1);" +
+                INSERT_INTO + CONTACT_INFO_DB + "(Id, ContactId, IsVerified, Value, [Type]) " +
+                VALUES + "('" + randomUUID() + "', '" + contactId + "', 'false', '" + email + "', '" + type + "');";
         connector.executeQuery(query);
-        LOG.info("Successfully inserted");
-    }
-
-    @Step("Delete contact from the database")
-    public void deleteContactFromDb(String firstName, String email) {
-        LOG.info("Delete contact from the database with first name and email : " + firstName + ", " + email);
-        SQLConnector connector = new SQLConnector();
-        String query = "USE CommunicationTool DELETE FROM Message; DELETE FROM ContactInfo WHERE Value='" + email + "';" +
-                "DELETE FROM Contact WHERE FirstName='" + firstName + "';";
-        connector.executeQuery(query);
-        LOG.info("Successfully deleted");
     }
 
     @Step("Insert contact to the database")
     public void insertContactToDb(String firstName) {
-        LOG.info("Insert contact to the database with first name: " + firstName);
         SQLConnector connector = new SQLConnector();
-        String query = "DECLARE @Id uniqueidentifier SET @Id = NEWID() " +
-                "INSERT INTO CommunicationTool.dbo.Contact (Id, FirstName, IsVerifiedLocation) " +
-                "VALUES(@Id, '" + firstName + "', 1);";
+        String query = INSERT_INTO + CONTACT_DB + "(Id, FirstName, IsVerifiedLocation)" +
+                VALUES + "('" + randomUUID() + "', '" + firstName + "', 1);";
         connector.executeQuery(query);
-        LOG.info("Successfully inserted");
     }
 
     @Step("Delete contact from the database")
     public void deleteContactFromDb(String firstName) {
-        LOG.info("Delete contact from the database with first name: " + firstName);
         SQLConnector connector = new SQLConnector();
-        String query = "DELETE FROM CommunicationTool.dbo.Contact WHERE FirstName='" + firstName + "';";
+        connector.executeQuery(DELETE_FROM + CONTACT_DB + WHERE + "FirstName='" + firstName + "';");
+    }
+
+    @Step("Delete contact from the database")
+    public void deleteContactFromDb(String firstName, String email) {
+        SQLConnector connector = new SQLConnector();
+        String query = DELETE_FROM + MESSAGE_DB + ";" + DELETE_FROM + CONTACT_INFO_DB + WHERE + "Value='" + email + "';" +
+                DELETE_FROM + CONTACT_DB + WHERE + "FirstName='" + firstName + "';";
         connector.executeQuery(query);
-        LOG.info("Successfully deleted");
     }
 
     @Step("Delete all campaign's filter in the database")
     public void deleteAllFiltersInCampaignDb() {
-        LOG.info("Delete all campaign's filter in the database");
         SQLConnector connector = new SQLConnector();
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.CampaignFilter");
+        connector.executeQuery(DELETE_FROM + CAMPAIGN_FILTER_DB);
     }
 
     @Step("Insert campaign's filter to the database")
     public void insertFilterToCampaignDb(String campaignName, String firstName) {
-        LOG.info("Get campaign id in the database");
         SQLConnector connector = new SQLConnector();
-        String campaignId = connector.getStringValueInDB("SELECT Id FROM CommunicationTool.dbo." +
-                "Campaign WHERE Name = '" + campaignName + "'", "Id");
-        LOG.info("Insert filter to campaign");
-        String query = "DECLARE @Id uniqueidentifier SET @Id = NEWID()" +
-                "INSERT INTO CommunicationTool.dbo.CampaignFilter" +
-                "(Id, AppliedAt, CampaignId, Count, Query)" +
-                "VALUES(@Id, {ts '2018-06-15 12:12:26.738'}, '" + campaignId + "', 1, '[{\"ModelFullName\":" +
+        String campaignId = connector.getValueInDb(SELECT_FROM + CAMPAIGN_DB + " WHERE Name = '" + campaignName + "'", "Id");
+        String query = INSERT_INTO + CAMPAIGN_FILTER_DB + VALUES +
+                "('" + randomUUID() + "', {ts '2018-06-15 12:12:26.738'}, '" + campaignId + "'" + ", 1, '[{\"ModelFullName\":" +
                 "\"CommunicationTool.Data.Filters.Entities.Contact\",\"Column\":\"FirstName\",\"Type\":1," +
                 "\"Params\":[\"" + firstName + "\"]}]');";
         connector.executeQuery(query);

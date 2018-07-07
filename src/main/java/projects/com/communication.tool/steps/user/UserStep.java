@@ -8,7 +8,8 @@ import settings.SQLConnector;
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.openqa.selenium.By.className;
 import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
-import static settings.SeleniumListener.LOG;
+import static projects.com.communication.tool.common.CommStackDB.USER_DB;
+import static settings.SQLConnector.*;
 import static settings.TestConfig.getProperty;
 
 public class UserStep {
@@ -38,10 +39,8 @@ public class UserStep {
 
     @Step("Delete user from database")
     public void deleteUserFromDb(String email) {
-        LOG.info("Delete user form database by email: " + email);
         SQLConnector connector = new SQLConnector();
-        connector.executeQuery("DELETE FROM CommunicationTool.dbo.[User] WHERE Email='" + email + "'");
-        LOG.info("Successfully deleted");
+        connector.executeQuery(DELETE_FROM + USER_DB + WHERE + "Email='" + email + "'");
         connector.closeConnection();
     }
 }

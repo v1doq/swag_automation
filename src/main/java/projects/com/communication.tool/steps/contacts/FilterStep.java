@@ -7,13 +7,13 @@ import projects.com.communication.tool.components.contacts.FilterComponent;
 import settings.SQLConnector;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
-import static settings.SQLConnector.EQUAL;
-import static settings.SQLConnector.NOT_EQUAL;
 import static settings.TestConfig.getProperty;
 
 public class FilterStep {
 
     private FilterComponent component;
+    private static final String EQUAL = " = ";
+    private static final String NOT_EQUAL = " != ";
     private static final String QUERY = "SELECT COUNT(*) AS total FROM CommunicationTool.dbo.Contact WHERE ";
 
     public FilterStep(WebDriver driver) {
@@ -25,7 +25,7 @@ public class FilterStep {
         component.open(getProperty("communication.tool.url") + "contacts/filters/");
     }
 
-    public int setFiltersByFirstName(String firstName){
+    public int setFiltersByFirstName(String firstName) {
         applyAllFilters("User", "First Name", "Equal", firstName);
         int count = getValueByCriterion("FirstName", EQUAL, firstName);
         waitForRecordsResult(count);

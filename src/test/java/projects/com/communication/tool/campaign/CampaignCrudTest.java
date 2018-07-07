@@ -43,7 +43,7 @@ public class CampaignCrudTest extends SuiteTestCT {
 
         campaignStep.createCampaign(campaignName, companyName);
 
-        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyInDb(campaignName, companyName);
         assertEquals(campaignNameInDB, campaignName);
         assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
     }
@@ -53,10 +53,9 @@ public class CampaignCrudTest extends SuiteTestCT {
     public void addCampaignToExistingCompany() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         campaignStep.createCampaign(campaignName, companyName);
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyInDb(campaignName, companyName);
 
-        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
         assertEquals(campaignNameInDB, campaignName);
-        assertTrue(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
     }
 
     @Severity(SeverityLevel.NORMAL)
@@ -86,9 +85,8 @@ public class CampaignCrudTest extends SuiteTestCT {
 
         campaignStep.deleteCampaign();
 
-        String campaignNameInDB = campaignStep.getCampaignNameByCompanyName(companyName, campaignName);
+        String campaignNameInDB = campaignStep.getCampaignNameByCompanyInDb(campaignName, companyName);
         assertNull(campaignNameInDB);
-        assertFalse(campaignStep.isCompanyAndCampaignInList(companyName, campaignName));
     }
 
     @Severity(SeverityLevel.MINOR)
@@ -97,14 +95,6 @@ public class CampaignCrudTest extends SuiteTestCT {
         campaignStep.createCampaign("", "");
 
         assertTrue(campaignStep.isValidationMessagesDisplayed());
-    }
-
-    @Severity(SeverityLevel.MINOR)
-    @Test(groups = "sanity campaign", description = "Try to create campaign with existing name")
-    public void tryToCreateCampaignWithExistingName() {
-        campaignStep.createCampaign(campaignName, companyName);
-
-        assertTrue(campaignStep.isServerErrorDisplayed(DUPLICATE_CAMPAIGN_ERROR));
     }
 
     @Severity(SeverityLevel.MINOR)
