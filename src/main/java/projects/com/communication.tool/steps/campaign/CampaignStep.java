@@ -1,24 +1,30 @@
 package projects.com.communication.tool.steps.campaign;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.campaign.CampaignComponent;
 import settings.SQLConnector;
 
+import java.util.List;
+
+import static java.util.Arrays.asList;
 import static org.openqa.selenium.By.className;
-import static org.openqa.selenium.support.ui.ExpectedConditions.*;
+import static org.openqa.selenium.By.tagName;
+import static org.openqa.selenium.support.ui.ExpectedConditions.attributeToBe;
+import static org.openqa.selenium.support.ui.ExpectedConditions.invisibilityOf;
 import static settings.SeleniumListener.LOG;
 import static settings.TestConfig.getProperty;
 
 public class CampaignStep {
 
     private CampaignComponent component;
+    public static final byte MIN_COMPANY_NAME_LENGTH = 5;
     public static final byte MIN_CAMPAIGN_NAME_LENGTH = 5;
     public static final byte MIN_CAMPAIGN_DESC_LENGTH = 1;
-    public static final byte MIN_COMPANY_NAME_LENGTH = 5;
+    public static final String DUPLICATE_CAMPAIGN_ERROR = "Campaign with this name already exists";
+    public static final String COMMUNICATION_START_ERROR = "Could not start the campaign";
 
     public CampaignStep(WebDriver driver) {
         this.component = new CampaignComponent(driver);
@@ -31,17 +37,17 @@ public class CampaignStep {
 
     @Step("Create campaign")
     public void createCampaign(String campaignName, String companyName) {
-        openCampaignPopUp();
+        component.getCreateCampaignButton().click();
         component.getCompanyNameInput().sendKeys(companyName, Keys.ENTER);
         component.getCampaignNameInput().sendKeys(campaignName);
         component.getModalTitle().click();
-        saveCampaign();
+        component.actionClick(component.getSubmitButton());
     }
 
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
         searchInCampaignList(campaignName);
-        component.clickToElementInListByText(campaignName, component.getCampaignInList());
+        component.getElementInListByText(campaignName, component.getCampaignInList()).click();
         try {
             component.waitForText(component.getCampaignNameInPreview(), campaignName);
         } catch (TimeoutException e){
@@ -55,36 +61,6 @@ public class CampaignStep {
         }
     }
 
-    @Step("Open campaign pop up")
-    public void openCampaignPopUp() {
-        component.getCreateCampaignButton().click();
-    }
-
-    @Step("Save campaign")
-    public void saveCampaign() {
-        component.actionClick(component.getSubmitButton());
-    }
-
-    @Step("Activate communication")
-    public void activateCommunication() {
-        component.scrollUp(component.getCommunicationButton());
-        component.getCommunicationButton().click();
-        component.waitForPartOfText(component.getSendingStatus(), "In progress");
-    }
-
-    @Step("Stop communication")
-    public void stopCommunication() {
-        component.scrollUp(component.getCommunicationButton());
-        component.getCommunicationButton().click();
-        component.waitForPartOfText(component.getSendingStatus(), "Paused");
-    }
-
-    @Step("Update campaign's name and description")
-    public void updateCampaign(String campaignName, String campaignDesc) {
-        updateCampaignName(campaignName);
-        updateCampaignDesc(campaignDesc);
-    }
-
     @Step("Update campaign's name")
     public void updateCampaignName(String campaignName) {
         component.getEditCampaignNameButton().click();
@@ -94,7 +70,7 @@ public class CampaignStep {
     }
 
     @Step("Update campaign's desc")
-    private void updateCampaignDesc(String campaignDesc) {
+    public void updateCampaignDesc(String campaignDesc) {
         component.getEditCampaignDescButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
         component.getUpdateCampaignDescButton().click();
@@ -119,45 +95,70 @@ public class CampaignStep {
         return component.getCampaignDescInPreviewElement().getText();
     }
 
+    @Step("Activate communication")
+    public void activateCommunication() {
+        component.scrollUp(component.getCommunicationButton());
+        component.getCommunicationButton().click();
+    }
+
+    @Step("Verify that communication successfully started")
+    public boolean isCommunicationStarted() {
+        try {
+            component.waitForText(component.getSendingStatus(), "In progress");
+        } catch (TimeoutException e){
+            return false;
+        }
+        return true;
+    }
+
+    @Step("Stop communication")
+    public void stopCommunication() {
+        component.scrollUp(component.getCommunicationButton());
+        component.getCommunicationButton().click();
+        component.waitForText(component.getSendingStatus(), "Paused");
+    }
+
     @Step("Verify that company and campaign are displayed in list")
     public boolean isCompanyAndCampaignInList(String companyName, String campaignName) {
         component.assertThat(attributeToBe(className("modal-mask"), "style", "display: none;"));
         searchInCampaignList(companyName);
-        component.waitForText(component.getCompanyInList(), companyName);
-        return component.isTextDisplayed(companyName, component.getCompanyInList()) &
-                component.isTextDisplayed(campaignName, component.getCampaignInList());
+        try {
+            component.waitForText(component.getCompanyInList(), companyName);
+        } catch (TimeoutException e){
+            return false;
+        }
+        return component.isTextDisplayed(campaignName, component.getCampaignInList());
     }
+
+    @Step("Is server error message displayed")
+    public boolean isServerErrorDisplayed(String error) {
+        try {
+            component.waitForText(component.getServerError(), error);
+        } catch (TimeoutException e){
+            return false;
+        }
+        return true;
+    }
+
+    @Step("Is error validation messages are displayed")
+    public boolean isValidationMessagesDisplayed(){
+        boolean isDisplayed = false;
+        for (String error : REQUIRED_FIELDS_ERRORS) {
+            isDisplayed = component.isTextDisplayed(error, tagName("div"));
+            if (!isDisplayed){
+                break;
+            }
+        }
+        return isDisplayed;
+    }
+
+    private static final List<String> REQUIRED_FIELDS_ERRORS = asList(
+            "The name field is required.",
+            "The company field is required."
+    );
 
     private void searchInCampaignList(String value) {
         component.clearAndSendKeys(component.getSearchInput(), value);
-    }
-
-    @Step("Is error message displayed for duplicate campaign name")
-    public boolean isCampaignServerErrorDisplayedInPopUp() {
-        String message = "Campaign with this name already exists";
-        By locator = component.getServerErrorInPopUp();
-        component.waitForText(locator, message);
-        return component.isTextDisplayed(message, locator);
-    }
-
-    @Step("Is error message displayed for duplicate campaign name")
-    public boolean isCampaignServerErrorDisplayedInPreview() {
-        String message = "Campaign with this name already exists";
-        By locator = component.getServerErrorInPreview();
-        component.waitForText(locator, message);
-        return component.isTextDisplayed(message, locator);
-    }
-
-    @Step("Verify that error message is displayed for campaign field")
-    public boolean isCampaignErrorDisplayed() {
-        component.assertThat(visibilityOfElementLocated(component.getCampaignNameError()));
-        return component.isTextDisplayed("The name field is required.", component.getCampaignNameError());
-    }
-
-    @Step("Verify that error message is displayed for company field")
-    public boolean isCompanyErrorDisplayed() {
-        component.assertThat(visibilityOfElementLocated(component.getCompanyNameError()));
-        return component.isTextDisplayed("The company field is required.", component.getCompanyNameError());
     }
 
     @Step("Verify that campaign is assign to company")

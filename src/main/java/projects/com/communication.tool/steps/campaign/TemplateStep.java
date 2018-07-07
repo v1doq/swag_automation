@@ -30,7 +30,7 @@ public class TemplateStep {
     @Step("Add placeholders to template")
     public void addPlaceholderToTemplate(List<String> list) {
         for (String placeholder: list) {
-            component.clickToElementInListByText(placeholder, component.getPlaceholderButton());
+            component.getElementInListByText(placeholder, component.getPlaceholderButton()).click();
         }
     }
 

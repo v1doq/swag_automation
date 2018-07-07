@@ -57,7 +57,7 @@ public class MailStep {
         return new Message[0];
     }
 
-    @Step("Delete all messages in mail")
+    @Step("Clean mail folders")
     public static void cleanMailFolders(){
         openMailFolder(INBOX);
         deleteMessages();
@@ -67,6 +67,39 @@ public class MailStep {
         deleteMessages();
     }
 
+    public static String getMessageBody(Part p)  {
+        try {
+            if (p.isMimeType("text/*")) {
+                return (String) p.getContent();
+            }
+            if (p.isMimeType("multipart/alternative")) {
+                Multipart mp = (Multipart) p.getContent();
+                String text = null;
+                for (int i = 0; i < mp.getCount(); i++) {
+                    Part bp = mp.getBodyPart(i);
+                    if (bp.isMimeType("text/*")) {
+                        if (text == null)
+                            text = getMessageBody(bp);
+                    } else {
+                        return getMessageBody(bp);
+                    }
+                }
+                return text;
+            } else if (p.isMimeType("multipart/*")) {
+                Multipart mp = (Multipart) p.getContent();
+                for (int i = 0; i < mp.getCount(); i++) {
+                    String s = getMessageBody(mp.getBodyPart(i));
+                    if (s != null)
+                        return s;
+                }
+            }
+        } catch (MessagingException | IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Step("Delete all messages in folder")
     private static void deleteMessages(){
         LOG.info("Delete all messages in: " + folder.getFullName().toUpperCase());
         try {
@@ -106,37 +139,5 @@ public class MailStep {
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-    }
-
-    public static String getMessageBody(Part p)  {
-        try {
-            if (p.isMimeType("text/*")) {
-                return (String) p.getContent();
-            }
-            if (p.isMimeType("multipart/alternative")) {
-                Multipart mp = (Multipart) p.getContent();
-                String text = null;
-                for (int i = 0; i < mp.getCount(); i++) {
-                    Part bp = mp.getBodyPart(i);
-                    if (bp.isMimeType("text/*")) {
-                        if (text == null)
-                            text = getMessageBody(bp);
-                    } else {
-                        return getMessageBody(bp);
-                    }
-                }
-                return text;
-            } else if (p.isMimeType("multipart/*")) {
-                Multipart mp = (Multipart) p.getContent();
-                for (int i = 0; i < mp.getCount(); i++) {
-                    String s = getMessageBody(mp.getBodyPart(i));
-                    if (s != null)
-                        return s;
-                }
-            }
-        } catch (MessagingException | IOException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 }

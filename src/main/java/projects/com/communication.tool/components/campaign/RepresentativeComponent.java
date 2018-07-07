@@ -17,6 +17,10 @@ public class RepresentativeComponent extends BaseComponent {
         return $(cssSelector(".gateways__add-new > button"));
     }
 
+    public By getAddButtonLocator(){
+        return by(cssSelector(".gateways__add-new > button"));
+    }
+
     public WebElement getFromNameInput(){
         return $(cssSelector(".card--active__content .control:nth-of-type(1) .control__placeholder input"));
     }
@@ -59,6 +63,10 @@ public class RepresentativeComponent extends BaseComponent {
 
     public WebElement getPlaceholderValueInput(){
         return $(cssSelector(".card--active__content .control:nth-of-type(3) .control__placeholder input"));
+    }
+
+    public By getRepsPlaceholderList(){
+        return by(className("list__tile__title"));
     }
 
     public WebElement getFromNameValue(){

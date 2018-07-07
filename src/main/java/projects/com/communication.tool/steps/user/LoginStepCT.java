@@ -31,8 +31,8 @@ public class LoginStepCT {
 
     @Step("Login with user credential")
     public void login(String username, String pass) {
-        component.jsClearAndSendKeys(component.getEmailInput(), username);
-        component.jsClearAndSendKeys(component.getPasswordInput(), pass);
+        component.clearAndSendKeys(component.getEmailInput(), username);
+        component.clearAndSendKeys(component.getPasswordInput(), pass);
         component.getSubmitButton().click();
     }
 

@@ -59,4 +59,12 @@ public class FlowStep {
         component.scrollUp(component.getSaveButton());
         component.getSaveButton().click();
     }
+
+    @Step("Save flow without template")
+    public void saveFlowWithoutTemplate(String channel) {
+        openFlowTab();
+        selectFlow(channel);
+        openFlowDialog();
+        saveFlow();
+    }
 }
