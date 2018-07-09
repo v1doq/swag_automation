@@ -14,11 +14,12 @@ import javax.mail.MessagingException;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
-import static projects.com.communication.tool.steps.campaign.ContactsStep.*;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.campaign.ContactsStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL_CHANNEL;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.*;
-import static projects.com.communication.tool.steps.campaign.TemplateStep.*;
+import static projects.com.communication.tool.steps.campaign.TemplateStep.MIN_BODY_LENGTH;
+import static projects.com.communication.tool.steps.campaign.TemplateStep.MIN_SUBJECT_LENGTH;
 import static projects.com.communication.tool.steps.communication.MailStep.*;
 import static settings.SeleniumListener.LOG;
 
@@ -31,6 +32,7 @@ public class CampaignFlowTest extends SuiteTestCT {
     private TemplateStep templateStep;
     private RepresentativeStep repsStep;
     private ContactsStep contactsStep;
+    private RepresentativeStep repStep;
     private String subj = randomAlphabetic(MIN_SUBJECT_LENGTH);
     private String body = randomAlphabetic(MIN_BODY_LENGTH);
 
@@ -41,6 +43,7 @@ public class CampaignFlowTest extends SuiteTestCT {
         templateStep = new TemplateStep(driver);
         repsStep = new RepresentativeStep(driver);
         contactsStep = new ContactsStep(driver);
+        repStep = new RepresentativeStep(driver);
         loginWithToken();
     }
 
@@ -64,8 +67,8 @@ public class CampaignFlowTest extends SuiteTestCT {
     public void createFlowWithoutTemplate() {
         String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
         prepareCampaign(campaignName);
-        prepareFlow();
-        flowStep.saveFlow();
+
+        flowStep.saveFlowWithoutTemplate(WORK_EMAIL_CHANNEL);
 
         assertNull(templateStep.getTemplateSubjInDB(campaignName));
     }
@@ -101,6 +104,19 @@ public class CampaignFlowTest extends SuiteTestCT {
             assertTrue(messageBody.contains(body));
         }
         contactsStep.deleteContactFromDb(firstName, contactInfo);
+    }
+
+    @Severity(SeverityLevel.MINOR)
+    @Test(groups = "sanity negative reps", description = "Check validation messages")
+    public void tryToStartCampaignWithoutTemplate() {
+        String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
+        prepareCampaign(campaignName);
+        repStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
+        flowStep.saveFlowWithoutTemplate(WORK_EMAIL_CHANNEL);
+
+        campaignStep.activateCommunication();
+
+        assertTrue(campaignStep.isServerErrorDisplayed(NO_TEMPLATE_FOUND));
     }
 
     private void prepareCampaign(String campaignName) {

@@ -18,7 +18,7 @@ public class CampaignComponent extends BaseComponent {
     }
 
     public WebElement getCommunicationButton(){
-        return $(className("input-group--selection-controls__ripple"));
+        return $(className("v-input--selection-controls__ripple"));
     }
 
     public By getSendingStatus(){

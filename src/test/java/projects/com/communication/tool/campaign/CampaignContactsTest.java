@@ -10,6 +10,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.campaign.ContactsStep;
 import projects.com.communication.tool.steps.campaign.CampaignStep;
+import projects.com.communication.tool.steps.campaign.FlowStep;
+import projects.com.communication.tool.steps.campaign.RepresentativeStep;
 import projects.com.communication.tool.steps.contacts.FilterStep;
 
 import static common.ConciseApi.sleep;
@@ -17,6 +19,9 @@ import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.*;
 import static projects.com.communication.tool.steps.campaign.ContactsStep.WORK_EMAIL_TYPE;
 import static projects.com.communication.tool.steps.campaign.CampaignStep.*;
+import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL_CHANNEL;
+import static projects.com.communication.tool.steps.campaign.RepresentativeStep.GATEWAY_OUTLOOK_EMAIL;
+import static projects.com.communication.tool.steps.campaign.RepresentativeStep.MIN_FROM_NAME_LENGTH;
 
 @Feature("Campaign's filters")
 @Story("Functional tests for filters tab in campaign")
@@ -25,6 +30,8 @@ public class CampaignContactsTest extends SuiteTestCT {
     private FilterStep filterStep;
     private CampaignStep campaignStep;
     private ContactsStep contactsStep;
+    private RepresentativeStep repStep;
+    private FlowStep flowStep;
     private String campaignName = randomAlphabetic(MIN_CAMPAIGN_NAME_LENGTH);
 
     @BeforeClass(description = "Create new campaign", alwaysRun = true)
@@ -38,6 +45,8 @@ public class CampaignContactsTest extends SuiteTestCT {
         campaignStep = new CampaignStep(driver);
         filterStep = new FilterStep(driver);
         contactsStep = new ContactsStep(driver);
+        repStep = new RepresentativeStep(driver);
+        flowStep = new FlowStep(driver);
         contactsStep.deleteAllFiltersInCampaignDb();
         loginWithToken();
     }
@@ -102,6 +111,18 @@ public class CampaignContactsTest extends SuiteTestCT {
 
         assertFalse(contactsStep.isFilterDisplayedInTable(firstName, 1));
         contactsStep.deleteContactFromDb(firstName);
+    }
+
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Try to activate campaign without contacts")
+    public void tryToActivateCampaignWithoutContacts() {
+        campaignStep.selectCampaignInList(campaignName);
+        repStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
+        flowStep.saveFlowWithoutTemplate(WORK_EMAIL_CHANNEL);
+
+        campaignStep.activateCommunication();
+
+        assertTrue(campaignStep.isServerErrorDisplayed(NO_CONTACT_FOUND));
     }
 
     private void goToContactsTab() {
