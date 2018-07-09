@@ -128,15 +128,15 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
         assertTrue(repsStep.isValidationMessagesDisplayed(REQUIRED_FIELDS_ERRORS));
     }
 
-    @Severity(SeverityLevel.MINOR)
-    @Test(groups = "sanity negative reps", description = "Check validation messages")
+    @Severity(SeverityLevel.NORMAL)
+    @Test(groups = "sanity campaign", description = "Check validation messages")
     public void tryToStartCampaignWithoutRepresentative() {
         createAndSelectCampaign();
         flowStep.saveFlowWithoutTemplate(WORK_EMAIL_CHANNEL);
 
         campaignStep.activateCommunication();
 
-        assertTrue(campaignStep.isServerErrorDisplayed(COMMUNICATION_START_ERROR));
+        assertTrue(campaignStep.isServerErrorDisplayed(NO_REPRESENTATIVE_FOUND));
     }
 
     private void selectCampaign(String campaignName){

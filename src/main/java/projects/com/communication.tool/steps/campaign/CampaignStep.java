@@ -26,7 +26,9 @@ public class CampaignStep {
     public static final byte MIN_CAMPAIGN_NAME_LENGTH = 5;
     public static final byte MIN_CAMPAIGN_DESC_LENGTH = 1;
     public static final String DUPLICATE_CAMPAIGN_ERROR = "Campaign with this name already exists";
-    public static final String COMMUNICATION_START_ERROR = "Could not start the campaign";
+    public static final String NO_REPRESENTATIVE_FOUND = "No active representatives found";
+    public static final String NO_CONTACT_FOUND = "No contact filters found";
+    public static final String NO_TEMPLATE_FOUND = "Flow template cannot be empty";
 
     public CampaignStep(WebDriver driver) {
         this.component = new CampaignComponent(driver);
