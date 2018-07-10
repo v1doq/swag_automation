@@ -73,7 +73,7 @@ public class RepresentativeStep {
     public void saveRepresentative(String fromName) {
         clickSaveButton();
         while (component.isElementPresent(name("login"))) {
-            sleep(1000);
+            sleep(2000);
             if (component.isTextDisplayed("settings error", className("error-message"))) {
                 break;
             }

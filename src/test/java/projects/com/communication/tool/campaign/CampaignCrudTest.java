@@ -7,6 +7,7 @@ import io.qameta.allure.SeverityLevel;
 import io.qameta.allure.Story;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.campaign.CampaignStep;
 
@@ -97,6 +98,7 @@ public class CampaignCrudTest extends SuiteTestCT {
         assertTrue(campaignStep.isValidationMessagesDisplayed());
     }
 
+    @Ignore    //there is no server message periodically, need to do
     @Severity(SeverityLevel.MINOR)
     @Test(groups = "sanity campaign", description = "Try to update campaign name with existing name")
     public void tryToUpdateCampaignNameWithExistingName() {
