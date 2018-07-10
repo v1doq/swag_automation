@@ -44,7 +44,7 @@ public class RepresentativeStep {
             component.clearAndSendKeys(component.getSmtpHostInput(), "smtp.gmail.com:587");
             component.clearAndSendKeys(component.getImapHostInput(), "imap.gmail.com:993");
         }
-        saveRepresentative();
+        saveRepresentative(fromName);
     }
 
     @Step("Create representative with placeholder")
@@ -58,7 +58,7 @@ public class RepresentativeStep {
         component.getEditRepsButton().click();
         component.getElementInListByText("Edit", component.getRepsActions()).click();
         component.clearAndSendKeys(component.getFromNameInput(), fromName);
-        saveRepresentative();
+        saveRepresentative(fromName);
     }
 
     @Step("Delete representative")
@@ -70,16 +70,16 @@ public class RepresentativeStep {
     }
 
     @Step("Save representative")
-    public void saveRepresentative() {
+    public void saveRepresentative(String fromName) {
         clickSaveButton();
         while (component.isElementPresent(name("login"))) {
-            sleep(2000);
+            sleep(1000);
             if (component.isTextDisplayed("settings error", className("error-message"))) {
                 break;
             }
         }
         if (!component.isElementPresent(name("login"))) {
-            component.assertThat(visibilityOf(component.getFromNameValue()));
+            component.waitForTextInList(component.getFromNameValue(), fromName);
         }
     }
 
@@ -91,7 +91,10 @@ public class RepresentativeStep {
 
     @Step("Is representative was created")
     public boolean isFromNameDisplayedInRepsCards(String fromName) {
-        return component.isTextDisplayed(fromName, className("card__textfield"));
+        if (component.isElementPresent(name("login"))){
+            return false;
+        }
+        return component.isTextDisplayed(fromName, component.getFromNameValue());
     }
 
     @Step("Fill representative's fields")
@@ -111,7 +114,7 @@ public class RepresentativeStep {
     }
 
     @Step("Create placeholder")
-    private void createPlaceholder(String key, String value) {
+    public void createPlaceholder(String key, String value) {
         openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().sendKeys(key, Keys.ENTER);
@@ -123,7 +126,7 @@ public class RepresentativeStep {
         openRepsFormIfNotDisplayed();
         component.getNewPlaceholderButton().click();
         component.getPlaceholderKeyInput().click();
-        WebElement element = component.getElementInListByText(key, className("list__tile__title"));
+        WebElement element = component.getElementInListByText(key, className("v-list__tile__title"));
         return element.getText().equals(key);
     }
 
@@ -179,6 +182,7 @@ public class RepresentativeStep {
     public static final List<String> REQUIRED_FIELDS_ERRORS = asList(
             "The value field is required.",
             "The login field is required.",
+            "The placeholder field is required.",
             "The password field is required.",
             "The SMTP host field is required.",
             "The IMAP host field is required."

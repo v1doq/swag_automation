@@ -35,7 +35,7 @@ public class ScheduleStep {
     }
 
     private void selectAllDays() {
-        List<WebElement> list = component.getDriver().findElements(component.getDaysCheckbox());
+        List<WebElement> list = component.getDaysCheckbox();
         for (WebElement element : list) {
             if (element.getAttribute("aria-checked").contains("false")) {
                 element.click();

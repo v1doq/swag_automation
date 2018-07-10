@@ -51,14 +51,15 @@ public class CampaignStep {
     @Step("Select campaign in list")
     public void selectCampaignInList(String campaignName) {
         searchInCampaignList(campaignName);
+        component.assertThat(elementToBeClickable(component.getCampaignInList()));
         component.getElementInListByText(campaignName, component.getCampaignInList()).click();
         try {
-            component.waitForText(component.getCampaignNameInPreview(), campaignName);
+            component.waitForText(component.getCampaignNameInPreviewLocator(), campaignName);
         } catch (TimeoutException e) {
-            while (!component.getCampaignNameInPreviewElement().getText().equals(campaignName)) {
+            while (!component.getCampaignNameInPreview().getText().equals(campaignName)) {
                 component.getDriver().navigate().refresh();
                 selectCampaignInList(campaignName);
-                if (component.getCampaignNameInPreviewElement().getText().equals(campaignName)) {
+                if (component.getCampaignNameInPreview().getText().equals(campaignName)) {
                     break;
                 }
             }
@@ -70,7 +71,7 @@ public class CampaignStep {
         component.getEditCampaignNameButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignNameInput(), campaignName);
         component.getUpdateCampaignNameButton().click();
-        component.waitForText(component.getCampaignNameInPreview(), campaignName);
+        component.waitForText(component.getCampaignNameInPreviewLocator(), campaignName);
     }
 
     @Step("Update campaign's desc")
@@ -78,8 +79,8 @@ public class CampaignStep {
         component.getEditCampaignDescButton().click();
         component.clearAndSendKeys(component.getUpdateCampaignDescInput(), campaignDesc);
         component.getUpdateCampaignDescButton().click();
-        while (component.getCampaignNameInPreviewElement().getText().contains("description")) {
-            component.waitForText(component.getCampaignDescInPreview(), campaignDesc);
+        if (!component.getCampaignDescInPreview().getText().equals(campaignDesc)) {
+            component.waitForText(component.getCampaignDescInPreviewLocator(), campaignDesc);
         }
     }
 
@@ -92,11 +93,11 @@ public class CampaignStep {
     }
 
     public String getCampaignNameInPreview() {
-        return component.getCampaignNameInPreviewElement().getText();
+        return component.getCampaignNameInPreview().getText();
     }
 
     public String getCampaignDescInPreview() {
-        return component.getCampaignDescInPreviewElement().getText();
+        return component.getCampaignDescInPreview().getText();
     }
 
     @Step("Activate communication")
@@ -179,7 +180,7 @@ public class CampaignStep {
         UUID companyId = randomUUID();
         UUID campaignId = randomUUID();
         String query = INSERT_INTO + COMPANY_DB + "(Id, Name)" + VALUES + "('" + companyId + "', '" + companyName + "');" +
-                INSERT_INTO + CAMPAIGN_DB + VALUES + "('" + campaignId + "', '" + companyId + "', 'desc', " +
+                INSERT_INTO + CAMPAIGN_DB + VALUES + "('" + campaignId + "', '" + companyId + "', NULL, " +
                 "'" + campaignName + "', '23:00:00.000', 30, '06:00:00.000', " + "'FLE Standard Time', 254, " +
                 "{ts '2018-06-13 09:04:06.854'}, NULL, 1, 0);";
         connector.executeQuery(query);

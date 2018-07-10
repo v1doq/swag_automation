@@ -1,7 +1,6 @@
 package projects.com.communication.tool.steps.contacts;
 
 import io.qameta.allure.Step;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import projects.com.communication.tool.components.contacts.FilterComponent;
 import settings.SQLConnector;
@@ -37,13 +36,13 @@ public class FilterStep {
         component.assertThat(elementToBeClickable(component.getEntityInput()));
         component.getEntityInput().sendKeys(entity);
         component.waitForText(component.getSearchResult(), entity);
-        component.getEntityInput().sendKeys(Keys.ENTER);
+        component.getElementInListByText(entity, component.getSearchResult()).click();
         component.getFieldInput().sendKeys(column);
         component.waitForText(component.getSearchResult(), column);
-        component.getFieldInput().sendKeys(Keys.ENTER);
+        component.getElementInListByText(column, component.getSearchResult()).click();
         component.getCriterionInput().sendKeys(criterion);
         component.waitForText(component.getSearchResult(), criterion);
-        component.getCriterionInput().sendKeys(Keys.ENTER);
+        component.getElementInListByText(criterion, component.getSearchResult()).click();
         component.clearAndSendKeys(component.getValueInput(), value);
     }
 
@@ -57,8 +56,8 @@ public class FilterStep {
 
     @Step("Verify count of records in counter")
     public String getRecordsCounter() {
-        String text = " record(s) match";
-        return component.getCounterValue().getText().replace(text, "");
+        String text = " record(s) satisfy criteria";
+        return component.getCountOfAllFilters().getText().replace(text, "");
     }
 
     @Step("Get contact's count in the database")
@@ -74,6 +73,6 @@ public class FilterStep {
     }
 
     private void waitForRecordsResult(int records) {
-        component.waitForText(component.getCounter(), String.valueOf(records));
+        component.waitForText(component.getCountOfOneFilter(), String.valueOf(records));
     }
 }

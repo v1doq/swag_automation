@@ -32,6 +32,10 @@ public abstract class ConciseApi {
         return element;
     }
 
+    protected List<WebElement> $$(By locator) {
+        return getDriver().findElements(locator);
+    }
+
     protected By by(By locator) {
         assertThat(visibilityOfElementLocated(locator));
         return locator;
@@ -47,7 +51,7 @@ public abstract class ConciseApi {
     }
 
     public void actionClick(WebElement element) {
-        LOG.info("Move to element: " + element + " and click");
+        LOG.info("Move to element and click: " + element.getTagName());
         Actions actions = new Actions(getDriver());
         actions.moveToElement(element).click().build().perform();
     }
@@ -60,7 +64,6 @@ public abstract class ConciseApi {
 
     public WebElement getElementInListByText(String text, By locator) {
         LOG.info("Try to get element in list by text: " + text);
-        assertThat(elementToBeClickable(locator));
         List<WebElement> list = getDriver().findElements(locator);
         for (WebElement element : list) {
             if (element.getText().equals(text)) {
@@ -116,6 +119,13 @@ public abstract class ConciseApi {
         assertThat(textMatches(by, Pattern.compile(value)));
     }
 
+    public void waitForTextInList(By by, String value) {
+        LOG.info("Wait for part of text to be '" + value + "' " + by);
+        while (!isTextDisplayed(value, by)){
+            sleep(500);
+        }
+    }
+
     public void open(String url) {
         getDriver().get(url);
     }
@@ -141,7 +151,7 @@ public abstract class ConciseApi {
         assertThat(elementToBeClickable(element));
     }
 
-    public void implicitlyWait(long time) {
+    private void implicitlyWait(long time) {
         getDriver().manage().timeouts().implicitlyWait(time, TimeUnit.SECONDS);
     }
 
