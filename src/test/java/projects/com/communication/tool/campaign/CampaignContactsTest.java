@@ -23,8 +23,8 @@ import static projects.com.communication.tool.steps.campaign.FlowStep.WORK_EMAIL
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.GATEWAY_OUTLOOK_EMAIL;
 import static projects.com.communication.tool.steps.campaign.RepresentativeStep.MIN_FROM_NAME_LENGTH;
 
-@Feature("Campaign's filters")
-@Story("Functional tests for filters tab in campaign")
+@Feature("Campaign's contacts")
+@Story("Functional tests for contacts tab in campaign")
 public class CampaignContactsTest extends SuiteTestCT {
 
     private FilterStep filterStep;
@@ -114,6 +114,7 @@ public class CampaignContactsTest extends SuiteTestCT {
     @Severity(SeverityLevel.NORMAL)
     @Test(groups = "sanity campaign", description = "Try to activate campaign without contacts")
     public void tryToActivateCampaignWithoutContacts() {
+        campaignStep.openCampaignPage();
         campaignStep.selectCampaignInList(campaignName);
         repStep.createRepresentative(GATEWAY_OUTLOOK_EMAIL, randomAlphabetic(MIN_FROM_NAME_LENGTH));
         flowStep.saveFlowWithoutTemplate(WORK_EMAIL_CHANNEL);
