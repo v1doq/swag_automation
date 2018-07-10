@@ -54,19 +54,19 @@ public class RepresentativeComponent extends BaseComponent {
     }
 
     public WebElement getPlaceholderKeyInput(){
-        return $(cssSelector("div.input-group__selections > input"));
+        return $(cssSelector(".v-select__slot [placeholder=\"Select or type a placeholder\"]"));
     }
 
     public WebElement getPlaceholderValueInput(){
         return $(cssSelector(".card--active__content .control:nth-of-type(3) .control__placeholder input"));
     }
 
-    public WebElement getFromNameValue(){
-        return $(cssSelector(".card__textfield"));
+    public By getFromNameValue(){
+        return by(className("card__textfield"));
     }
 
     public WebElement getEditRepsButton(){
-        return $(cssSelector(".gateways__card .btn__content"));
+        return $(cssSelector(".gateways__card .v-btn__content"));
     }
 
     public WebElement getDeleteRepsButton(){

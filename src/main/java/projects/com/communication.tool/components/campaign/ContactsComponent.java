@@ -20,15 +20,15 @@ public class ContactsComponent extends BaseComponent {
     }
 
     public WebElement getExpansionPanel(){
-        return $(className("expansion-panel"));
+        return $(className("v-expansion-panel"));
     }
 
     public WebElement getOpenPopUpButton(){
-        return $(cssSelector(".expansion-panel .btn-add"));
+        return $(cssSelector(".v-expansion-panel .btn-add"));
     }
 
     public WebElement getAddToCampaignButton(){
-        return $(cssSelector(".is-horizontal>button"));
+        return $(cssSelector(".modal-container--large .btn-save"));
     }
 
     public WebElement getEditFilterButton(){

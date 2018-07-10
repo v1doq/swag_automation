@@ -48,7 +48,7 @@ public class FlowComponent extends BaseComponent {
     }
 
     public By getFlowTypeSelect(){
-        return by(cssSelector(".flow-stage--template .input-group__selections__comma"));
+        return by(cssSelector(".flow-template-dialogue .v-select__selections"));
     }
 
     public WebElement getSaveButton(){

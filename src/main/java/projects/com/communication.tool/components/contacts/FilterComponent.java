@@ -31,14 +31,14 @@ public class FilterComponent extends BaseComponent {
     }
 
     public By getSearchResult(){
-        return by(className("list__tile__mask"));
+        return by(className("v-list__tile__mask"));
     }
 
-    public WebElement getCounterValue(){
-        return $(className("filter-count"));
+    public WebElement getCountOfAllFilters(){
+        return $(className("filter-count-preview"));
     }
 
-    public By getCounter(){
+    public By getCountOfOneFilter(){
         return by(className("filter-count"));
     }
 }

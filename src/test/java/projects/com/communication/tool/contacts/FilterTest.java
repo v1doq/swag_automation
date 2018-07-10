@@ -1,6 +1,6 @@
 package projects.com.communication.tool.contacts;
 
-import common.SuiteTestCT;
+import common.BaseTest;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -9,13 +9,14 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import projects.com.communication.tool.steps.campaign.ContactsStep;
 import projects.com.communication.tool.steps.contacts.FilterStep;
+import projects.com.communication.tool.steps.user.LoginStepCT;
 
 import static org.apache.commons.lang.RandomStringUtils.randomAlphabetic;
 import static org.testng.Assert.assertEquals;
 
 @Feature("Filters")
 @Story("Functional tests for filters selection")
-public class FilterTest extends SuiteTestCT {
+public class FilterTest extends BaseTest {
 
     private FilterStep filterStep;
     private ContactsStep contactsStep;
@@ -24,7 +25,8 @@ public class FilterTest extends SuiteTestCT {
     public void setUp() {
         filterStep = new FilterStep(driver);
         contactsStep = new ContactsStep(driver);
-        loginWithToken();
+        LoginStepCT loginStep = new LoginStepCT(driver);
+        loginStep.authorization();
     }
 
     @Severity(SeverityLevel.CRITICAL)

@@ -62,7 +62,7 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
 
         repsStep.fillRepsFields(email, fromName);
         repsStep.fillGatewayFields(email, pass, smtp, imap);
-        repsStep.saveRepresentative();
+        repsStep.saveRepresentative(fromName);
 
         assertTrue(repsStep.isFromNameDisplayedInRepsCards(fromName));
     }
@@ -76,7 +76,7 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
 
         repsStep.fillRepsFields(email, fromName);
         repsStep.fillGatewayFields(email, pass, smtp, imap);
-        repsStep.saveRepresentative();
+        repsStep.saveRepresentative(fromName);
 
         assertFalse(repsStep.isFromNameDisplayedInRepsCards(fromName));
     }
@@ -123,6 +123,7 @@ public class CampaignRepresentativeTest extends SuiteTestCT {
 
         repsStep.fillRepsFields(" ", " ");
         repsStep.fillGatewayFields(" ", " ", " ", " ");
+        repsStep.createPlaceholder(" ", " ");
         repsStep.clickSaveButton();
 
         assertTrue(repsStep.isValidationMessagesDisplayed(REQUIRED_FIELDS_ERRORS));

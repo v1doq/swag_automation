@@ -103,14 +103,12 @@ public class CampaignContactsTest extends SuiteTestCT {
     @Test(groups = "sanity campaign", description = "Delete campaign's filter")
     public void deleteCampaignsFilter() {
         String firstName = randomAlphabetic(5);
-        contactsStep.insertContactToDb(firstName);
         contactsStep.insertFilterToCampaignDb(campaignName, randomAlphabetic(5));
         goToContactsTab();
 
         contactsStep.deleteFilter();
 
         assertFalse(contactsStep.isFilterDisplayedInTable(firstName, 1));
-        contactsStep.deleteContactFromDb(firstName);
     }
 
     @Severity(SeverityLevel.NORMAL)

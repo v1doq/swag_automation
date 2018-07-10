@@ -7,6 +7,7 @@ import settings.SQLConnector;
 
 import java.util.List;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable;
 import static projects.com.communication.tool.common.CommStackDB.*;
 import static settings.SQLConnector.*;
 
@@ -31,6 +32,7 @@ public class TemplateStep {
     @Step("Add placeholders to template")
     public void addPlaceholderToTemplate(List<String> list) {
         for (String placeholder : list) {
+            component.assertThat(elementToBeClickable(component.getPlaceholderButton()));
             component.getElementInListByText(placeholder, component.getPlaceholderButton()).click();
         }
     }

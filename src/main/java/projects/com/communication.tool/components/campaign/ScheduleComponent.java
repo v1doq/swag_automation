@@ -1,9 +1,10 @@
 package projects.com.communication.tool.components.campaign;
 
 import common.BaseComponent;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 import static org.openqa.selenium.By.*;
 
@@ -33,7 +34,7 @@ public class ScheduleComponent extends BaseComponent {
         return $(cssSelector(".schedule .btn-save"));
     }
 
-    public By getDaysCheckbox() {
-        return by(cssSelector("[name=weekDays] [role=checkbox]"));
+    public List<WebElement> getDaysCheckbox() {
+        return $$(cssSelector("[name=weekDays] [role=checkbox]"));
     }
 }

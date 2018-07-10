@@ -61,19 +61,19 @@ public class CampaignComponent extends BaseComponent {
     }
 
     //PREVIEW
-    public By getCampaignNameInPreview(){
+    public By getCampaignNameInPreviewLocator(){
         return by(cssSelector(".campaign-preview__title .editable__text"));
     }
 
-    public WebElement getCampaignNameInPreviewElement(){
+    public WebElement getCampaignNameInPreview(){
         return $(className("campaign-preview__title"));
     }
 
-    public By getCampaignDescInPreview(){
+    public By getCampaignDescInPreviewLocator(){
         return by(cssSelector(".campaign-preview__description .editable__text"));
     }
 
-    public WebElement getCampaignDescInPreviewElement(){
+    public WebElement getCampaignDescInPreview(){
         return $(className("campaign-preview__description"));
     }
 
